@@ -1,0 +1,9 @@
+[submodule "uC-LIB"]
+	path = uC-LIB
+	url = git@github.com:weston-embedded/uC-LIB.git
+[submodule "uC-CPU"]
+	path = uC-CPU
+	url = git@github.com:weston-embedded/uC-CPU.git
+[submodule "uC-OS3"]
+	path = uC-OS3
+	url = git@github.com:weston-embedded/uC-OS3.git
