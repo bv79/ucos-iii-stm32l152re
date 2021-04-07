@@ -33,3 +33,6 @@
 
 # Testing projects
 blank
+
+# Config files and dirs
+.obsidian
