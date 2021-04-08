@@ -151,8 +151,8 @@ void  BSP_OS_TickInit (void)
 void  BSP_OS_TickEnable (void)
 {
 #if (OS_CFG_DYN_TICK_EN != DEF_ENABLED)
-    CPU_REG_NVIC_ST_CTRL |= (CPU_REG_NVIC_ST_CTRL_TICKINT |     /* Enables SysTick exception request                    */
-                             CPU_REG_NVIC_ST_CTRL_ENABLE);      /* Enables SysTick counter                              */
+    CPU_REG_SYST_CSR |= (CPU_REG_SYST_CSR_TICKINT |     /* Enables SysTick exception request                    */
+                         CPU_REG_SYST_CSR_ENABLE);      /* Enables SysTick counter                              */
 #else
     BSP_IntEnable(INT_ID_TIM5);                                 /* Enable Timer interrupt.                              */
     HAL_TIM_Base_Start(&TimHandle);                             /* Start the Timer count generation.                    */
@@ -177,8 +177,8 @@ void  BSP_OS_TickEnable (void)
 void  BSP_OS_TickDisable (void)
 {
 #if (OS_CFG_DYN_TICK_EN != DEF_ENABLED)
-    CPU_REG_NVIC_ST_CTRL &= ~(CPU_REG_NVIC_ST_CTRL_TICKINT |    /* Disables SysTick exception request                   */
-                              CPU_REG_NVIC_ST_CTRL_ENABLE);     /* Disables SysTick counter                             */
+    CPU_REG_SYST_CSR &= ~(CPU_REG_SYST_CSR_TICKINT |    /* Disables SysTick exception request                   */
+                          CPU_REG_SYST_CSR_ENABLE);     /* Disables SysTick counter                             */
 #else
     HAL_TIM_Base_Stop(&TimHandle);                              /* Stop the Timer count generation.                     */
     BSP_IntDisable(INT_ID_TIM5);                                /* Disable Timer interrupt.                             */
