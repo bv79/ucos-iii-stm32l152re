@@ -114,13 +114,15 @@ include_dir = Inc
 src_dir = Src
 lib_dir = Lib
 ```
-- In VSCode, click <img src="/attachments/platformio.png" width=20> icon on the `Activity Bar` > `Open` >`Open Project`
+- In VSCode, click <img src="/attachments/platformio.png" width=20> icon on the `Activity Bar` > `Open` >`Open Project` > Locate the generated project
 
 ![](attachments/vscode-platformio-icon.png)
 
 ![](attachments/vscode-platformio-open.png)
 
 ![](attachments/vscode-platformio-open-project.png)
+
+![](attachments/vscode-platformio-locate-project.png)
 
 - After imported, serveral files and directories will be automatically generated.
 ```bash
@@ -155,6 +157,76 @@ lib_dir = Lib
 ```
 
 ## Porting ucos-iii
+- In the generated project, create a directory named `Lib` to store libraries.
+- Download or clone following repositories:
+	- (1) [https://github.com/weston-embedded/uC-OS3/](https://github.com/weston-embedded/uC-OS3/)
+	- (2) [https://github.com/weston-embedded/uC-CPU/](https://github.com/weston-embedded/uC-CPU/)
+	- (3) [https://github.com/weston-embedded/uC-LIB/](https://github.com/weston-embedded/uC-LIB/)
+- Copy files from downloaded/cloned repositories to `Lib` directory as following:
+---
+> NOTE:
+> - `cfg` directory contains config files from `Cfg/Template` of downloaded/cloned repositories
+> -  For `STM32 Nucleo L152RE` board,
+>     - `uc-LIB`: use `Ports/ARM-Cortex-M3/GNU`
+>     - `uc-CPU`: use `ARM-Cortex-M/ARMv7-M/GNU`
+
+
+---
+```
+Lib
+├── cfg
+│   ├── cpu_cfg.h               (2)/Cfg/Template/
+│   ├── lib_cfg.h               (3)/Cfg/Template/
+│   ├── os_app_hooks.c          (1)/Cfg/Template/
+│   ├── os_app_hooks.h          (1)/Cfg/Template/
+│   ├── os_cfg_app.h            (1)/Cfg/Template/
+│   └── os_cfg.h                (1)/Cfg/Template/
+├── uC-CPU
+│   ├── cpu_a.s
+│   ├── cpu_cache.h
+│   ├── cpu_c.c
+│   ├── cpu_core.c
+│   ├── cpu_core.h
+│   ├── cpu_def.h
+│   └── cpu.h
+├── uC-LIB
+│   ├── lib_ascii.c
+│   ├── lib_ascii.h
+│   ├── lib_def.h
+│   ├── lib_math.c
+│   ├── lib_math.h
+│   ├── lib_mem_a.s
+│   ├── lib_mem.c
+│   ├── lib_mem.h
+│   ├── lib_str.c
+│   └── lib_str.h
+└── uC-OS3
+    ├── __dbg_uCOS-III.c
+    ├── os_cfg_app.c
+    ├── os_core.c
+    ├── os_cpu_a.S
+    ├── os_cpu_c.c
+    ├── os_cpu.h
+    ├── os_dbg.c
+    ├── os_flag.c
+    ├── os.h
+    ├── os_mem.c
+    ├── os_msg.c
+    ├── os_mutex.c
+    ├── os_prio.c
+    ├── os_q.c
+    ├── os_sem.c
+    ├── os_stat.c
+    ├── os_task.c
+    ├── os_tick.c
+    ├── os_time.c
+    ├── os_tmr.c
+    ├── os_trace.h
+    ├── os_type.h
+    └── os_var.c
+
+4 directories, 46 files
+```
 - Copy and modify `startup_stm32l152xe.S` file
 - Fix compiling errors:
 	- Enable `CPU_CFG_NVIC_PRIO_BITS` in `cpu_cfg.h` file to fix following error:
