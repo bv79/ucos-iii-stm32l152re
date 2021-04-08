@@ -166,9 +166,9 @@ lib_dir = Lib
 ---
 > NOTE:
 > - `cfg` directory contains config files from `Cfg/Template` of downloaded/cloned repositories
-> -  For `STM32 Nucleo L152RE` board,
->     - `uc-LIB`: use `Ports/ARM-Cortex-M3/GNU`
->     - `uc-CPU`: use `ARM-Cortex-M/ARMv7-M/GNU`
+> - `STM32 Nucleo L152RE` board and `gcc` compiler are used in this project so
+>     - `uc-LIB`: copy files under `Ports/ARM-Cortex-M3/GNU` directory
+>     - `uc-CPU`: copy files under  `ARM-Cortex-M/ARMv7-M/GNU` directory
 
 
 ---
@@ -182,48 +182,48 @@ Lib
 │   ├── os_cfg_app.h            (1)/Cfg/Template/
 │   └── os_cfg.h                (1)/Cfg/Template/
 ├── uC-CPU
-│   ├── cpu_a.s
-│   ├── cpu_cache.h
-│   ├── cpu_c.c
-│   ├── cpu_core.c
-│   ├── cpu_core.h
-│   ├── cpu_def.h
-│   └── cpu.h
+│   ├── cpu_a.s                 (2)/ARM-Cortex-M/ARMv7-M/GNU/
+│   ├── cpu_cache.h             (2)/
+│   ├── cpu_c.c                 (2)/ARM-Cortex-M/ARMv7-M/
+│   ├── cpu_core.c              (2)/
+│   ├── cpu_core.h              (2)/
+│   ├── cpu_def.h               (2)/
+│   └── cpu.h                   (2)/ARM-Cortex-M/ARMv7-M/GNU/
 ├── uC-LIB
-│   ├── lib_ascii.c
-│   ├── lib_ascii.h
-│   ├── lib_def.h
-│   ├── lib_math.c
-│   ├── lib_math.h
-│   ├── lib_mem_a.s
-│   ├── lib_mem.c
-│   ├── lib_mem.h
-│   ├── lib_str.c
-│   └── lib_str.h
+│   ├── lib_ascii.c             (3)/
+│   ├── lib_ascii.h             (3)/ 
+│   ├── lib_def.h               (3)/ 
+│   ├── lib_math.c              (3)/ 
+│   ├── lib_math.h              (3)/ 
+│   ├── lib_mem_a.s             (3)/Ports/ARM-Cortex-M3/GNU/
+│   ├── lib_mem.c               (3)/ 
+│   ├── lib_mem.h               (3)/ 
+│   ├── lib_str.c               (3)/ 
+│   └── lib_str.h               (3)/ 
 └── uC-OS3
-    ├── __dbg_uCOS-III.c
-    ├── os_cfg_app.c
-    ├── os_core.c
-    ├── os_cpu_a.S
-    ├── os_cpu_c.c
-    ├── os_cpu.h
-    ├── os_dbg.c
-    ├── os_flag.c
-    ├── os.h
-    ├── os_mem.c
-    ├── os_msg.c
-    ├── os_mutex.c
-    ├── os_prio.c
-    ├── os_q.c
-    ├── os_sem.c
-    ├── os_stat.c
-    ├── os_task.c
-    ├── os_tick.c
-    ├── os_time.c
-    ├── os_tmr.c
-    ├── os_trace.h
-    ├── os_type.h
-    └── os_var.c
+    ├── __dbg_uCOS-III.c        (1)/Source/
+    ├── os_cfg_app.c            (1)/Source/
+    ├── os_core.c               (1)/Source/
+    ├── os_cpu_a.S              (1)/Ports/ARM-Cortex-M/ARMv7-M/GNU/
+    ├── os_cpu_c.c              (1)/Ports/ARM-Cortex-M/ARMv7-M/
+    ├── os_cpu.h                (1)/Ports/ARM-Cortex-M/ARMv7-M/GNU/
+    ├── os_dbg.c                (1)/Source/
+    ├── os_flag.c               (1)/Source/
+    ├── os.h                    (1)/Source/
+    ├── os_mem.c                (1)/Source/
+    ├── os_msg.c                (1)/Source/
+    ├── os_mutex.c              (1)/Source/
+    ├── os_prio.c               (1)/Source/
+    ├── os_q.c                  (1)/Source/
+    ├── os_sem.c                (1)/Source/
+    ├── os_stat.c               (1)/Source/
+    ├── os_task.c               (1)/Source/
+    ├── os_tick.c               (1)/Source/
+    ├── os_time.c               (1)/Source/
+    ├── os_tmr.c                (1)/Source/
+    ├── os_trace.h              (1)/Source/
+    ├── os_type.h               (1)/Source/
+    └── os_var.c                (1)/Source/
 
 4 directories, 46 files
 ```
