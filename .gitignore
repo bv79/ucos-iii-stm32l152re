@@ -36,3 +36,5 @@ blank
 
 # Config files and dirs
 .obsidian
+.vscode
+.pio
