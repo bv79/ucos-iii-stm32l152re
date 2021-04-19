@@ -9,7 +9,9 @@
 - [Generate a STM32 project with STM32CubeMX](#generate-a-stm32-project-with-stm32cubemx)
 - [Import the project to Platformio](#import-the-project-to-platformio)
 - [Porting ucos-iii](#porting-ucos-iii)
+- [- Copy files from downloaded/cloned repositories to `Lib` directory as following:](#--copy-files-from-downloadedcloned-repositories-to-lib-directory-as-following)
 - [Problems](#problems)
+- [References](#references)
 
 <!-- vim-markdown-toc -->
 
@@ -227,18 +229,66 @@ Lib
 
 4 directories, 46 files
 ```
-- Copy and modify `startup_stm32l152xe.S` file
-- Fix compiling errors:
-	- Enable `CPU_CFG_NVIC_PRIO_BITS` in `cpu_cfg.h` file to fix following error:
+- Enable `CPU_CFG_NVIC_PRIO_BITS` in `cpu_cfg.h` file to fix following error:
 
-	![](attachments/nvic-prio-bits-error.png)
+![](attachments/nvic-prio-bits-error.png)
 
-	- Change `#include  "../../../Source/os.h"`  in `os_cpu_c.c` file to `#include "os.h"` to fix following error:
+- Change `#include  "../../../Source/os.h"`  in `os_cpu_c.c` file to `#include "os.h"` to fix following error:
 
-	![](attachments/include-os-header-error.png)
+![](attachments/include-os-header-error.png)
 
+- Find the startup file for `STM32 Nucleo L152RE` (version for `gcc` - GNU toolchain) and copy it to `Src` directory of the project. Under GNU/Linux, you can use `find` or `locate` (requires `mlocate` installed) command to find the file under `~/platformio` directory.
+  ```bash
+  find ~/.platformio -name startup_stm32l152xe.S
+  ```
+  or
+  ```bash
+  sudo updatedb
+  locate startup_stm32l152xe.S
+  ```
+> OS_CPU_SysTickHandler() is automatically invoked by the Cortex-M3 when a SysTick interrupt occurs and interrupts are enabled. For this to happen, however, the address of **OS_CPU_SysTickHandler() must be placed in the interrupt vector table at the SysTick entry**
+>
+> --- <cite>[µC/OS-III for the STMicroelectronics STM32][1]</cite>
+
+>Note that you **must place a pointer to OS_CPU_PendSVHandler() in the exception vector table** at vector location 14 (based of the vector table + 4 * 14 or, offset 56).
+>
+> --- <cite>[Application Note AN-1018: µC/OS-II and ARM Cortex-M3 Processors][2]</cite>
+
+| Position   | Exception/Interrupt      | Priority       | Description                                                                                                                                                                                                                             |
+| :--------: | ------------------------ | :------------: | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 0          | -                        | -              | Stack top is loaded from first entry of vector table on reset.                                                                                                                                                                          |
+| 1          | Reset                    | -3 (highest)   | Invoked on power up and warm reset. On first instruction, drops to lowest priority (Thread mode). This is asynchronous.                                                                                                                 |
+| 2          | Non-maskable Interrupt   | -2             | Cannot be stopped or pre-empted by any exception but reset. This is asynchronous                                                                                                                                                        |
+| 3          | Hard Fault               | -1             | All classes of Fault, when the fault cannot activate because of priority or the Configurable Fault handler has been disabled. This is synchronous.                                                                                      |
+| 4          | Memory Management        | Configurable   | Memory Protection Unit (MPU) mismatch, including access violation and no match. This is synchronous. This is used even if the MPU is disabled or not present, to support the Executable Never (XN) regions of the default memory map.   |
+| 5          | Bus Fault                | Configurable   | Pre-fetch fault, memory access fault, and other address/memory related. This is synchronous when precise and asynchronous when imprecise.                                                                                               |
+| 6          | Usage Fault              | Configurable   | Usage fault, such as Undefined instruction executed or illegal state transition attempt. This is synchronous.                                                                                                                           |
+| 7-10       | -                        | -              | Reserved                                                                                                                                                                                                                                |
+| 11         | SVCall                   | Configurable   | System service call with SVC instruction. This is synchronous.                                                                                                                                                                          |
+| 12         | Debug Monitor            | Configurable   | Debug monitor, when not halting. This is synchronous, but only active when enabled. It does not activate if lower priority than the current activation.                                                                                 |
+| 13         | -                        | -              | Reserved                                                                                                                                                                                                                                |
+| 14         | PendSV                   | Configurable   | Pendable request for system service. This is asynchronous and only pended by software.                                                                                                                                                  |
+| 15         | SysTick                  | Configurable   | System tick timer has fired. This is asynchronous.                                                                                                                                                                                      |
+| 16-        | External Interrupt       | Configurable   | Asserted from outside the core, INTISR[239:0], and fed through the NVIC (prioritized). These are all asynchronous.                                                                                                                      |
+| ---------- | ------------------------ | -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+
+
+
+- OS_CPU_SysTickHandler
+
+
+- Include "os.h"
+- Create `main()` function
 ## Problems
 - Can't debug when PC13 is enabled. Solutions:
 	- Call any `HAL_GPIO_xxx()` function
 	- Disable pin `PC13`
 
+## References
+- [µC/OS-III for the STMicroelectronics STM32][1]
+- [Application Note AN-1018: µC/OS-II and ARM Cortex-M3 Processors][2]
+- [Reference Manual RM0038 - STM32L100xx, STM32L151xx, STM32L152xx and STM32L162xx][3]
+
+[1]: https://micrium.atlassian.net/wiki/spaces/osiiidoc/overview?homepageId=132386&preview=/132386/157512/100-uCOS-III-ST-STM32-003.pdf
+[2]: https://www.element14.com/community/servlet/JiveServlet/previewBody/35592-102-2-216909/OSs-Micrium-Learning%20Centre-Application%20Notes-Micrium.Application_Notes_22.pdf
+[3]: https://www.st.com/content/ccc/resource/technical/document/reference_manual/cc/f9/93/b2/f0/82/42/57/CD00240193.pdf/files/CD00240193.pdf/jcr:content/translations/en.CD00240193.pdf
