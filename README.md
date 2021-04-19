@@ -1,16 +1,3 @@
-<!-- CSS -->
-<style>
-/* Keep images centered */
-img
-{
-    display:block; 
-    float:none; 
-    margin-left:auto;
-    margin-right:auto;
-    width:60%;
-}
-</style> 
-<!-- End of CSS -->
 # ucos-iii-STM32L152RE
 
 ## Table of Contents
