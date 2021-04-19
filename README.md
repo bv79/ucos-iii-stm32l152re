@@ -9,7 +9,6 @@
 - [Generate a STM32 project with STM32CubeMX](#generate-a-stm32-project-with-stm32cubemx)
 - [Import the project to Platformio](#import-the-project-to-platformio)
 - [Porting ucos-iii](#porting-ucos-iii)
-- [- Copy files from downloaded/cloned repositories to `Lib` directory as following:](#--copy-files-from-downloadedcloned-repositories-to-lib-directory-as-following)
 - [Problems](#problems)
 - [References](#references)
 
@@ -45,7 +44,7 @@
     ```bash
     stat /dev/ttyACM0 
     ```
-    ```
+    ```bash
       File: /dev/ttyACM0
       Size: 0               Blocks: 0          IO Block: 4096   character special file
     Device: 5h/5d   Inode: 870         Links: 1     Device type: a6,0
@@ -165,6 +164,7 @@ lib_dir = Lib
 	- (2) [https://github.com/weston-embedded/uC-CPU/](https://github.com/weston-embedded/uC-CPU/)
 	- (3) [https://github.com/weston-embedded/uC-LIB/](https://github.com/weston-embedded/uC-LIB/)
 - Copy files from downloaded/cloned repositories to `Lib` directory as following:
+
 ---
 > NOTE:
 > - `cfg` directory contains config files from `Cfg/Template` of downloaded/cloned repositories
@@ -278,7 +278,7 @@ Lib
     .word OS_CPU_SysTickHandler
   ```
 - Include `os.h` in `main.h`
-- Create `main()` function
+- Create `main()` function in `main.c`
 
 ## Problems
 - Can't debug when PC13 is enabled. Solutions:
