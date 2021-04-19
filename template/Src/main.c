@@ -56,10 +56,10 @@ void SystemClock_Config(void);
 int main(void)
 {
 
-  OS_ERR err;
+  OS_ERR os_err;
 
-  OSInit(&err);
-  OSStart(&err);
+  OSInit(&os_err);
+  OSStart(&os_err);
 
 }
 /* USER CODE END 0 */

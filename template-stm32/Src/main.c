@@ -53,7 +53,14 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+int main(void)
+{
+  OS_ERR os_err;
 
+  OSInit(&os_err);
+  OSStart(&os_err);
+
+}
 /* USER CODE END 0 */
 
 /**
