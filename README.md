@@ -270,7 +270,6 @@ Lib
 | 14         | PendSV                   | Configurable   | Pendable request for system service. This is asynchronous and only pended by software.                                                                                                                                                  |
 | 15         | SysTick                  | Configurable   | System tick timer has fired. This is asynchronous.                                                                                                                                                                                      |
 | 16-        | External Interrupt       | Configurable   | Asserted from outside the core, INTISR[239:0], and fed through the NVIC (prioritized). These are all asynchronous.                                                                                                                      |
-| ---------- | ------------------------ | -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 
 
 
