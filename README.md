@@ -246,6 +246,8 @@ Lib
   sudo updatedb
   locate startup_stm32l152xe.S
   ```
+
+---
 > OS_CPU_SysTickHandler() is automatically invoked by the Cortex-M3 when a SysTick interrupt occurs and interrupts are enabled. For this to happen, however, the address of **OS_CPU_SysTickHandler() must be placed in the interrupt vector table at the SysTick entry**
 >
 > --- <cite>[µC/OS-III for the STMicroelectronics STM32][1]</cite>
@@ -254,7 +256,8 @@ Lib
 >
 > --- <cite>[Application Note AN-1018: µC/OS-II and ARM Cortex-M3 Processors][2]</cite>
 
-- According to Micrum's documentation, `PendSV` and `SysTick` entries in the interrupt vector table must be replaced with `OS_CPU_PendSVHandler` and ` OS_CPU_SysTickHandler`. To do that the vector table in `startup_stm32l152xe.S` should be modified as follow:
+---
+- As above mentionted quotes, `PendSV` and `SysTick` entries in the interrupt vector table must be replaced with `OS_CPU_PendSVHandler` and ` OS_CPU_SysTickHandler`. To do that the vector table in `startup_stm32l152xe.S` should be modified as follow:
   ```
   g_pfnVectors:
     .word _estack
