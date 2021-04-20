@@ -31,6 +31,9 @@
   .fpu softvfp
   .thumb
 
+.extern OS_CPU_PendSVHandler
+.extern OS_CPU_SysTickHandler
+
 .global g_pfnVectors
 .global Default_Handler
 
