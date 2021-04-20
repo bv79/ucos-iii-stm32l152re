@@ -1,4 +1,5 @@
 # ucos-iii-STM32L152RE
+> Description goes here
 
 ## Table of Contents
 
@@ -237,7 +238,7 @@ Lib
 
 ![](attachments/include-os-header-error.png)
 
-- Find the startup file for `STM32 Nucleo L152RE` (version for `gcc` - GNU toolchain) and copy it to `Src` directory of the project. Under GNU/Linux, you can use `find` or `locate` (requires `mlocate` installed) command to find the file under `~/platformio` directory.
+- Find the startup file for `STM32 Nucleo L152RE` (version for `gcc` - GNU toolchain) and copy it to `Src` directory of the project. Under GNU/Linux, you can use `find` or `locate` command (requires `mlocate` installed) to find the file under `~/platformio` directory.
   ```bash
   find ~/.platformio -name startup_stm32l152xe.S
   ```
