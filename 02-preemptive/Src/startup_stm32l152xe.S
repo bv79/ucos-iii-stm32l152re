@@ -406,3 +406,13 @@ g_pfnVectors:
    .thumb_set COMP_ACQ_IRQHandler,Default_Handler
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+
+.thumb_func
+PendSV_Handler:
+	b OS_CPU_PendSVHandler
+	b .
+	
+.thumb_func	
+SysTick_Handler:
+	b OS_CPU_SysTickHandler
+	b .

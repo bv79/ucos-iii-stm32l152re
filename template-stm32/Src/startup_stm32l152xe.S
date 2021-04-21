@@ -31,9 +31,6 @@
   .fpu softvfp
   .thumb
 
-.extern OS_CPU_PendSVHandler
-.extern OS_CPU_SysTickHandler
-
 .global g_pfnVectors
 .global Default_Handler
 
@@ -237,11 +234,11 @@ g_pfnVectors:
   .weak DebugMon_Handler
   .thumb_set DebugMon_Handler,Default_Handler
 
-  .weak PendSV_Handler
-  .thumb_set PendSV_Handler,Default_Handler
+  .weak OS_CPU_PendSVHandler
+  .thumb_set OS_CPU_PendSVHandler,Default_Handler
 
-  .weak SysTick_Handler
-  .thumb_set SysTick_Handler,Default_Handler
+  .weak OS_CPU_SysTickHandler
+  .thumb_set OS_CPU_SysTickHandler,Default_Handler
 
   .weak WWDG_IRQHandler
   .thumb_set WWDG_IRQHandler,Default_Handler
@@ -410,3 +407,12 @@ g_pfnVectors:
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
 
+.thumb_func
+PendSV_Handler:
+	b OS_CPU_PendSVHandler
+	b .
+	
+.thumb_func	
+SysTick_Handler:
+	b OS_CPU_SysTickHandler
+	b .
