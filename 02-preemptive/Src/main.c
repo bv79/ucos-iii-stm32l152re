@@ -32,6 +32,10 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+/* Task Stack Size */
+#define APP_TASK_START_STK_SIZE 128u
+/* Task Priority */
+#define APP_TASK_START_PRIO 1u
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -42,18 +46,77 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+/* Task Control Block */
+static OS_TCB AppTaskStartTCB;
+/* Task Stack */
+static CPU_STK AppTaskStartStk[APP_TASK_START_STK_SIZE];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
-
+static void AppTaskStart(void *p_arg);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+int main(void)
+{
+  /* To store error code */
+  OS_ERR os_err;
 
+  /* Initialize uC/OS-III */
+  OSInit(&os_err);
+
+  if (os_err != OS_ERR_NONE)
+  {
+    while (DEF_TRUE)
+      ;
+  }
+
+  OSTaskCreate(
+      /* pointer to task control block */
+      (OS_TCB *)&AppTaskStartTCB,
+      /* task name can be displayed by debuggers */
+      (CPU_CHAR *)"App Task Start",
+      /* pointer to the task */
+      (OS_TASK_PTR)AppTaskStart,
+      /* pointer to an OPTIONAL data area */
+      (void *)0,
+      /* task priority: the lower the number, the higher the priority */
+      (OS_PRIO)APP_TASK_START_PRIO,
+      /* pointer to task's stack base addr */
+      (CPU_STK *)&AppTaskStartStk[0],
+      /* task's stack limit to monitor and ensure that the stack 
+       * doesn't overflow (10%) */
+      (CPU_STK_SIZE)APP_TASK_START_STK_SIZE / 10,
+      /* task's stack size */
+      (CPU_STK_SIZE)APP_TASK_START_STK_SIZE,
+      /* max number of message that the task can receive through 
+       * internal message queue (5) */
+      (OS_MSG_QTY)5u,
+      /* amount of clock ticks for the time quanta 
+       * when round robin is enabled */
+      (OS_TICK)0u,
+      /* pointer to an OPTIONAL user-supplied memory location 
+       * use as a TCB extension */
+      (void *)0,
+      /* contain task-specific option 
+       * OS_OPT_TASK_STK_CHK: allow stack checking 
+       * OS_OPT_TASK_STK_CLR: stack needs to be cleared */
+      (OS_OPT)(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR),
+      /* pointer to a variable that will receive an error code */
+      (OS_ERR *)&os_err);
+
+  if (os_err != OS_ERR_NONE)
+  {
+    while (DEF_TRUE)
+      ;
+  }
+
+  /* Start Mulitasking */
+  OSStart(&os_err);
+}
 /* USER CODE END 0 */
 
 /**
@@ -103,7 +166,21 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+static void AppTaskStart(void *p_arg)
+{
+  OS_ERR os_err;
 
+  HAL_Init();
+  SystemClock_Config();
+  MX_GPIO_Init();
+
+  while (DEF_TRUE)
+  {
+    BSP_LED_GREEN_Toggle();
+    BSP_LED_RED_Toggle();
+    OSTimeDlyHMSM(0, 0, 0, 500, OS_OPT_TIME_HMSM_STRICT, &os_err);
+  }
+}
 /* USER CODE END 4 */
 
 /**

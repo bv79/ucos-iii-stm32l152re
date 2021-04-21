@@ -32,7 +32,9 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include <os.h>
+#include <gpio.h>
+#include <bsp_led.h>
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
