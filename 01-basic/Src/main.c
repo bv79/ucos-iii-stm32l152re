@@ -66,34 +66,37 @@ int main(void)
   /* To store error code */
   OS_ERR os_err;
 
+  /* Initialize uC/OS-III */
   OSInit(&os_err);
 
   if (os_err != OS_ERR_NONE)
   {
-    while(DEF_TRUE);
+    while (DEF_TRUE)
+      ;
   }
 
   OSTaskCreate(
-                (OS_TCB       *)&AppTaskStartTCB,
-                (CPU_CHAR     *)"App Task Start",
-                (OS_TASK_PTR   )AppTaskStart,
-                (void         *)0,
-                (OS_PRIO       )APP_TASK_START_PRIO,
-                (CPU_STK      *)&AppTaskStartStk[0],
-                (CPU_STK_SIZE  )APP_TASK_START_STK_SIZE / 10,
-                (CPU_STK_SIZE  )APP_TASK_START_STK_SIZE,
-                (OS_MSG_QTY    )5u,
-                (OS_TICK       )0u,
-                (void         *)0,
-                (OS_OPT        )(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR),
-                (OS_ERR       *)&os_err
-  );
+      (OS_TCB *)&AppTaskStartTCB,
+      (CPU_CHAR *)"App Task Start",
+      (OS_TASK_PTR)AppTaskStart,
+      (void *)0,
+      (OS_PRIO)APP_TASK_START_PRIO,
+      (CPU_STK *)&AppTaskStartStk[0],
+      (CPU_STK_SIZE)APP_TASK_START_STK_SIZE / 10,
+      (CPU_STK_SIZE)APP_TASK_START_STK_SIZE,
+      (OS_MSG_QTY)5u,
+      (OS_TICK)0u,
+      (void *)0,
+      (OS_OPT)(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR),
+      (OS_ERR *)&os_err);
 
   if (os_err != OS_ERR_NONE)
   {
-    while(DEF_TRUE);
+    while (DEF_TRUE)
+      ;
   }
 
+  /* Start Mulitasking */
   OSStart(&os_err);
 }
 /* USER CODE END 0 */
@@ -131,8 +134,8 @@ void SystemClock_Config(void)
   }
   /** Initializes the CPU, AHB and APB buses clocks
   */
-  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
-                              |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
+  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK 
+                              | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
@@ -147,14 +150,15 @@ void SystemClock_Config(void)
 /* USER CODE BEGIN 4 */
 static void AppTaskStart(void *p_arg)
 {
-  OS_ERR os_err;  
+  OS_ERR os_err;
   HAL_Init();
   CPU_Init();
   MX_GPIO_Init();
   SystemClock_Config();
-  while(DEF_TRUE){
+  while (DEF_TRUE)
+  {
     HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
-    OSTimeDlyHMSM(0,0,0,500,OS_OPT_TIME_HMSM_STRICT, &os_err);
+    OSTimeDlyHMSM(0, 0, 0, 500, OS_OPT_TIME_HMSM_STRICT, &os_err);
   }
 }
 /* USER CODE END 4 */
@@ -174,7 +178,7 @@ void Error_Handler(void)
   /* USER CODE END Error_Handler_Debug */
 }
 
-#ifdef  USE_FULL_ASSERT
+#ifdef USE_FULL_ASSERT
 /**
   * @brief  Reports the name of the source file and the source line number
   *         where the assert_param error has occurred.
