@@ -106,13 +106,13 @@ void  BSP_IntInit (void)
     CPU_SR_ALLOC();
 
 
-    p_vect_tbl = (CPU_FNCT_VOID *)CPU_REG_NVIC_VTOR;
+    p_vect_tbl = (CPU_FNCT_VOID *)CPU_REG_SCB_VTOR;
     for (int_id = 0u; int_id <= (INT_VTOR_TBL_SIZE - 1u); int_id++) {
         VectorTbl_RAM[int_id] = p_vect_tbl[int_id];             /* Copy current table into RAM table                    */
     }
 
     CPU_CRITICAL_ENTER();
-    CPU_REG_NVIC_VTOR = (CPU_INT32U)&VectorTbl_RAM[0u];         /* See note 1.                                          */
+    CPU_REG_SCB_VTOR = (CPU_INT32U)&VectorTbl_RAM[0u];         /* See note 1.                                          */
     CPU_CRITICAL_EXIT();
 }
 
