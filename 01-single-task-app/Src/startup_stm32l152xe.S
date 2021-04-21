@@ -405,8 +405,6 @@ g_pfnVectors:
   .weak COMP_ACQ_IRQHandler
    .thumb_set COMP_ACQ_IRQHandler,Default_Handler
 
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
-
 .thumb_func
 PendSV_Handler:
 	b OS_CPU_PendSVHandler
@@ -416,3 +414,5 @@ PendSV_Handler:
 SysTick_Handler:
 	b OS_CPU_SysTickHandler
 	b .
+
+/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
