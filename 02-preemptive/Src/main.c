@@ -34,8 +34,12 @@
 /* USER CODE BEGIN PD */
 /* Task Stack Size */
 #define APP_TASK_START_STK_SIZE 128u
+#define LED_GREEN_TASK_STK_SIZE 128u
+#define LED_RED_TASK_STK_SIZE 128u
 /* Task Priority */
 #define APP_TASK_START_PRIO 1u
+#define LED_GREEN_TASK_PRIO 2u
+#define LED_RED_TASK_PRIO 3u
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -48,14 +52,20 @@
 /* USER CODE BEGIN PV */
 /* Task Control Block */
 static OS_TCB AppTaskStartTCB;
+static OS_TCB LEDGreenTaskTCB;
+static OS_TCB LEDRedTaskTCB;
 /* Task Stack */
 static CPU_STK AppTaskStartStk[APP_TASK_START_STK_SIZE];
+static CPU_STK LEDGreenTaskStk[APP_TASK_START_STK_SIZE];
+static CPU_STK LEDRedTaskStk[APP_TASK_START_STK_SIZE];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
 static void AppTaskStart(void *p_arg);
+static void LEDGreenTask(void *p_arg);
+static void LEDRedTask(void *p_arg);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -174,12 +184,57 @@ static void AppTaskStart(void *p_arg)
   SystemClock_Config();
   MX_GPIO_Init();
 
+  OSTaskCreate(
+      (OS_TCB *)&LEDGreenTaskTCB,
+      (CPU_CHAR *)"LED Green Task",
+      (OS_TASK_PTR)LEDGreenTask,
+      (void *)0,
+      (OS_PRIO)LED_GREEN_TASK_PRIO,
+      (CPU_STK *)&LEDGreenTaskStk[0],
+      (CPU_STK_SIZE)LED_GREEN_TASK_STK_SIZE / 10,
+      (CPU_STK_SIZE)LED_GREEN_TASK_STK_SIZE,
+      (OS_MSG_QTY)5u,
+      (OS_TICK)0u,
+      (void *)0,
+      (OS_OPT)(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR),
+      (OS_ERR *)&os_err);
+
+  OSTaskCreate(
+      (OS_TCB *)&LEDRedTaskTCB,
+      (CPU_CHAR *)"LED Red Task",
+      (OS_TASK_PTR)LEDRedTask,
+      (void *)0,
+      (OS_PRIO)LED_RED_TASK_PRIO,
+      (CPU_STK *)&LEDRedTaskStk[0],
+      (CPU_STK_SIZE)LED_RED_TASK_STK_SIZE / 10,
+      (CPU_STK_SIZE)LED_RED_TASK_STK_SIZE,
+      (OS_MSG_QTY)5u,
+      (OS_TICK)0u,
+      (void *)0,
+      (OS_OPT)(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR),
+      (OS_ERR *)&os_err);
+}
+
+static void LEDGreenTask(void *p_arg)
+{
+
+  OS_ERR os_err;
   while (DEF_TRUE)
   {
     BSP_LED_GREEN_Toggle();
+    OSTimeDlyHMSM(0, 0, 5, 0, OS_OPT_TIME_HMSM_STRICT, &os_err);
+  }
+}
+
+static void LEDRedTask(void *p_arg)
+{
+  OS_ERR os_err;
+  while (DEF_TRUE)
+  {
     BSP_LED_RED_Toggle();
     OSTimeDlyHMSM(0, 0, 0, 500, OS_OPT_TIME_HMSM_STRICT, &os_err);
   }
+
 }
 /* USER CODE END 4 */
 
