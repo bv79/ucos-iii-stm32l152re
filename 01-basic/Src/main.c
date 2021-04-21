@@ -151,10 +151,11 @@ void SystemClock_Config(void)
 static void AppTaskStart(void *p_arg)
 {
   OS_ERR os_err;
+
   HAL_Init();
-  CPU_Init();
-  MX_GPIO_Init();
   SystemClock_Config();
+  MX_GPIO_Init();
+
   while (DEF_TRUE)
   {
     HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
