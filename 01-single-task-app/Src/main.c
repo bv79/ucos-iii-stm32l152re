@@ -76,18 +76,37 @@ int main(void)
   }
 
   OSTaskCreate(
+      /* pointer to task control block */
       (OS_TCB *)&AppTaskStartTCB,
+      /* task name can be displayed by debuggers */
       (CPU_CHAR *)"App Task Start",
+      /* pointer to the task */
       (OS_TASK_PTR)AppTaskStart,
+      /* pointer to an OPTIONAL data area */
       (void *)0,
+      /* task priority: the lower the number, the higher the priority */
       (OS_PRIO)APP_TASK_START_PRIO,
+      /* pointer to task's stack base addr */
       (CPU_STK *)&AppTaskStartStk[0],
+      /* task's stack limit to monitor and ensure that the stack 
+       * doesn't overflow (10%) */
       (CPU_STK_SIZE)APP_TASK_START_STK_SIZE / 10,
+      /* task's stack size */
       (CPU_STK_SIZE)APP_TASK_START_STK_SIZE,
+      /* max number of message that the task can receive through 
+       * internal message queue (5) */
       (OS_MSG_QTY)5u,
+      /* amount of clock ticks for the time quanta 
+       * when round robin is enabled */
       (OS_TICK)0u,
+      /* pointer to an OPTIONAL user-supplied memory location 
+       * use as a TCB extension */
       (void *)0,
+      /* contain task-specific option 
+       * OS_OPT_TASK_STK_CHK: allow stack checking 
+       * OS_OPT_TASK_STK_CLR: stack needs to be cleared */
       (OS_OPT)(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR),
+      /* pointer to a variable that will receive an error code */
       (OS_ERR *)&os_err);
 
   if (os_err != OS_ERR_NONE)
@@ -134,8 +153,8 @@ void SystemClock_Config(void)
   }
   /** Initializes the CPU, AHB and APB buses clocks
   */
-  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
-                              |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
+  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK 
+                              | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
@@ -179,7 +198,7 @@ void Error_Handler(void)
   /* USER CODE END Error_Handler_Debug */
 }
 
-#ifdef  USE_FULL_ASSERT
+#ifdef USE_FULL_ASSERT
 /**
   * @brief  Reports the name of the source file and the source line number
   *         where the assert_param error has occurred.
