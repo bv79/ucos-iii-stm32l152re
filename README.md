@@ -260,6 +260,19 @@ Lib
 ---
 - As above mentionted quotes, `PendSV` and `SysTick` entries in the interrupt vector table must be replaced with `OS_CPU_PendSVHandler` and ` OS_CPU_SysTickHandler`. To do that the vector table in `startup_stm32l152xe.S` should be modified as follow:
   ```
+    .syntax unified
+    .cpu cortex-m3
+    .fpu softvfp
+    .thumb
+
+  .extern OS_CPU_PendSVHandler
+  .extern OS_CPU_SysTickHandler
+
+  .global g_pfnVectors
+  .global Default_Handler
+  ```
+
+  ```
   g_pfnVectors:
     .word _estack
     .word Reset_Handler
