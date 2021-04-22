@@ -34,8 +34,8 @@
 * @date	2020-01-10
 * @version	v3.3.4
 *
-*/#ifndef __BMP280_DEFS_H__
-#define __BMP280_DEFS_H__
+*/#ifndef __BSP_BMP280_DEFS_H__
+#define __BSP_BMP280_DEFS_H__
 
 /*! CPP guard */
 #ifdef __cplusplus
@@ -401,4 +401,4 @@ struct bmp280_dev
 }
 #endif /* End of CPP guard */
 
-#endif /* __BMP280_DEFS_H__ */
+#endif /* __BSP_BMP280_DEFS_H__ */

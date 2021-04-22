@@ -19,6 +19,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "i2c.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -60,6 +61,13 @@ static CPU_STK ReadDataTaskStk[APP_TASK_START_STK_SIZE];
 static CPU_STK DisplayDataTaskStk[APP_TASK_START_STK_SIZE];
 /* Semaphore */
 OS_SEM sem;
+/* BMP280 */
+struct bmp280_dev bmp;
+int8_t rslt;
+struct bmp280_config conf;
+struct bmp280_uncomp_data ucomp_data;
+int32_t temp32;
+double temp;
 
 /* USER CODE END PV */
 
@@ -194,6 +202,10 @@ static void AppTaskStart(void *p_arg)
   SystemClock_Config();
   MX_GPIO_Init();
   MX_USART2_UART_Init();
+  MX_I2C1_Init();
+
+  BSP_LED_GREEN_Off();
+  BSP_LED_RED_Off();
 
   OSTaskCreate(
       (OS_TCB *)&ReadDataTaskTCB,
@@ -230,20 +242,39 @@ static void ReadDataTask(void *p_arg)
 {
 
   OS_ERR os_err;
+
+  /* Map functions */
+  bmp.delay_ms = delay_ms;
+  bmp.read = i2c_reg_read;
+  bmp.write = i2c_reg_write;
+  /* Assign address*/
+  bmp.dev_id = BMP280_I2C_ADDR_PRIM;
+  bmp.intf = BMP280_I2C_INTF;
+
+  bmp280_init(&bmp);
+  bmp280_get_config(&conf, &bmp);
+  conf.filter = BMP280_FILTER_COEFF_2;
+  conf.os_temp = BMP280_OS_4X;
+  conf.os_pres = BMP280_OS_NONE;
+  conf.odr = BMP280_ODR_1000_MS;
+  bmp280_set_config(&conf, &bmp);
+  bmp280_set_power_mode(BMP280_NORMAL_MODE, &bmp);
+
   unsigned char MSG[14];
   sprintf((char*)MSG, "ReadDataTask\n");
   while (DEF_TRUE)
   {
-    BSP_LED_GREEN_Toggle();
-    HAL_UART_Transmit(&huart2, MSG, sizeof(MSG), 100);
-
+    BSP_LED_GREEN_On();
+    bmp280_get_uncomp_data(&ucomp_data, &bmp);
+    bmp280_get_comp_temp_32bit(&temp32, ucomp_data.uncomp_temp, &bmp);
+    bmp280_get_comp_temp_double(&temp, ucomp_data.uncomp_temp, &bmp);
+    BSP_LED_GREEN_Off();
     OSSemPost(
       (OS_SEM *)&sem,
       (OS_OPT)OS_OPT_TIME_HMSM_STRICT,
       (OS_ERR *)&os_err
     );
-
-    OSTimeDlyHMSM(0, 0, 0, 500, OS_OPT_TIME_HMSM_STRICT, &os_err);
+    OSTimeDlyHMSM(0, 0, 1, 0, OS_OPT_TIME_HMSM_STRICT, &os_err);
   }
 }
 
@@ -252,6 +283,8 @@ static void DisplayDataTask(void *p_arg)
   OS_ERR os_err;
   unsigned char MSG[17];
   sprintf((char *)MSG, "DisplayDataTask\n");
+  unsigned char DATA[34];
+
   while (DEF_TRUE)
   {
     OSSemPend(
@@ -262,10 +295,11 @@ static void DisplayDataTask(void *p_arg)
       (OS_ERR *)&os_err
     );
 
-    BSP_LED_RED_Toggle();
-    HAL_UART_Transmit(&huart2, MSG, sizeof(MSG), 100);
-
-    OSTimeDlyHMSM(0, 0, 0, 500, OS_OPT_TIME_HMSM_STRICT, &os_err);
+    BSP_LED_RED_On();
+    sprintf((char *)DATA, "UT: %ld, T32: %ld, T: %.2f \r\n", ucomp_data.uncomp_temp, temp32, temp);
+    HAL_UART_Transmit(&huart2, DATA, sizeof(DATA), 100);
+    BSP_LED_RED_Off();
+    OSTimeDlyHMSM(0, 0, 1, 0, OS_OPT_TIME_HMSM_STRICT, &os_err);
   }
 
 }

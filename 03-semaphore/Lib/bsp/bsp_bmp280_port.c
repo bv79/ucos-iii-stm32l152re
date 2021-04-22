@@ -10,8 +10,15 @@
  */
 void delay_ms(uint32_t period_ms)
 {
+    OS_ERR os_err;
     /* Implement the delay routine according to the target machine */
-    HAL_Delay(period_ms);
+    if (period_ms < 1000){
+        OSTimeDlyHMSM(0, 0, 0, period_ms, OS_OPT_TIME_HMSM_STRICT, &os_err);
+    }
+    else if (period_ms < 59000) 
+    {
+        OSTimeDlyHMSM(0, 0, period_ms/1000u,period_ms%1000u, OS_OPT_TIME_HMSM_STRICT, &os_err);
+    }
 }
 
 /*!

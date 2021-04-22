@@ -34,10 +34,10 @@
 * @date	2020-01-10
 * @version	v3.3.4
 *
-*/#ifndef __BMP280_H__
-#define __BMP280_H__
+*/#ifndef __BSP_BMP280_H__
+#define __BSP_BMP280_H__
 
-#include "bmp280_defs.h"
+#include "bsp_bmp280_defs.h"
 
 /*! CPP guard */
 #ifdef __cplusplus
@@ -284,4 +284,4 @@ uint8_t bmp280_compute_meas_time(const struct bmp280_dev *dev);
 }
 #endif /* End of CPP guard */
 
-#endif /* _BMP280_H_ */
+#endif /* _BSP_BMP280_H_ */

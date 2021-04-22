@@ -34,7 +34,8 @@
 * @date	2020-01-10
 * @version	v3.3.4
 *
-*/#include "bmp280.h"
+*/
+#include <bsp_bmp280.h>
 
 /********************** Static function declarations ************************/
 
@@ -431,15 +432,15 @@ int8_t bmp280_get_comp_temp_32bit(int32_t *comp_temp, int32_t uncomp_temp, struc
     if (rslt == BMP280_OK)
     {
         var1 =
-            ((((uncomp_temp / 8) - ((int32_t) dev->calib_param.dig_t1 << 1))) * ((int32_t) dev->calib_param.dig_t2)) /
+            ((((uncomp_temp / 8u) - ((int32_t) dev->calib_param.dig_t1 << 1))) * ((int32_t) dev->calib_param.dig_t2)) /
             2048;
         var2 =
-            (((((uncomp_temp / 16) - ((int32_t) dev->calib_param.dig_t1)) *
-               ((uncomp_temp / 16) - ((int32_t) dev->calib_param.dig_t1))) / 4096) *
+            (((((uncomp_temp / 16u) - ((int32_t) dev->calib_param.dig_t1)) *
+               ((uncomp_temp / 16u) - ((int32_t) dev->calib_param.dig_t1))) / 4096u) *
              ((int32_t) dev->calib_param.dig_t3)) /
-            16384;
+            16384u;
         dev->calib_param.t_fine = var1 + var2;
-        *comp_temp = (dev->calib_param.t_fine * 5 + 128) / 256;
+        *comp_temp = (dev->calib_param.t_fine * 5u + 128u) / 256u;
         rslt = BMP280_OK;
     }
     else
