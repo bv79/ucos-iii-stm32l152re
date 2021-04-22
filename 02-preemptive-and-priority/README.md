@@ -1,5 +1,5 @@
-# Exercise 03
+# Exercise 02
 - STM32 Pinout & Configuration
-![](03-stm32-pinout-config.png)
-- Ex3 wiring diagram
-![](03-wiring-diagram.png)
+![](02-stm32-pinout-config.png)
+- Ex2 wiring diagram
+![](02-wiring-diagram.png)
