@@ -220,7 +220,7 @@ static void LEDGreenTask(void *p_arg)
 {
 
   OS_ERR os_err;
-  unsigned char MSG[13];
+  unsigned char MSG[14];
   sprintf((char*)MSG, "LEDGreenTask\n");
   while (DEF_TRUE)
   {
@@ -233,7 +233,7 @@ static void LEDGreenTask(void *p_arg)
 static void LEDRedTask(void *p_arg)
 {
   OS_ERR os_err;
-  unsigned char MSG[11];
+  unsigned char MSG[12];
   sprintf((char *)MSG, "LEDRedTask\n");
   while (DEF_TRUE)
   {
