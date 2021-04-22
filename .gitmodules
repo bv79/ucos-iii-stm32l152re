@@ -7,3 +7,6 @@
 [submodule "uC-OS3"]
 	path = uC-OS3
 	url = git@github.com:weston-embedded/uC-OS3.git
+[submodule "BMP280_driver"]
+	path = BMP280_driver
+	url = git@github.com:BoschSensortec/BMP280_driver.git
