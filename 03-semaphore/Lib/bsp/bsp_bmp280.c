@@ -30,7 +30,7 @@
 * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 * POSSIBILITY OF SUCH DAMAGE.
 *
-* @file	bmp280.c
+* @file	bsp_bmp280.c
 * @date	2020-01-10
 * @version	v3.3.4
 *
