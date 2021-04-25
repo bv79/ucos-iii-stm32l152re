@@ -1,6 +1,6 @@
 
-#ifndef __BSP_BMP280_PORT_H__
-#define __BSP_BMP280_PORT_H__
+#ifndef __BSP_BMP280_CFG_H__
+#define __BSP_BMP280_CFG_H__
 
 #include <stdio.h>
 #include <i2c.h>
