@@ -39,7 +39,7 @@ extern "C" {
 #include <i2c.h>
 #include <bsp_led.h>
 #include <bsp_uart.h>
-#include <bsp_bmp280_port.h>
+#include <bsp_bmp280_cfg.h>
 
 /* USER CODE END Includes */
 
