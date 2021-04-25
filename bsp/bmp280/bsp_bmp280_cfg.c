@@ -1,4 +1,4 @@
-#include <bsp_bmp280_port.h>
+#include <bsp_bmp280_cfg.h>
 
 /*!
  *  @brief Function that creates a mandatory delay required in some of the APIs such as "bmg250_soft_reset",
