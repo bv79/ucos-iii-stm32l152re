@@ -34,7 +34,8 @@
 * @date	2020-01-10
 * @version	v3.3.4
 *
-*/#ifndef __BSP_BMP280_DEFS_H__
+*/
+#ifndef __BSP_BMP280_DEFS_H__
 #define __BSP_BMP280_DEFS_H__
 
 /*! CPP guard */
