@@ -1,4 +1,4 @@
-/*!
+/**
 * Copyright (c) 2020 Bosch Sensortec GmbH. All rights reserved.
 *
 * BSD-3-Clause
@@ -34,8 +34,7 @@
 * @date	2020-01-10
 * @version	v3.3.4
 *
-*/
-#ifndef __BSP_BMP280_H__
+*/#ifndef __BSP_BMP280_H__
 #define __BSP_BMP280_H__
 
 #include "bsp_bmp280_defs.h"

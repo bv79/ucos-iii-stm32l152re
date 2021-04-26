@@ -1,40 +1,40 @@
-/*!
-* Copyright (c) 2020 Bosch Sensortec GmbH. All rights reserved.
-*
-* BSD-3-Clause
-*
-* Redistribution and use in source and binary forms, with or without
-* modification, are permitted provided that the following conditions are met:
-*
-* 1. Redistributions of source code must retain the above copyright
-*    notice, this list of conditions and the following disclaimer.
-*
-* 2. Redistributions in binary form must reproduce the above copyright
-*    notice, this list of conditions and the following disclaimer in the
-*    documentation and/or other materials provided with the distribution.
-*
-* 3. Neither the name of the copyright holder nor the names of its
-*    contributors may be used to endorse or promote products derived from
-*    this software without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-* "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-* LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
-* FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
-* COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
-* INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-* (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
-* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
-* IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-* POSSIBILITY OF SUCH DAMAGE.
-*
-* @file	bsp_bmp280.c
-* @date	2020-01-10
-* @version	v3.3.4
-*
-*/
+/**
+ * Copyright (c) 2020 Bosch Sensortec GmbH. All rights reserved.
+ *
+ * BSD-3-Clause
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * 3. Neither the name of the copyright holder nor the names of its
+ *    contributors may be used to endorse or promote products derived from
+ *    this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+ * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+ * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ *
+ * @file	bsp_bmp280.c
+ * @date	2020-01-10
+ * @version	v3.3.4
+ *
+ */
 #include <bsp_bmp280.h>
 
 /********************** Static function declarations ************************/
@@ -62,7 +62,8 @@ static int8_t null_ptr_check(const struct bmp280_dev *dev);
  * @return Result of API execution status
  * @retval Zero for Success, non-zero otherwise.
  */
-static void interleave_data(const uint8_t *reg_addr, uint8_t *temp_buff, const uint8_t *reg_data, uint8_t len);
+static void interleave_data(const uint8_t *reg_addr, uint8_t *temp_buff,
+                            const uint8_t *reg_data, uint8_t len);
 
 /*!
  * @brief This API is used to read the calibration parameters used
@@ -76,7 +77,8 @@ static void interleave_data(const uint8_t *reg_addr, uint8_t *temp_buff, const u
 static int8_t get_calib_param(struct bmp280_dev *dev);
 
 /*!
- * @brief This internal API to reset the sensor, restore/set conf, restore/set mode
+ * @brief This internal API to reset the sensor, restore/set conf, restore/set
+ * mode
  *
  * @param[in] mode: Desired mode
  * @param[in] conf : Desired configuration to the bmp280
@@ -93,10 +95,12 @@ static int8_t get_calib_param(struct bmp280_dev *dev);
  * @return Result of API execution status
  * @retval Zero for Success, non-zero otherwise.
  */
-static int8_t conf_sensor(uint8_t mode, const struct bmp280_config *conf, struct bmp280_dev *dev);
+static int8_t conf_sensor(uint8_t mode, const struct bmp280_config *conf,
+                          struct bmp280_dev *dev);
 
 /*!
- * @This internal API checks whether the uncompensated temperature and pressure are within the range
+ * @This internal API checks whether the uncompensated temperature and pressure
+ * are within the range
  *
  * @param[in] utemperature : uncompensated temperature
  * @param[in] upressure : uncompensated pressure
@@ -112,7 +116,8 @@ static int8_t st_check_boundaries(int32_t utemperature, int32_t upressure);
  * @brief This API reads the data from the given register address of the
  * sensor.
  */
-int8_t bmp280_get_regs(uint8_t reg_addr, uint8_t *reg_data, uint8_t len, const struct bmp280_dev *dev)
+int8_t bmp280_get_regs(uint8_t reg_addr, uint8_t *reg_data, uint8_t len,
+                       const struct bmp280_dev *dev)
 {
     int8_t rslt;
 
@@ -144,7 +149,8 @@ int8_t bmp280_get_regs(uint8_t reg_addr, uint8_t *reg_data, uint8_t len, const s
  * @brief This API writes the given data to the register addresses
  * of the sensor.
  */
-int8_t bmp280_set_regs(uint8_t *reg_addr, const uint8_t *reg_data, uint8_t len, const struct bmp280_dev *dev)
+int8_t bmp280_set_regs(uint8_t *reg_addr, const uint8_t *reg_data, uint8_t len,
+                       const struct bmp280_dev *dev)
 {
     int8_t rslt;
     uint8_t temp_buff[8]; /* Typically not to write more than 4 registers */
@@ -187,7 +193,8 @@ int8_t bmp280_set_regs(uint8_t *reg_addr, const uint8_t *reg_data, uint8_t len, 
             }
             rslt = dev->write(dev->dev_id, reg_addr[0], temp_buff, temp_len);
 
-            /* Check for communication error and mask with an internal error code */
+            /* Check for communication error and mask with an internal error
+             * code */
             if (rslt != BMP280_OK)
             {
                 rslt = BMP280_E_COMM_FAIL;
@@ -246,8 +253,9 @@ int8_t bmp280_init(struct bmp280_dev *dev)
             rslt = bmp280_get_regs(BMP280_CHIP_ID_ADDR, &dev->chip_id, 1, dev);
 
             /* Check for chip id validity */
-            if ((rslt == BMP280_OK) &&
-                (dev->chip_id == BMP280_CHIP_ID1 || dev->chip_id == BMP280_CHIP_ID2 || dev->chip_id == BMP280_CHIP_ID3))
+            if ((rslt == BMP280_OK) && (dev->chip_id == BMP280_CHIP_ID1 ||
+                                        dev->chip_id == BMP280_CHIP_ID2 ||
+                                        dev->chip_id == BMP280_CHIP_ID3))
             {
                 rslt = bmp280_soft_reset(dev);
                 if (rslt == BMP280_OK)
@@ -290,7 +298,7 @@ int8_t bmp280_init(struct bmp280_dev *dev)
 int8_t bmp280_get_config(struct bmp280_config *conf, struct bmp280_dev *dev)
 {
     int8_t rslt;
-    uint8_t temp[2] = { 0, 0 };
+    uint8_t temp[2] = {0, 0};
 
     rslt = null_ptr_check(dev);
     if ((rslt == BMP280_OK) && (conf != NULL))
@@ -315,11 +323,12 @@ int8_t bmp280_get_config(struct bmp280_config *conf, struct bmp280_dev *dev)
 }
 
 /*!
- * @brief This API writes the data to the ctrl_meas register and config register.
- * It sets the temperature and pressure over-sampling configuration,
+ * @brief This API writes the data to the ctrl_meas register and config
+ * register. It sets the temperature and pressure over-sampling configuration,
  * power mode configuration, sleep duration and IIR filter coefficient.
  */
-int8_t bmp280_set_config(const struct bmp280_config *conf, struct bmp280_dev *dev)
+int8_t bmp280_set_config(const struct bmp280_config *conf,
+                         struct bmp280_dev *dev)
 {
     return conf_sensor(BMP280_SLEEP_MODE, conf, dev);
 }
@@ -327,7 +336,8 @@ int8_t bmp280_set_config(const struct bmp280_config *conf, struct bmp280_dev *de
 /*!
  * @brief This API reads the status register
  */
-int8_t bmp280_get_status(struct bmp280_status *status, const struct bmp280_dev *dev)
+int8_t bmp280_get_status(struct bmp280_status *status,
+                         const struct bmp280_dev *dev)
 {
     int8_t rslt;
     uint8_t temp;
@@ -337,7 +347,8 @@ int8_t bmp280_get_status(struct bmp280_status *status, const struct bmp280_dev *
     {
         rslt = bmp280_get_regs(BMP280_STATUS_ADDR, &temp, 1, dev);
         status->measuring = BMP280_GET_BITS(BMP280_STATUS_MEAS, temp);
-        status->im_update = BMP280_GET_BITS_POS_0(BMP280_STATUS_IM_UPDATE, temp);
+        status->im_update =
+            BMP280_GET_BITS_POS_0(BMP280_STATUS_IM_UPDATE, temp);
     }
     else
     {
@@ -389,10 +400,11 @@ int8_t bmp280_set_power_mode(uint8_t mode, struct bmp280_dev *dev)
  * @brief This API reads the temperature and pressure data registers.
  * It gives the raw temperature and pressure data .
  */
-int8_t bmp280_get_uncomp_data(struct bmp280_uncomp_data *uncomp_data, const struct bmp280_dev *dev)
+int8_t bmp280_get_uncomp_data(struct bmp280_uncomp_data *uncomp_data,
+                              const struct bmp280_dev *dev)
 {
     int8_t rslt;
-    uint8_t temp[6] = { 0 };
+    uint8_t temp[6] = {0};
 
     rslt = null_ptr_check(dev);
     if ((rslt == BMP280_OK) && (uncomp_data != NULL))
@@ -400,11 +412,14 @@ int8_t bmp280_get_uncomp_data(struct bmp280_uncomp_data *uncomp_data, const stru
         rslt = bmp280_get_regs(BMP280_PRES_MSB_ADDR, temp, 6, dev);
         if (rslt == BMP280_OK)
         {
-            uncomp_data->uncomp_press =
-                (int32_t) ((((uint32_t) (temp[0])) << 12) | (((uint32_t) (temp[1])) << 4) | ((uint32_t) temp[2] >> 4));
-            uncomp_data->uncomp_temp =
-                (int32_t) ((((int32_t) (temp[3])) << 12) | (((int32_t) (temp[4])) << 4) | (((int32_t) (temp[5])) >> 4));
-            rslt = st_check_boundaries((int32_t)uncomp_data->uncomp_temp, (int32_t)uncomp_data->uncomp_press);
+            uncomp_data->uncomp_press = (int32_t)(
+                (((uint32_t)(temp[0])) << 12) | (((uint32_t)(temp[1])) << 4) |
+                ((uint32_t)temp[2] >> 4));
+            uncomp_data->uncomp_temp = (int32_t)((((int32_t)(temp[3])) << 12) |
+                                                 (((int32_t)(temp[4])) << 4) |
+                                                 (((int32_t)(temp[5])) >> 4));
+            rslt = st_check_boundaries((int32_t)uncomp_data->uncomp_temp,
+                                       (int32_t)uncomp_data->uncomp_press);
         }
         else
         {
@@ -423,7 +438,8 @@ int8_t bmp280_get_uncomp_data(struct bmp280_uncomp_data *uncomp_data, const stru
  * @brief This API is used to get the compensated temperature from
  * uncompensated temperature. This API uses 32 bit integers.
  */
-int8_t bmp280_get_comp_temp_32bit(int32_t *comp_temp, int32_t uncomp_temp, struct bmp280_dev *dev)
+int8_t bmp280_get_comp_temp_32bit(int32_t *comp_temp, int32_t uncomp_temp,
+                                  struct bmp280_dev *dev)
 {
     int32_t var1, var2;
     int8_t rslt;
@@ -432,13 +448,14 @@ int8_t bmp280_get_comp_temp_32bit(int32_t *comp_temp, int32_t uncomp_temp, struc
     if (rslt == BMP280_OK)
     {
         var1 =
-            ((((uncomp_temp / 8u) - ((int32_t) dev->calib_param.dig_t1 << 1))) * ((int32_t) dev->calib_param.dig_t2)) /
+            ((((uncomp_temp / 8u) - ((int32_t)dev->calib_param.dig_t1 << 1))) *
+             ((int32_t)dev->calib_param.dig_t2)) /
             2048;
-        var2 =
-            (((((uncomp_temp / 16u) - ((int32_t) dev->calib_param.dig_t1)) *
-               ((uncomp_temp / 16u) - ((int32_t) dev->calib_param.dig_t1))) / 4096u) *
-             ((int32_t) dev->calib_param.dig_t3)) /
-            16384u;
+        var2 = (((((uncomp_temp / 16u) - ((int32_t)dev->calib_param.dig_t1)) *
+                  ((uncomp_temp / 16u) - ((int32_t)dev->calib_param.dig_t1))) /
+                 4096u) *
+                ((int32_t)dev->calib_param.dig_t3)) /
+               16384u;
         dev->calib_param.t_fine = var1 + var2;
         *comp_temp = (dev->calib_param.t_fine * 5u + 128u) / 256u;
         rslt = BMP280_OK;
@@ -456,7 +473,8 @@ int8_t bmp280_get_comp_temp_32bit(int32_t *comp_temp, int32_t uncomp_temp, struc
  * @brief This API is used to get the compensated pressure from
  * uncompensated pressure. This API uses 32 bit integers.
  */
-int8_t bmp280_get_comp_pres_32bit(uint32_t *comp_pres, uint32_t uncomp_pres, const struct bmp280_dev *dev)
+int8_t bmp280_get_comp_pres_32bit(uint32_t *comp_pres, uint32_t uncomp_pres,
+                                  const struct bmp280_dev *dev)
 {
     int32_t var1, var2;
     int8_t rslt;
@@ -464,32 +482,43 @@ int8_t bmp280_get_comp_pres_32bit(uint32_t *comp_pres, uint32_t uncomp_pres, con
     rslt = null_ptr_check(dev);
     if (rslt == BMP280_OK)
     {
-        var1 = (((int32_t) dev->calib_param.t_fine) / 2) - (int32_t) 64000;
-        var2 = (((var1 / 4) * (var1 / 4)) / 2048) * ((int32_t) dev->calib_param.dig_p6);
-        var2 = var2 + ((var1 * ((int32_t) dev->calib_param.dig_p5)) * 2);
-        var2 = (var2 / 4) + (((int32_t) dev->calib_param.dig_p4) * 65536);
+        var1 = (((int32_t)dev->calib_param.t_fine) / 2) - (int32_t)64000;
+        var2 = (((var1 / 4) * (var1 / 4)) / 2048) *
+               ((int32_t)dev->calib_param.dig_p6);
+        var2 = var2 + ((var1 * ((int32_t)dev->calib_param.dig_p5)) * 2);
+        var2 = (var2 / 4) + (((int32_t)dev->calib_param.dig_p4) * 65536);
         var1 =
-            (((dev->calib_param.dig_p3 * (((var1 / 4) * (var1 / 4)) / 8192)) / 8) +
-             ((((int32_t) dev->calib_param.dig_p2) * var1) / 2)) / 262144;
-        var1 = ((((32768 + var1)) * ((int32_t) dev->calib_param.dig_p1)) / 32768);
-        *comp_pres = (uint32_t)(((int32_t)(1048576 - uncomp_pres) - (var2 / 4096)) * 3125);
+            (((dev->calib_param.dig_p3 * (((var1 / 4) * (var1 / 4)) / 8192)) /
+              8) +
+             ((((int32_t)dev->calib_param.dig_p2) * var1) / 2)) /
+            262144;
+        var1 =
+            ((((32768 + var1)) * ((int32_t)dev->calib_param.dig_p1)) / 32768);
+        *comp_pres = (uint32_t)(
+            ((int32_t)(1048576 - uncomp_pres) - (var2 / 4096)) * 3125);
 
         /* Avoid exception caused by division with zero */
         if (var1 != 0)
         {
-            /* Check for overflows against UINT32_MAX/2; if pres is left-shifted by 1 */
+            /* Check for overflows against UINT32_MAX/2; if pres is left-shifted
+             * by 1 */
             if (*comp_pres < 0x80000000)
             {
-                *comp_pres = (*comp_pres << 1) / ((uint32_t) var1);
+                *comp_pres = (*comp_pres << 1) / ((uint32_t)var1);
             }
             else
             {
-                *comp_pres = (*comp_pres / (uint32_t) var1) * 2;
+                *comp_pres = (*comp_pres / (uint32_t)var1) * 2;
             }
-            var1 = (((int32_t) dev->calib_param.dig_p9) * ((int32_t) (((*comp_pres / 8) * (*comp_pres / 8)) / 8192))) /
+            var1 = (((int32_t)dev->calib_param.dig_p9) *
+                    ((int32_t)(((*comp_pres / 8) * (*comp_pres / 8)) / 8192))) /
                    4096;
-            var2 = (((int32_t) (*comp_pres / 4)) * ((int32_t) dev->calib_param.dig_p8)) / 8192;
-            *comp_pres = (uint32_t) ((int32_t) *comp_pres + ((var1 + var2 + dev->calib_param.dig_p7) / 16));
+            var2 = (((int32_t)(*comp_pres / 4)) *
+                    ((int32_t)dev->calib_param.dig_p8)) /
+                   8192;
+            *comp_pres =
+                (uint32_t)((int32_t)*comp_pres +
+                           ((var1 + var2 + dev->calib_param.dig_p7) / 16));
             rslt = BMP280_OK;
         }
         else
@@ -508,7 +537,8 @@ int8_t bmp280_get_comp_pres_32bit(uint32_t *comp_pres, uint32_t uncomp_pres, con
  * @brief This API is used to get the compensated pressure from
  * uncompensated pressure. This API uses 64 bit integers.
  */
-int8_t bmp280_get_comp_pres_64bit(uint32_t *pressure, uint32_t uncomp_pres, const struct bmp280_dev *dev)
+int8_t bmp280_get_comp_pres_64bit(uint32_t *pressure, uint32_t uncomp_pres,
+                                  const struct bmp280_dev *dev)
 {
     int64_t var1, var2, p;
     int8_t rslt;
@@ -516,20 +546,25 @@ int8_t bmp280_get_comp_pres_64bit(uint32_t *pressure, uint32_t uncomp_pres, cons
     rslt = null_ptr_check(dev);
     if (rslt == BMP280_OK)
     {
-        var1 = ((int64_t) (dev->calib_param.t_fine)) - 128000;
-        var2 = var1 * var1 * (int64_t) dev->calib_param.dig_p6;
-        var2 = var2 + ((var1 * (int64_t) dev->calib_param.dig_p5) * 131072);
-        var2 = var2 + (((int64_t) dev->calib_param.dig_p4) * 34359738368);
-        var1 = ((var1 * var1 * (int64_t) dev->calib_param.dig_p3) / 256) +
-               ((var1 * (int64_t) dev->calib_param.dig_p2) * 4096);
-        var1 = ((INT64_C(0x800000000000) + var1) * ((int64_t)dev->calib_param.dig_p1)) / 8589934592;
+        var1 = ((int64_t)(dev->calib_param.t_fine)) - 128000;
+        var2 = var1 * var1 * (int64_t)dev->calib_param.dig_p6;
+        var2 = var2 + ((var1 * (int64_t)dev->calib_param.dig_p5) * 131072);
+        var2 = var2 + (((int64_t)dev->calib_param.dig_p4) * 34359738368);
+        var1 = ((var1 * var1 * (int64_t)dev->calib_param.dig_p3) / 256) +
+               ((var1 * (int64_t)dev->calib_param.dig_p2) * 4096);
+        var1 = ((INT64_C(0x800000000000) + var1) *
+                ((int64_t)dev->calib_param.dig_p1)) /
+               8589934592;
         if (var1 != 0)
         {
             p = 1048576 - uncomp_pres;
             p = (((((p * 2147483648U)) - var2) * 3125) / var1);
-            var1 = (((int64_t) dev->calib_param.dig_p9) * (p / 8192) * (p / 8192)) / 33554432;
-            var2 = (((int64_t) dev->calib_param.dig_p8) * p) / 524288;
-            p = ((p + var1 + var2) / 256) + (((int64_t)dev->calib_param.dig_p7) * 16);
+            var1 =
+                (((int64_t)dev->calib_param.dig_p9) * (p / 8192) * (p / 8192)) /
+                33554432;
+            var2 = (((int64_t)dev->calib_param.dig_p8) * p) / 524288;
+            p = ((p + var1 + var2) / 256) +
+                (((int64_t)dev->calib_param.dig_p7) * 16);
             *pressure = (uint32_t)p;
             rslt = BMP280_OK;
         }
@@ -551,7 +586,8 @@ int8_t bmp280_get_comp_pres_64bit(uint32_t *pressure, uint32_t uncomp_pres, cons
  * @brief This API is used to get the compensated temperature from
  * uncompensated temperature. This API uses double floating precision.
  */
-int8_t bmp280_get_comp_temp_double(double *temperature, int32_t uncomp_temp, struct bmp280_dev *dev)
+int8_t bmp280_get_comp_temp_double(double *temperature, int32_t uncomp_temp,
+                                   struct bmp280_dev *dev)
 {
     double var1, var2;
     int8_t rslt;
@@ -559,13 +595,15 @@ int8_t bmp280_get_comp_temp_double(double *temperature, int32_t uncomp_temp, str
     rslt = null_ptr_check(dev);
     if (rslt == BMP280_OK)
     {
-        var1 = (((double) uncomp_temp) / 16384.0 - ((double) dev->calib_param.dig_t1) / 1024.0) *
-               ((double) dev->calib_param.dig_t2);
-        var2 =
-            ((((double) uncomp_temp) / 131072.0 - ((double) dev->calib_param.dig_t1) / 8192.0) *
-             (((double) uncomp_temp) / 131072.0 - ((double) dev->calib_param.dig_t1) / 8192.0)) *
-            ((double) dev->calib_param.dig_t3);
-        dev->calib_param.t_fine = (int32_t) (var1 + var2);
+        var1 = (((double)uncomp_temp) / 16384.0 -
+                ((double)dev->calib_param.dig_t1) / 1024.0) *
+               ((double)dev->calib_param.dig_t2);
+        var2 = ((((double)uncomp_temp) / 131072.0 -
+                 ((double)dev->calib_param.dig_t1) / 8192.0) *
+                (((double)uncomp_temp) / 131072.0 -
+                 ((double)dev->calib_param.dig_t1) / 8192.0)) *
+               ((double)dev->calib_param.dig_t3);
+        dev->calib_param.t_fine = (int32_t)(var1 + var2);
         *temperature = ((var1 + var2) / 5120.0);
     }
     else
@@ -581,7 +619,8 @@ int8_t bmp280_get_comp_temp_double(double *temperature, int32_t uncomp_temp, str
  * @brief This API is used to get the compensated pressure from
  * uncompensated pressure. This API uses double floating precision.
  */
-int8_t bmp280_get_comp_pres_double(double *pressure, uint32_t uncomp_pres, const struct bmp280_dev *dev)
+int8_t bmp280_get_comp_pres_double(double *pressure, uint32_t uncomp_pres,
+                                   const struct bmp280_dev *dev)
 {
     double var1, var2;
     int8_t rslt;
@@ -589,21 +628,25 @@ int8_t bmp280_get_comp_pres_double(double *pressure, uint32_t uncomp_pres, const
     rslt = null_ptr_check(dev);
     if (rslt == BMP280_OK)
     {
-        var1 = ((double) dev->calib_param.t_fine / 2.0) - 64000.0;
-        var2 = var1 * var1 * ((double) dev->calib_param.dig_p6) / 32768.0;
-        var2 = var2 + var1 * ((double) dev->calib_param.dig_p5) * 2.0;
-        var2 = (var2 / 4.0) + (((double) dev->calib_param.dig_p4) * 65536.0);
-        var1 = (((double)dev->calib_param.dig_p3) * var1 * var1 / 524288.0 + ((double)dev->calib_param.dig_p2) * var1) /
+        var1 = ((double)dev->calib_param.t_fine / 2.0) - 64000.0;
+        var2 = var1 * var1 * ((double)dev->calib_param.dig_p6) / 32768.0;
+        var2 = var2 + var1 * ((double)dev->calib_param.dig_p5) * 2.0;
+        var2 = (var2 / 4.0) + (((double)dev->calib_param.dig_p4) * 65536.0);
+        var1 = (((double)dev->calib_param.dig_p3) * var1 * var1 / 524288.0 +
+                ((double)dev->calib_param.dig_p2) * var1) /
                524288.0;
-        var1 = (1.0 + var1 / 32768.0) * ((double) dev->calib_param.dig_p1);
+        var1 = (1.0 + var1 / 32768.0) * ((double)dev->calib_param.dig_p1);
 
         *pressure = 1048576.0 - (double)uncomp_pres;
         if (var1 < 0 || var1 > 0)
         {
             *pressure = (*pressure - (var2 / 4096.0)) * 6250.0 / var1;
-            var1 = ((double)dev->calib_param.dig_p9) * (*pressure) * (*pressure) / 2147483648.0;
+            var1 = ((double)dev->calib_param.dig_p9) * (*pressure) *
+                   (*pressure) / 2147483648.0;
             var2 = (*pressure) * ((double)dev->calib_param.dig_p8) / 32768.0;
-            *pressure = *pressure + (var1 + var2 + ((double)dev->calib_param.dig_p7)) / 16.0;
+            *pressure =
+                *pressure +
+                (var1 + var2 + ((double)dev->calib_param.dig_p7)) / 16.0;
         }
         else
         {
@@ -625,7 +668,9 @@ uint8_t bmp280_compute_meas_time(const struct bmp280_dev *dev)
 {
     uint32_t period = 0;
     uint32_t t_dur = 0, p_dur = 0, p_startup = 0;
-    const uint32_t startup = 1000, period_per_osrs = 2000; /* Typical timings in us. Maximum is +15% each */
+    const uint32_t startup = 1000,
+                   period_per_osrs =
+                       2000; /* Typical timings in us. Maximum is +15% each */
     int8_t rslt;
 
     rslt = null_ptr_check(dev);
@@ -653,7 +698,8 @@ static int8_t null_ptr_check(const struct bmp280_dev *dev)
 {
     int8_t rslt;
 
-    if ((dev == NULL) || (dev->read == NULL) || (dev->write == NULL) || (dev->delay_ms == NULL))
+    if ((dev == NULL) || (dev->read == NULL) || (dev->write == NULL) ||
+        (dev->delay_ms == NULL))
     {
         /* Null-pointer found */
         rslt = BMP280_E_NULL_PTR;
@@ -670,7 +716,8 @@ static int8_t null_ptr_check(const struct bmp280_dev *dev)
  * @brief This internal API interleaves the register addresses and respective
  * register data for a burst write
  */
-static void interleave_data(const uint8_t *reg_addr, uint8_t *temp_buff, const uint8_t *reg_data, uint8_t len)
+static void interleave_data(const uint8_t *reg_addr, uint8_t *temp_buff,
+                            const uint8_t *reg_data, uint8_t len)
 {
     uint8_t index;
 
@@ -688,38 +735,51 @@ static void interleave_data(const uint8_t *reg_addr, uint8_t *temp_buff, const u
 static int8_t get_calib_param(struct bmp280_dev *dev)
 {
     int8_t rslt;
-    uint8_t temp[BMP280_CALIB_DATA_SIZE] = { 0 };
+    uint8_t temp[BMP280_CALIB_DATA_SIZE] = {0};
 
     rslt = null_ptr_check(dev);
     if (rslt == BMP280_OK)
     {
-        rslt = bmp280_get_regs(BMP280_DIG_T1_LSB_ADDR, temp, BMP280_CALIB_DATA_SIZE, dev);
+        rslt = bmp280_get_regs(BMP280_DIG_T1_LSB_ADDR, temp,
+                               BMP280_CALIB_DATA_SIZE, dev);
         if (rslt == BMP280_OK)
         {
             dev->calib_param.dig_t1 =
-                (uint16_t) (((uint16_t) temp[BMP280_DIG_T1_MSB_POS] << 8) | ((uint16_t) temp[BMP280_DIG_T1_LSB_POS]));
+                (uint16_t)(((uint16_t)temp[BMP280_DIG_T1_MSB_POS] << 8) |
+                           ((uint16_t)temp[BMP280_DIG_T1_LSB_POS]));
             dev->calib_param.dig_t2 =
-                (int16_t) (((int16_t) temp[BMP280_DIG_T2_MSB_POS] << 8) | ((int16_t) temp[BMP280_DIG_T2_LSB_POS]));
+                (int16_t)(((int16_t)temp[BMP280_DIG_T2_MSB_POS] << 8) |
+                          ((int16_t)temp[BMP280_DIG_T2_LSB_POS]));
             dev->calib_param.dig_t3 =
-                (int16_t) (((int16_t) temp[BMP280_DIG_T3_MSB_POS] << 8) | ((int16_t) temp[BMP280_DIG_T3_LSB_POS]));
+                (int16_t)(((int16_t)temp[BMP280_DIG_T3_MSB_POS] << 8) |
+                          ((int16_t)temp[BMP280_DIG_T3_LSB_POS]));
             dev->calib_param.dig_p1 =
-                (uint16_t) (((uint16_t) temp[BMP280_DIG_P1_MSB_POS] << 8) | ((uint16_t) temp[BMP280_DIG_P1_LSB_POS]));
+                (uint16_t)(((uint16_t)temp[BMP280_DIG_P1_MSB_POS] << 8) |
+                           ((uint16_t)temp[BMP280_DIG_P1_LSB_POS]));
             dev->calib_param.dig_p2 =
-                (int16_t) (((int16_t) temp[BMP280_DIG_P2_MSB_POS] << 8) | ((int16_t) temp[BMP280_DIG_P2_LSB_POS]));
+                (int16_t)(((int16_t)temp[BMP280_DIG_P2_MSB_POS] << 8) |
+                          ((int16_t)temp[BMP280_DIG_P2_LSB_POS]));
             dev->calib_param.dig_p3 =
-                (int16_t) (((int16_t) temp[BMP280_DIG_P3_MSB_POS] << 8) | ((int16_t) temp[BMP280_DIG_P3_LSB_POS]));
+                (int16_t)(((int16_t)temp[BMP280_DIG_P3_MSB_POS] << 8) |
+                          ((int16_t)temp[BMP280_DIG_P3_LSB_POS]));
             dev->calib_param.dig_p4 =
-                (int16_t) (((int16_t) temp[BMP280_DIG_P4_MSB_POS] << 8) | ((int16_t) temp[BMP280_DIG_P4_LSB_POS]));
+                (int16_t)(((int16_t)temp[BMP280_DIG_P4_MSB_POS] << 8) |
+                          ((int16_t)temp[BMP280_DIG_P4_LSB_POS]));
             dev->calib_param.dig_p5 =
-                (int16_t) (((int16_t) temp[BMP280_DIG_P5_MSB_POS] << 8) | ((int16_t) temp[BMP280_DIG_P5_LSB_POS]));
+                (int16_t)(((int16_t)temp[BMP280_DIG_P5_MSB_POS] << 8) |
+                          ((int16_t)temp[BMP280_DIG_P5_LSB_POS]));
             dev->calib_param.dig_p6 =
-                (int16_t) (((int16_t) temp[BMP280_DIG_P6_MSB_POS] << 8) | ((int16_t) temp[BMP280_DIG_P6_LSB_POS]));
+                (int16_t)(((int16_t)temp[BMP280_DIG_P6_MSB_POS] << 8) |
+                          ((int16_t)temp[BMP280_DIG_P6_LSB_POS]));
             dev->calib_param.dig_p7 =
-                (int16_t) (((int16_t) temp[BMP280_DIG_P7_MSB_POS] << 8) | ((int16_t) temp[BMP280_DIG_P7_LSB_POS]));
+                (int16_t)(((int16_t)temp[BMP280_DIG_P7_MSB_POS] << 8) |
+                          ((int16_t)temp[BMP280_DIG_P7_LSB_POS]));
             dev->calib_param.dig_p8 =
-                (int16_t) (((int16_t) temp[BMP280_DIG_P8_MSB_POS] << 8) | ((int16_t) temp[BMP280_DIG_P8_LSB_POS]));
+                (int16_t)(((int16_t)temp[BMP280_DIG_P8_MSB_POS] << 8) |
+                          ((int16_t)temp[BMP280_DIG_P8_LSB_POS]));
             dev->calib_param.dig_p9 =
-                (int16_t) (((int16_t) temp[BMP280_DIG_P9_MSB_POS] << 8) | ((int16_t) temp[BMP280_DIG_P9_LSB_POS]));
+                (int16_t)(((int16_t)temp[BMP280_DIG_P9_MSB_POS] << 8) |
+                          ((int16_t)temp[BMP280_DIG_P9_LSB_POS]));
         }
     }
 
@@ -727,13 +787,15 @@ static int8_t get_calib_param(struct bmp280_dev *dev)
 }
 
 /*!
- * @brief This internal API to reset the sensor, restore/set conf, restore/set mode
+ * @brief This internal API to reset the sensor, restore/set conf, restore/set
+ * mode
  */
-static int8_t conf_sensor(uint8_t mode, const struct bmp280_config *conf, struct bmp280_dev *dev)
+static int8_t conf_sensor(uint8_t mode, const struct bmp280_config *conf,
+                          struct bmp280_dev *dev)
 {
     int8_t rslt;
-    uint8_t temp[2] = { 0, 0 };
-    uint8_t reg_addr[2] = { BMP280_CTRL_MEAS_ADDR, BMP280_CONFIG_ADDR };
+    uint8_t temp[2] = {0, 0};
+    uint8_t reg_addr[2] = {BMP280_CTRL_MEAS_ADDR, BMP280_CONFIG_ADDR};
 
     rslt = null_ptr_check(dev);
     if ((rslt == BMP280_OK) && (conf != NULL))
@@ -747,19 +809,25 @@ static int8_t conf_sensor(uint8_t mode, const struct bmp280_config *conf, struct
             rslt = bmp280_soft_reset(dev);
             if (rslt == BMP280_OK)
             {
-                temp[0] = BMP280_SET_BITS(temp[0], BMP280_OS_TEMP, conf->os_temp);
-                temp[0] = BMP280_SET_BITS(temp[0], BMP280_OS_PRES, conf->os_pres);
-                temp[1] = BMP280_SET_BITS(temp[1], BMP280_STANDBY_DURN, conf->odr);
+                temp[0] =
+                    BMP280_SET_BITS(temp[0], BMP280_OS_TEMP, conf->os_temp);
+                temp[0] =
+                    BMP280_SET_BITS(temp[0], BMP280_OS_PRES, conf->os_pres);
+                temp[1] =
+                    BMP280_SET_BITS(temp[1], BMP280_STANDBY_DURN, conf->odr);
                 temp[1] = BMP280_SET_BITS(temp[1], BMP280_FILTER, conf->filter);
-                temp[1] = BMP280_SET_BITS_POS_0(temp[1], BMP280_SPI3_ENABLE, conf->spi3w_en);
+                temp[1] = BMP280_SET_BITS_POS_0(temp[1], BMP280_SPI3_ENABLE,
+                                                conf->spi3w_en);
                 rslt = bmp280_set_regs(reg_addr, temp, 2, dev);
                 if (rslt == BMP280_OK)
                 {
                     dev->conf = *conf;
                     if (mode != BMP280_SLEEP_MODE)
                     {
-                        /* Write only the power mode register in a separate write */
-                        temp[0] = BMP280_SET_BITS_POS_0(temp[0], BMP280_POWER_MODE, mode);
+                        /* Write only the power mode register in a separate
+                         * write */
+                        temp[0] = BMP280_SET_BITS_POS_0(
+                            temp[0], BMP280_POWER_MODE, mode);
                         rslt = bmp280_set_regs(reg_addr, temp, 1, dev);
                     }
                 }
@@ -775,23 +843,27 @@ static int8_t conf_sensor(uint8_t mode, const struct bmp280_config *conf, struct
 }
 
 /*!
- * @This internal API checks whether the uncompensated temperature and pressure are within the range
+ * @This internal API checks whether the uncompensated temperature and pressure
+ * are within the range
  */
 static int8_t st_check_boundaries(int32_t utemperature, int32_t upressure)
 {
     int8_t rslt = 0;
 
     /* check UT and UP for valid range */
-    if ((utemperature <= BMP280_ST_ADC_T_MIN || utemperature >= BMP280_ST_ADC_T_MAX) &&
+    if ((utemperature <= BMP280_ST_ADC_T_MIN ||
+         utemperature >= BMP280_ST_ADC_T_MAX) &&
         (upressure <= BMP280_ST_ADC_P_MIN || upressure >= BMP280_ST_ADC_P_MAX))
     {
         rslt = BMP280_E_UNCOMP_TEMP_AND_PRESS_RANGE;
     }
-    else if (utemperature <= BMP280_ST_ADC_T_MIN || utemperature >= BMP280_ST_ADC_T_MAX)
+    else if (utemperature <= BMP280_ST_ADC_T_MIN ||
+             utemperature >= BMP280_ST_ADC_T_MAX)
     {
         rslt = BMP280_E_UNCOMP_TEMP_RANGE;
     }
-    else if (upressure <= BMP280_ST_ADC_P_MIN || upressure >= BMP280_ST_ADC_P_MAX)
+    else if (upressure <= BMP280_ST_ADC_P_MIN ||
+             upressure >= BMP280_ST_ADC_P_MAX)
     {
         rslt = BMP280_E_UNCOMP_PRES_RANGE;
     }
