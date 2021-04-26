@@ -1,3 +1,6 @@
+/*!
+ * @file bsp_bmp280_cfg.h
+ */
 
 #ifndef __BSP_BMP280_CFG_H__
 #define __BSP_BMP280_CFG_H__
@@ -6,15 +9,16 @@
 #include <i2c.h>
 #include "bsp_bmp280.h"
 
-/*! CPP guard */
+/* CPP guard */
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-//#define BMP280_SPI
+/*! @brief define BMP280_I2C or BMP280_SPI. Use only one of them */
 #define BMP280_I2C
-
+/*! @brief define port of Chip Select Pin */
 #define BMP280_SPI_CS_PORT GPIOA
+/*! @brief define pin number of Chip Select Pin */
 #define BMP280_SPI_CS_PIN GPIO_PIN_10
 
 extern struct bmp280_dev bmp;
