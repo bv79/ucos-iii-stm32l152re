@@ -37,6 +37,7 @@ extern "C" {
 #include <gpio.h>
 #include <usart.h>
 #include <i2c.h>
+#include <spi.h>
 #include <bsp_bmp280_cfg.h>
 
 /* USER CODE END Includes */

@@ -11,6 +11,9 @@
 extern "C" {
 #endif
 
+#define BMP280_SPI_CS_PORT GPIOA
+#define BMP280_SPI_CS_PIN GPIO_PIN_10
+
 extern struct bmp280_dev bmp;
 extern struct bmp280_config conf;
 extern struct bmp280_uncomp_data ucomp_data;

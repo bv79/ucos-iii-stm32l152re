@@ -195,6 +195,7 @@ static void AppTaskStart(void *p_arg)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   MX_I2C1_Init();
+  MX_SPI1_Init();
 
   OSTaskCreate(
       (OS_TCB *)&ReadDataTaskTCB,
@@ -234,11 +235,11 @@ static void ReadDataTask(void *p_arg)
 
   /* Map functions */
   bmp.delay_ms = Delay_ms;
-  bmp.read = I2C_Reg_Read;
-  bmp.write = I2C_Reg_Write;
+  bmp.read = SPI_Reg_Read;
+  bmp.write = SPI_Reg_Write;
   /* Assign address*/
   bmp.dev_id = BMP280_I2C_ADDR_PRIM;
-  bmp.intf = BMP280_I2C_INTF;
+  bmp.intf = BMP280_SPI_INTF;
   conf.filter = BMP280_FILTER_COEFF_2;
   conf.os_temp = BMP280_OS_4X;
   conf.os_pres = BMP280_OS_NONE;
@@ -258,7 +259,7 @@ static void ReadDataTask(void *p_arg)
       (OS_OPT)OS_OPT_TIME_HMSM_STRICT,
       (OS_ERR *)&os_err
     );
-    OSTimeDlyHMSM(0, 0, 10, 0, OS_OPT_TIME_HMSM_STRICT, &os_err);
+    OSTimeDlyHMSM(0, 0, 1, 0, OS_OPT_TIME_HMSM_STRICT, &os_err);
   }
 }
 

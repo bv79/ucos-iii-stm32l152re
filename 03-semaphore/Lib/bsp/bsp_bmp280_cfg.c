@@ -7,7 +7,7 @@ int32_t temp32;
 double temp;
 
 /*!
- *  @brief Function that reads data (temp, humidity and pressure)
+ *  @brief Function that reads and computes data (temp, humidity and pressure)
  *
  *  @return void.
  *
@@ -23,7 +23,7 @@ void BMP280_Read(void)
  *  @brief Function that creates a mandatory delay required in some of the APIs such as "bmg250_soft_reset",
  *      "bmg250_set_foc", "bmg250_perform_self_test"  and so on.
  *
- *  @param[in] period_ms  : the required wait time in milliseconds.
+ *  @param[in] period_ms  : the required wait time in milliseconds. (< 60000ms)
  *  @return void.
  *
  */
@@ -34,7 +34,7 @@ void Delay_ms(uint32_t period_ms)
     if (period_ms < 1000){
         OSTimeDlyHMSM(0, 0, 0, period_ms, OS_OPT_TIME_HMSM_STRICT, &os_err);
     }
-    else if (period_ms < 59000) 
+    else if (period_ms < 60000) 
     {
         OSTimeDlyHMSM(0, 0, period_ms/1000u,period_ms%1000u, OS_OPT_TIME_HMSM_STRICT, &os_err);
     }
@@ -50,7 +50,7 @@ void Delay_ms(uint32_t period_ms)
  *
  *  @return Status of execution
  *  @retval 0 -> Success
- *  @retval >0 -> Failure Info
+ *  @retval -1 -> Failed
  *
  */
 int8_t I2C_Reg_Write(uint8_t i2c_addr, uint8_t reg_addr, uint8_t *reg_data, uint16_t length)
@@ -77,7 +77,7 @@ int8_t I2C_Reg_Write(uint8_t i2c_addr, uint8_t reg_addr, uint8_t *reg_data, uint
  *
  *  @return Status of execution
  *  @retval 0 -> Success
- *  @retval >0 -> Failure Info
+ *  @retval -1 -> Failed
  *
  */
 int8_t I2C_Reg_Read(uint8_t i2c_addr, uint8_t reg_addr, uint8_t *reg_data, uint16_t length)
@@ -101,37 +101,51 @@ int8_t I2C_Reg_Read(uint8_t i2c_addr, uint8_t reg_addr, uint8_t *reg_data, uint1
 /*!
  *  @brief Function for writing the sensor's registers through SPI bus.
  *
- *  @param[in] cs           : Chip select to enable the sensor.
- *  @param[in] reg_addr     : Register address.
- *  @param[in] reg_data : Pointer to the data buffer whose data has to be written.
- *  @param[in] length       : No of bytes to write.
+ *  @param[in] cs           : NOT USE
+ *  @param[in] reg_addr     : NOT USE
+ *  @param[in] reg_data 	: Pointer to the data buffer whose data has to be written.
+ *  @param[in] length       : Number of bytes to write.
  *
  *  @return Status of execution
  *  @retval 0 -> Success
- *  @retval >0 -> Failure Info
+ *  @retval -1 -> Failed
  *
  */
 int8_t SPI_Reg_Write(uint8_t cs, uint8_t reg_addr, uint8_t *reg_data, uint16_t length)
 {
-
-    return -1;
+	HAL_GPIO_WritePin(BMP280_SPI_CS_PORT, BMP280_SPI_CS_PIN, GPIO_PIN_RESET);
+	if(HAL_SPI_Transmit(&hspi1, reg_data, length, 100) == HAL_OK)
+	{
+		HAL_GPIO_WritePin(BMP280_SPI_CS_PORT, BMP280_SPI_CS_PIN, GPIO_PIN_SET);
+		return 0;
+	}
+	else
+		return -1;
 }
 
 /*!
  *  @brief Function for reading the sensor's registers through SPI bus.
  *
- *  @param[in] cs       : Chip select to enable the sensor.
- *  @param[in] reg_addr : Register address.
+ *  @param[in] cs       	: NOT USE
+ *  @param[in] reg_addr 	: Register command
  *  @param[out] reg_data    : Pointer to the data buffer to store the read data.
- *  @param[in] length   : No of bytes to read.
+ *  @param[in] length   	: Number of bytes to read.
  *
  *  @return Status of execution
  *  @retval 0 -> Success
- *  @retval >0 -> Failure Info
+ *  @retval 1 -> Failed
  *
  */
 int8_t SPI_Reg_Read(uint8_t cs, uint8_t reg_addr, uint8_t *reg_data, uint16_t length)
 {
 
-    return -1;
+	HAL_GPIO_WritePin(BMP280_SPI_CS_PORT, BMP280_SPI_CS_PIN, GPIO_PIN_RESET);
+	if(HAL_SPI_Transmit(&hspi1, &reg_addr, 1, 100) == HAL_OK 
+		&& HAL_SPI_Receive(&hspi1, reg_data, length, 100) == HAL_OK)
+	{
+		HAL_GPIO_WritePin(BMP280_SPI_CS_PORT, BMP280_SPI_CS_PIN, GPIO_PIN_SET);
+		return 0;
+	}
+	else
+		return -1;
 }
