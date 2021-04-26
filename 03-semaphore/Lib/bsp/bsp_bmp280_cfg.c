@@ -65,6 +65,13 @@ void BMP280_Setup(void)
 	bmp280_set_config(&conf, &bmp);
 	bmp280_set_power_mode(BMP280_NORMAL_MODE, &bmp);
 }
+
+void BMP280_Print(UART_HandleTypeDef *uart)
+{
+    unsigned char MSG[60];
+    sprintf((char *)MSG, "\rTemperature = %.2f Celsius | Pressure = %.2f Pa\n\r", temp, pres);
+    HAL_UART_Transmit(uart, MSG, sizeof(MSG), 100);
+}
 /*!
  *  @brief Function that creates a mandatory delay required in some of the APIs such as "bmg250_soft_reset",
  *      "bmg250_set_foc", "bmg250_perform_self_test"  and so on.

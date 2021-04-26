@@ -252,7 +252,6 @@ static void ReadDataTask(void *p_arg)
 static void DisplayDataTask(void *p_arg)
 {
   OS_ERR os_err;
-  unsigned char MSG[60];
 
   while (DEF_TRUE)
   {
@@ -263,9 +262,7 @@ static void DisplayDataTask(void *p_arg)
       (CPU_TS *)NULL,
       (OS_ERR *)&os_err
     );
-
-    sprintf((char *)MSG, "DisplayDataTask: Temperature=%.2f | Pressure=%.2f \r\n", temp, pres);
-    HAL_UART_Transmit(&huart2, MSG, sizeof(MSG), 100);
+    BMP280_Print(&huart2);
     OSTimeDlyHMSM(0, 0, 1, 0, OS_OPT_TIME_HMSM_STRICT, &os_err);
   }
 

@@ -29,6 +29,7 @@ extern double pres;
 
 void BMP280_Read(void);
 void BMP280_Setup(void);
+void BMP280_Print(UART_HandleTypeDef *uart);
 void Delay_ms(uint32_t period_ms);
 int8_t I2C_Reg_Write(uint8_t i2c_addr, uint8_t reg_addr, uint8_t *reg_data, uint16_t length);
 int8_t I2C_Reg_Read(uint8_t i2c_addr, uint8_t reg_addr, uint8_t *reg_data, uint16_t length);
