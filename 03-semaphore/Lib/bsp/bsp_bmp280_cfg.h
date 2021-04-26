@@ -11,11 +11,8 @@
 extern "C" {
 #endif
 
-/*
- * 0: I2C
- * 1: SPI
-*/
-#define BMP280_PROTOCOL 0
+//#define BMP280_SPI
+#define BMP280_I2C
 
 #define BMP280_SPI_CS_PORT GPIOA
 #define BMP280_SPI_CS_PIN GPIO_PIN_10

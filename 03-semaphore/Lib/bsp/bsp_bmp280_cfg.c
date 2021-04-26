@@ -1,5 +1,8 @@
 #include <bsp_bmp280_cfg.h>
 
+SPI_HandleTypeDef *bmp280_spi_handler;
+I2C_HandleTypeDef *bmp280_i2c_handler;
+
 struct bmp280_dev bmp;
 struct bmp280_config conf;
 struct bmp280_uncomp_data ucomp_data;
@@ -41,18 +44,18 @@ void BMP280_Setup(void)
 
 	/* Map functions */
 	bmp.delay_ms = Delay_ms;
-	if (BMP280_PROTOCOL == 1)
-	{
+	#ifdef BMP280_SPI
+		bmp280_spi_handler = &hspi1;
 		bmp.read = SPI_Reg_Read;
 		bmp.write = SPI_Reg_Write;
 		bmp.intf = BMP280_SPI_INTF;
-	}
-	else if (BMP280_PROTOCOL == 0)
-	{
+	#endif
+	#ifdef BMP280_I2C
+		bmp280_i2c_handler = &hi2c1;
 		bmp.read = I2C_Reg_Read;
 		bmp.write = I2C_Reg_Write;
 		bmp.intf = BMP280_I2C_INTF;
-	}
+	#endif
 	
 	conf.filter = BMP280_FILTER_COEFF_2;
 	conf.os_temp = BMP280_OS_4X;
@@ -101,7 +104,7 @@ int8_t I2C_Reg_Write(uint8_t i2c_addr, uint8_t reg_addr, uint8_t *reg_data, uint
 {
 
 	uint16_t bmp280_addr = (bmp.dev_id << 1);
-	if (HAL_I2C_Mem_Write(&hi2c1,
+	if (HAL_I2C_Mem_Write(bmp280_i2c_handler,
 						  bmp280_addr,
 						  reg_addr,
 						  1,
@@ -130,7 +133,7 @@ int8_t I2C_Reg_Read(uint8_t i2c_addr, uint8_t reg_addr, uint8_t *reg_data, uint1
 	uint16_t bmp280_addr;
 	bmp280_addr = (bmp.dev_id << 1);
 
-	if (HAL_I2C_Mem_Read(&hi2c1,
+	if (HAL_I2C_Mem_Read(bmp280_i2c_handler,
 						 bmp280_addr,
 						 reg_addr,
 						 1,
@@ -158,7 +161,7 @@ int8_t I2C_Reg_Read(uint8_t i2c_addr, uint8_t reg_addr, uint8_t *reg_data, uint1
 int8_t SPI_Reg_Write(uint8_t cs, uint8_t reg_addr, uint8_t *reg_data, uint16_t length)
 {
 	HAL_GPIO_WritePin(BMP280_SPI_CS_PORT, BMP280_SPI_CS_PIN, GPIO_PIN_RESET);
-	if (HAL_SPI_Transmit(&hspi1, reg_data, length, 100) == HAL_OK)
+	if (HAL_SPI_Transmit(bmp280_spi_handler, reg_data, length, 100) == HAL_OK)
 	{
 		HAL_GPIO_WritePin(BMP280_SPI_CS_PORT, BMP280_SPI_CS_PIN, GPIO_PIN_SET);
 		return 0;
@@ -184,7 +187,7 @@ int8_t SPI_Reg_Read(uint8_t cs, uint8_t reg_addr, uint8_t *reg_data, uint16_t le
 {
 
 	HAL_GPIO_WritePin(BMP280_SPI_CS_PORT, BMP280_SPI_CS_PIN, GPIO_PIN_RESET);
-	if (HAL_SPI_Transmit(&hspi1, &reg_addr, 1, 100) == HAL_OK && HAL_SPI_Receive(&hspi1, reg_data, length, 100) == HAL_OK)
+	if (HAL_SPI_Transmit(bmp280_spi_handler, &reg_addr, 1, 100) == HAL_OK && HAL_SPI_Receive(bmp280_spi_handler, reg_data, length, 100) == HAL_OK)
 	{
 		HAL_GPIO_WritePin(BMP280_SPI_CS_PORT, BMP280_SPI_CS_PIN, GPIO_PIN_SET);
 		return 0;
