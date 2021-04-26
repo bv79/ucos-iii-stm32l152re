@@ -1,5 +1,24 @@
 #include <bsp_bmp280_cfg.h>
 
+struct bmp280_dev bmp;
+struct bmp280_config conf;
+struct bmp280_uncomp_data ucomp_data;
+int32_t temp32;
+double temp;
+
+/*!
+ *  @brief Function that reads data (temp, humidity and pressure)
+ *
+ *  @return void.
+ *
+ */
+void BMP280_Read(void)
+{
+    bmp280_get_uncomp_data(&ucomp_data, &bmp);
+    bmp280_get_comp_temp_32bit(&temp32, ucomp_data.uncomp_temp, &bmp);
+    bmp280_get_comp_temp_double(&temp, ucomp_data.uncomp_temp, &bmp);
+}
+
 /*!
  *  @brief Function that creates a mandatory delay required in some of the APIs such as "bmg250_soft_reset",
  *      "bmg250_set_foc", "bmg250_perform_self_test"  and so on.
@@ -8,7 +27,7 @@
  *  @return void.
  *
  */
-void delay_ms(uint32_t period_ms)
+void Delay_ms(uint32_t period_ms)
 {
     OS_ERR os_err;
     /* Implement the delay routine according to the target machine */
@@ -34,10 +53,9 @@ void delay_ms(uint32_t period_ms)
  *  @retval >0 -> Failure Info
  *
  */
-int8_t i2c_reg_write(uint8_t i2c_addr, uint8_t reg_addr, uint8_t *reg_data, uint16_t length)
+int8_t I2C_Reg_Write(uint8_t i2c_addr, uint8_t reg_addr, uint8_t *reg_data, uint16_t length)
 {
 
-    /* Implement the I2C write routine according to the target machine. */
 	uint16_t bmp280_addr = (bmp.dev_id << 1);
 	if (HAL_I2C_Mem_Write(&hi2c1,
 						  bmp280_addr,
@@ -62,10 +80,9 @@ int8_t i2c_reg_write(uint8_t i2c_addr, uint8_t reg_addr, uint8_t *reg_data, uint
  *  @retval >0 -> Failure Info
  *
  */
-int8_t i2c_reg_read(uint8_t i2c_addr, uint8_t reg_addr, uint8_t *reg_data, uint16_t length)
+int8_t I2C_Reg_Read(uint8_t i2c_addr, uint8_t reg_addr, uint8_t *reg_data, uint16_t length)
 {
 
-    /* Implement the I2C read routine according to the target machine. */
 	uint16_t bmp280_addr;
 	bmp280_addr = (bmp.dev_id << 1);
 
@@ -94,10 +111,9 @@ int8_t i2c_reg_read(uint8_t i2c_addr, uint8_t reg_addr, uint8_t *reg_data, uint1
  *  @retval >0 -> Failure Info
  *
  */
-int8_t spi_reg_write(uint8_t cs, uint8_t reg_addr, uint8_t *reg_data, uint16_t length)
+int8_t SPI_Reg_Write(uint8_t cs, uint8_t reg_addr, uint8_t *reg_data, uint16_t length)
 {
 
-    /* Implement the SPI write routine according to the target machine. */
     return -1;
 }
 
@@ -114,46 +130,8 @@ int8_t spi_reg_write(uint8_t cs, uint8_t reg_addr, uint8_t *reg_data, uint16_t l
  *  @retval >0 -> Failure Info
  *
  */
-int8_t spi_reg_read(uint8_t cs, uint8_t reg_addr, uint8_t *reg_data, uint16_t length)
+int8_t SPI_Reg_Read(uint8_t cs, uint8_t reg_addr, uint8_t *reg_data, uint16_t length)
 {
 
-    /* Implement the SPI read routine according to the target machine. */
     return -1;
-}
-
-/*!
- *  @brief Prints the execution status of the APIs.
- *
- *  @param[in] api_name : name of the API whose execution status has to be printed.
- *  @param[in] rslt     : error code returned by the API whose execution status has to be printed.
- *
- *  @return void.
- */
-void print_rslt(const char api_name[], int8_t rslt)
-{
-    if (rslt != BMP280_OK)
-    {
-        printf("%s\t", api_name);
-        if (rslt == BMP280_E_NULL_PTR)
-        {
-            printf("Error [%d] : Null pointer error\r\n", rslt);
-        }
-        else if (rslt == BMP280_E_COMM_FAIL)
-        {
-            printf("Error [%d] : Bus communication failed\r\n", rslt);
-        }
-        else if (rslt == BMP280_E_IMPLAUS_TEMP)
-        {
-            printf("Error [%d] : Invalid Temperature\r\n", rslt);
-        }
-        else if (rslt == BMP280_E_DEV_NOT_FOUND)
-        {
-            printf("Error [%d] : Device not found\r\n", rslt);
-        }
-        else
-        {
-            /* For more error codes refer "*_defs.h" */
-            printf("Error [%d] : Unknown error code\r\n", rslt);
-        }
-    }
 }
