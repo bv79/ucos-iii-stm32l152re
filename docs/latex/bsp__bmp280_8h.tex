@@ -12,9 +12,9 @@ int8\+\_\+t \mbox{\hyperlink{bsp__bmp280_8h_ab3d06fdfe71e48cb081e1f66c14ba63f}{b
 \begin{DoxyCompactList}\small\item\em This API triggers the soft reset of the sensor. \end{DoxyCompactList}\item 
 int8\+\_\+t \mbox{\hyperlink{bsp__bmp280_8h_a4a9809dbaa4df084461c705045925f8e}{bmp280\+\_\+init}} (struct \mbox{\hyperlink{structbmp280__dev}{bmp280\+\_\+dev}} $\ast$dev)
 \begin{DoxyCompactList}\small\item\em This API is the entry point. It reads the chip-\/id and calibration data from the sensor. \end{DoxyCompactList}\item 
-int8\+\_\+t \mbox{\hyperlink{bsp__bmp280_8h_aded88d5f67beb1b3311bb0e26ecc19da}{bmp280\+\_\+get\+\_\+config}} (struct \mbox{\hyperlink{structbmp280__config}{bmp280\+\_\+config}} $\ast$conf, struct \mbox{\hyperlink{structbmp280__dev}{bmp280\+\_\+dev}} $\ast$dev)
+int8\+\_\+t \mbox{\hyperlink{bsp__bmp280_8h_aded88d5f67beb1b3311bb0e26ecc19da}{bmp280\+\_\+get\+\_\+config}} (struct \mbox{\hyperlink{structbmp280__config}{bmp280\+\_\+config}} $\ast$\mbox{\hyperlink{bsp__bmp280__cfg_8h_af397dccfb46f629f15f4d28d643f84de}{conf}}, struct \mbox{\hyperlink{structbmp280__dev}{bmp280\+\_\+dev}} $\ast$dev)
 \begin{DoxyCompactList}\small\item\em This API reads the data from the ctrl\+\_\+meas register and config register. It gives the currently set temperature and pressure over-\/sampling configuration, power mode configuration, sleep duration and IIR filter coefficient. \end{DoxyCompactList}\item 
-int8\+\_\+t \mbox{\hyperlink{bsp__bmp280_8h_a61799b86b24d68b7a20814fcaf9adea8}{bmp280\+\_\+set\+\_\+config}} (const struct \mbox{\hyperlink{structbmp280__config}{bmp280\+\_\+config}} $\ast$conf, struct \mbox{\hyperlink{structbmp280__dev}{bmp280\+\_\+dev}} $\ast$dev)
+int8\+\_\+t \mbox{\hyperlink{bsp__bmp280_8h_a61799b86b24d68b7a20814fcaf9adea8}{bmp280\+\_\+set\+\_\+config}} (const struct \mbox{\hyperlink{structbmp280__config}{bmp280\+\_\+config}} $\ast$\mbox{\hyperlink{bsp__bmp280__cfg_8h_af397dccfb46f629f15f4d28d643f84de}{conf}}, struct \mbox{\hyperlink{structbmp280__dev}{bmp280\+\_\+dev}} $\ast$dev)
 \begin{DoxyCompactList}\small\item\em This API writes the data to the ctrl\+\_\+meas register and config register. It sets the temperature and pressure over-\/sampling configuration, power mode configuration, sleep duration and IIR filter coefficient. \end{DoxyCompactList}\item 
 int8\+\_\+t \mbox{\hyperlink{bsp__bmp280_8h_a7f39644204f57cb6fc3eff936df2715f}{bmp280\+\_\+get\+\_\+status}} (struct \mbox{\hyperlink{structbmp280__status}{bmp280\+\_\+status}} $\ast$status, const struct \mbox{\hyperlink{structbmp280__dev}{bmp280\+\_\+dev}} $\ast$dev)
 \begin{DoxyCompactList}\small\item\em This API reads the status register. \end{DoxyCompactList}\item 
@@ -83,30 +83,32 @@ Measurement time for the active configuration in milliseconds
 \end{DoxyReturn}
 
 
-Definition at line 624 of file bsp\+\_\+bmp280.\+c.
+Definition at line 667 of file bsp\+\_\+bmp280.\+c.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{625 \{}
-\DoxyCodeLine{626     uint32\_t period = 0;}
-\DoxyCodeLine{627     uint32\_t t\_dur = 0, p\_dur = 0, p\_startup = 0;}
-\DoxyCodeLine{628     \textcolor{keyword}{const} uint32\_t startup = 1000, period\_per\_osrs = 2000; \textcolor{comment}{/* Typical timings in us. Maximum is +15\% each */}}
-\DoxyCodeLine{629     int8\_t rslt;}
-\DoxyCodeLine{630 }
-\DoxyCodeLine{631     rslt = null\_ptr\_check(dev);}
-\DoxyCodeLine{632     \textcolor{keywordflow}{if} (rslt == BMP280\_OK)}
-\DoxyCodeLine{633     \{}
-\DoxyCodeLine{634         t\_dur = period\_per\_osrs * ((UINT32\_C(1) << dev-\/>conf.os\_temp) >> 1);}
-\DoxyCodeLine{635         p\_dur = period\_per\_osrs * ((UINT32\_C(1) << dev-\/>conf.os\_pres) >> 1);}
-\DoxyCodeLine{636         p\_startup = (dev-\/>conf.os\_pres) ? 500 : 0;}
-\DoxyCodeLine{637 }
-\DoxyCodeLine{638         \textcolor{comment}{/* Increment the value to next highest integer if greater than 0.5 */}}
-\DoxyCodeLine{639         period = startup + t\_dur + p\_startup + p\_dur + 500;}
-\DoxyCodeLine{640         period /= 1000; \textcolor{comment}{/* Convert to milliseconds */}}
-\DoxyCodeLine{641     \}}
-\DoxyCodeLine{642 }
-\DoxyCodeLine{643     \textcolor{keywordflow}{return} (uint8\_t)period;}
-\DoxyCodeLine{644 \}}
+\DoxyCodeLine{668 \{}
+\DoxyCodeLine{669     uint32\_t period = 0;}
+\DoxyCodeLine{670     uint32\_t t\_dur = 0, p\_dur = 0, p\_startup = 0;}
+\DoxyCodeLine{671     \textcolor{keyword}{const} uint32\_t startup = 1000,}
+\DoxyCodeLine{672                    period\_per\_osrs =}
+\DoxyCodeLine{673                        2000; \textcolor{comment}{/* Typical timings in us. Maximum is +15\% each */}}
+\DoxyCodeLine{674     int8\_t rslt;}
+\DoxyCodeLine{675 }
+\DoxyCodeLine{676     rslt = null\_ptr\_check(dev);}
+\DoxyCodeLine{677     \textcolor{keywordflow}{if} (rslt == BMP280\_OK)}
+\DoxyCodeLine{678     \{}
+\DoxyCodeLine{679         t\_dur = period\_per\_osrs * ((UINT32\_C(1) << dev-\/>conf.os\_temp) >> 1);}
+\DoxyCodeLine{680         p\_dur = period\_per\_osrs * ((UINT32\_C(1) << dev-\/>conf.os\_pres) >> 1);}
+\DoxyCodeLine{681         p\_startup = (dev-\/>conf.os\_pres) ? 500 : 0;}
+\DoxyCodeLine{682 }
+\DoxyCodeLine{683         \textcolor{comment}{/* Increment the value to next highest integer if greater than 0.5 */}}
+\DoxyCodeLine{684         period = startup + t\_dur + p\_startup + p\_dur + 500;}
+\DoxyCodeLine{685         period /= 1000; \textcolor{comment}{/* Convert to milliseconds */}}
+\DoxyCodeLine{686     \}}
+\DoxyCodeLine{687 }
+\DoxyCodeLine{688     \textcolor{keywordflow}{return} (uint8\_t)period;}
+\DoxyCodeLine{689 \}}
 
 \end{DoxyCode}
 \mbox{\Hypertarget{bsp__bmp280_8h_aed425399b074d6541e8d74883dba2446}\label{bsp__bmp280_8h_aed425399b074d6541e8d74883dba2446}} 
@@ -138,54 +140,65 @@ Result of API execution
 \end{DoxyRetVals}
 This API is used to get the compensated pressure from uncompensated pressure. This API uses 32 bit integers. Pressure in Pa as unsigned 32 bit integer output value of \char`\"{}96386\char`\"{} equals 96386 Pa = 963.\+86 h\+Pa. 
 
-Definition at line 459 of file bsp\+\_\+bmp280.\+c.
+Definition at line 476 of file bsp\+\_\+bmp280.\+c.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{460 \{}
-\DoxyCodeLine{461     int32\_t var1, var2;}
-\DoxyCodeLine{462     int8\_t rslt;}
-\DoxyCodeLine{463 }
-\DoxyCodeLine{464     rslt = null\_ptr\_check(dev);}
-\DoxyCodeLine{465     \textcolor{keywordflow}{if} (rslt == BMP280\_OK)}
-\DoxyCodeLine{466     \{}
-\DoxyCodeLine{467         var1 = (((int32\_t) dev-\/>calib\_param.t\_fine) / 2) -\/ (int32\_t) 64000;}
-\DoxyCodeLine{468         var2 = (((var1 / 4) * (var1 / 4)) / 2048) * ((int32\_t) dev-\/>calib\_param.dig\_p6);}
-\DoxyCodeLine{469         var2 = var2 + ((var1 * ((int32\_t) dev-\/>calib\_param.dig\_p5)) * 2);}
-\DoxyCodeLine{470         var2 = (var2 / 4) + (((int32\_t) dev-\/>calib\_param.dig\_p4) * 65536);}
-\DoxyCodeLine{471         var1 =}
-\DoxyCodeLine{472             (((dev-\/>calib\_param.dig\_p3 * (((var1 / 4) * (var1 / 4)) / 8192)) / 8) +}
-\DoxyCodeLine{473              ((((int32\_t) dev-\/>calib\_param.dig\_p2) * var1) / 2)) / 262144;}
-\DoxyCodeLine{474         var1 = ((((32768 + var1)) * ((int32\_t) dev-\/>calib\_param.dig\_p1)) / 32768);}
-\DoxyCodeLine{475         *comp\_pres = (uint32\_t)(((int32\_t)(1048576 -\/ uncomp\_pres) -\/ (var2 / 4096)) * 3125);}
-\DoxyCodeLine{476 }
-\DoxyCodeLine{477         \textcolor{comment}{/* Avoid exception caused by division with zero */}}
-\DoxyCodeLine{478         \textcolor{keywordflow}{if} (var1 != 0)}
-\DoxyCodeLine{479         \{}
-\DoxyCodeLine{480             \textcolor{comment}{/* Check for overflows against UINT32\_MAX/2; if pres is left-\/shifted by 1 */}}
-\DoxyCodeLine{481             \textcolor{keywordflow}{if} (*comp\_pres < 0x80000000)}
-\DoxyCodeLine{482             \{}
-\DoxyCodeLine{483                 *comp\_pres = (*comp\_pres << 1) / ((uint32\_t) var1);}
-\DoxyCodeLine{484             \}}
-\DoxyCodeLine{485             \textcolor{keywordflow}{else}}
-\DoxyCodeLine{486             \{}
-\DoxyCodeLine{487                 *comp\_pres = (*comp\_pres / (uint32\_t) var1) * 2;}
-\DoxyCodeLine{488             \}}
-\DoxyCodeLine{489             var1 = (((int32\_t) dev-\/>calib\_param.dig\_p9) * ((int32\_t) (((*comp\_pres / 8) * (*comp\_pres / 8)) / 8192))) /}
-\DoxyCodeLine{490                    4096;}
-\DoxyCodeLine{491             var2 = (((int32\_t) (*comp\_pres / 4)) * ((int32\_t) dev-\/>calib\_param.dig\_p8)) / 8192;}
-\DoxyCodeLine{492             *comp\_pres = (uint32\_t) ((int32\_t) *comp\_pres + ((var1 + var2 + dev-\/>calib\_param.dig\_p7) / 16));}
-\DoxyCodeLine{493             rslt = BMP280\_OK;}
-\DoxyCodeLine{494         \}}
-\DoxyCodeLine{495         \textcolor{keywordflow}{else}}
-\DoxyCodeLine{496         \{}
-\DoxyCodeLine{497             *comp\_pres = 0;}
-\DoxyCodeLine{498             rslt = BMP280\_E\_32BIT\_COMP\_PRESS;}
-\DoxyCodeLine{499         \}}
-\DoxyCodeLine{500     \}}
-\DoxyCodeLine{501 }
-\DoxyCodeLine{502     \textcolor{keywordflow}{return} rslt;}
-\DoxyCodeLine{503 \}}
+\DoxyCodeLine{478 \{}
+\DoxyCodeLine{479     int32\_t var1, var2;}
+\DoxyCodeLine{480     int8\_t rslt;}
+\DoxyCodeLine{481 }
+\DoxyCodeLine{482     rslt = null\_ptr\_check(dev);}
+\DoxyCodeLine{483     \textcolor{keywordflow}{if} (rslt == BMP280\_OK)}
+\DoxyCodeLine{484     \{}
+\DoxyCodeLine{485         var1 = (((int32\_t)dev-\/>calib\_param.t\_fine) / 2) -\/ (int32\_t)64000;}
+\DoxyCodeLine{486         var2 = (((var1 / 4) * (var1 / 4)) / 2048) *}
+\DoxyCodeLine{487                ((int32\_t)dev-\/>calib\_param.dig\_p6);}
+\DoxyCodeLine{488         var2 = var2 + ((var1 * ((int32\_t)dev-\/>calib\_param.dig\_p5)) * 2);}
+\DoxyCodeLine{489         var2 = (var2 / 4) + (((int32\_t)dev-\/>calib\_param.dig\_p4) * 65536);}
+\DoxyCodeLine{490         var1 =}
+\DoxyCodeLine{491             (((dev-\/>calib\_param.dig\_p3 * (((var1 / 4) * (var1 / 4)) / 8192)) /}
+\DoxyCodeLine{492               8) +}
+\DoxyCodeLine{493              ((((int32\_t)dev-\/>calib\_param.dig\_p2) * var1) / 2)) /}
+\DoxyCodeLine{494             262144;}
+\DoxyCodeLine{495         var1 =}
+\DoxyCodeLine{496             ((((32768 + var1)) * ((int32\_t)dev-\/>calib\_param.dig\_p1)) / 32768);}
+\DoxyCodeLine{497         *comp\_pres = (uint32\_t)(}
+\DoxyCodeLine{498             ((int32\_t)(1048576 -\/ uncomp\_pres) -\/ (var2 / 4096)) * 3125);}
+\DoxyCodeLine{499 }
+\DoxyCodeLine{500         \textcolor{comment}{/* Avoid exception caused by division with zero */}}
+\DoxyCodeLine{501         \textcolor{keywordflow}{if} (var1 != 0)}
+\DoxyCodeLine{502         \{}
+\DoxyCodeLine{503             \textcolor{comment}{/* Check for overflows against UINT32\_MAX/2; if pres is left-\/shifted }}
+\DoxyCodeLine{504 \textcolor{comment}{             * by 1 */}}
+\DoxyCodeLine{505             \textcolor{keywordflow}{if} (*comp\_pres < 0x80000000)}
+\DoxyCodeLine{506             \{}
+\DoxyCodeLine{507                 *comp\_pres = (*comp\_pres << 1) / ((uint32\_t)var1);}
+\DoxyCodeLine{508             \}}
+\DoxyCodeLine{509             \textcolor{keywordflow}{else}}
+\DoxyCodeLine{510             \{}
+\DoxyCodeLine{511                 *comp\_pres = (*comp\_pres / (uint32\_t)var1) * 2;}
+\DoxyCodeLine{512             \}}
+\DoxyCodeLine{513             var1 = (((int32\_t)dev-\/>calib\_param.dig\_p9) *}
+\DoxyCodeLine{514                     ((int32\_t)(((*comp\_pres / 8) * (*comp\_pres / 8)) / 8192))) /}
+\DoxyCodeLine{515                    4096;}
+\DoxyCodeLine{516             var2 = (((int32\_t)(*comp\_pres / 4)) *}
+\DoxyCodeLine{517                     ((int32\_t)dev-\/>calib\_param.dig\_p8)) /}
+\DoxyCodeLine{518                    8192;}
+\DoxyCodeLine{519             *comp\_pres =}
+\DoxyCodeLine{520                 (uint32\_t)((int32\_t)*comp\_pres +}
+\DoxyCodeLine{521                            ((var1 + var2 + dev-\/>calib\_param.dig\_p7) / 16));}
+\DoxyCodeLine{522             rslt = BMP280\_OK;}
+\DoxyCodeLine{523         \}}
+\DoxyCodeLine{524         \textcolor{keywordflow}{else}}
+\DoxyCodeLine{525         \{}
+\DoxyCodeLine{526             *comp\_pres = 0;}
+\DoxyCodeLine{527             rslt = BMP280\_E\_32BIT\_COMP\_PRESS;}
+\DoxyCodeLine{528         \}}
+\DoxyCodeLine{529     \}}
+\DoxyCodeLine{530 }
+\DoxyCodeLine{531     \textcolor{keywordflow}{return} rslt;}
+\DoxyCodeLine{532 \}}
 
 \end{DoxyCode}
 \mbox{\Hypertarget{bsp__bmp280_8h_a0b090c0b8883517d20694e343c1f7df7}\label{bsp__bmp280_8h_a0b090c0b8883517d20694e343c1f7df7}} 
@@ -217,43 +230,48 @@ Result of API execution
 \end{DoxyRetVals}
 This API is used to get the compensated pressure from uncompensated pressure. This API uses 64 bit integers. Pressure in Pa as unsigned 32 bit integer in Q24.\+8 format (24 integer bits and 8 fractional bits). Output value of \char`\"{}24674867\char`\"{} represents 24674867/256 = 96386.\+2 Pa = 963.\+862 h\+Pa. 
 
-Definition at line 511 of file bsp\+\_\+bmp280.\+c.
+Definition at line 540 of file bsp\+\_\+bmp280.\+c.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{512 \{}
-\DoxyCodeLine{513     int64\_t var1, var2, p;}
-\DoxyCodeLine{514     int8\_t rslt;}
-\DoxyCodeLine{515 }
-\DoxyCodeLine{516     rslt = null\_ptr\_check(dev);}
-\DoxyCodeLine{517     \textcolor{keywordflow}{if} (rslt == BMP280\_OK)}
-\DoxyCodeLine{518     \{}
-\DoxyCodeLine{519         var1 = ((int64\_t) (dev-\/>calib\_param.t\_fine)) -\/ 128000;}
-\DoxyCodeLine{520         var2 = var1 * var1 * (int64\_t) dev-\/>calib\_param.dig\_p6;}
-\DoxyCodeLine{521         var2 = var2 + ((var1 * (int64\_t) dev-\/>calib\_param.dig\_p5) * 131072);}
-\DoxyCodeLine{522         var2 = var2 + (((int64\_t) dev-\/>calib\_param.dig\_p4) * 34359738368);}
-\DoxyCodeLine{523         var1 = ((var1 * var1 * (int64\_t) dev-\/>calib\_param.dig\_p3) / 256) +}
-\DoxyCodeLine{524                ((var1 * (int64\_t) dev-\/>calib\_param.dig\_p2) * 4096);}
-\DoxyCodeLine{525         var1 = ((INT64\_C(0x800000000000) + var1) * ((int64\_t)dev-\/>calib\_param.dig\_p1)) / 8589934592;}
-\DoxyCodeLine{526         \textcolor{keywordflow}{if} (var1 != 0)}
-\DoxyCodeLine{527         \{}
-\DoxyCodeLine{528             p = 1048576 -\/ uncomp\_pres;}
-\DoxyCodeLine{529             p = (((((p * 2147483648U)) -\/ var2) * 3125) / var1);}
-\DoxyCodeLine{530             var1 = (((int64\_t) dev-\/>calib\_param.dig\_p9) * (p / 8192) * (p / 8192)) / 33554432;}
-\DoxyCodeLine{531             var2 = (((int64\_t) dev-\/>calib\_param.dig\_p8) * p) / 524288;}
-\DoxyCodeLine{532             p = ((p + var1 + var2) / 256) + (((int64\_t)dev-\/>calib\_param.dig\_p7) * 16);}
-\DoxyCodeLine{533             *pressure = (uint32\_t)p;}
-\DoxyCodeLine{534             rslt = BMP280\_OK;}
-\DoxyCodeLine{535         \}}
-\DoxyCodeLine{536         \textcolor{keywordflow}{else}}
-\DoxyCodeLine{537         \{}
-\DoxyCodeLine{538             *pressure = 0;}
-\DoxyCodeLine{539             rslt = BMP280\_E\_64BIT\_COMP\_PRESS;}
-\DoxyCodeLine{540         \}}
-\DoxyCodeLine{541     \}}
-\DoxyCodeLine{542 }
-\DoxyCodeLine{543     \textcolor{keywordflow}{return} rslt;}
-\DoxyCodeLine{544 \}}
+\DoxyCodeLine{542 \{}
+\DoxyCodeLine{543     int64\_t var1, var2, p;}
+\DoxyCodeLine{544     int8\_t rslt;}
+\DoxyCodeLine{545 }
+\DoxyCodeLine{546     rslt = null\_ptr\_check(dev);}
+\DoxyCodeLine{547     \textcolor{keywordflow}{if} (rslt == BMP280\_OK)}
+\DoxyCodeLine{548     \{}
+\DoxyCodeLine{549         var1 = ((int64\_t)(dev-\/>calib\_param.t\_fine)) -\/ 128000;}
+\DoxyCodeLine{550         var2 = var1 * var1 * (int64\_t)dev-\/>calib\_param.dig\_p6;}
+\DoxyCodeLine{551         var2 = var2 + ((var1 * (int64\_t)dev-\/>calib\_param.dig\_p5) * 131072);}
+\DoxyCodeLine{552         var2 = var2 + (((int64\_t)dev-\/>calib\_param.dig\_p4) * 34359738368);}
+\DoxyCodeLine{553         var1 = ((var1 * var1 * (int64\_t)dev-\/>calib\_param.dig\_p3) / 256) +}
+\DoxyCodeLine{554                ((var1 * (int64\_t)dev-\/>calib\_param.dig\_p2) * 4096);}
+\DoxyCodeLine{555         var1 = ((INT64\_C(0x800000000000) + var1) *}
+\DoxyCodeLine{556                 ((int64\_t)dev-\/>calib\_param.dig\_p1)) /}
+\DoxyCodeLine{557                8589934592;}
+\DoxyCodeLine{558         \textcolor{keywordflow}{if} (var1 != 0)}
+\DoxyCodeLine{559         \{}
+\DoxyCodeLine{560             p = 1048576 -\/ uncomp\_pres;}
+\DoxyCodeLine{561             p = (((((p * 2147483648U)) -\/ var2) * 3125) / var1);}
+\DoxyCodeLine{562             var1 =}
+\DoxyCodeLine{563                 (((int64\_t)dev-\/>calib\_param.dig\_p9) * (p / 8192) * (p / 8192)) /}
+\DoxyCodeLine{564                 33554432;}
+\DoxyCodeLine{565             var2 = (((int64\_t)dev-\/>calib\_param.dig\_p8) * p) / 524288;}
+\DoxyCodeLine{566             p = ((p + var1 + var2) / 256) +}
+\DoxyCodeLine{567                 (((int64\_t)dev-\/>calib\_param.dig\_p7) * 16);}
+\DoxyCodeLine{568             *pressure = (uint32\_t)p;}
+\DoxyCodeLine{569             rslt = BMP280\_OK;}
+\DoxyCodeLine{570         \}}
+\DoxyCodeLine{571         \textcolor{keywordflow}{else}}
+\DoxyCodeLine{572         \{}
+\DoxyCodeLine{573             *pressure = 0;}
+\DoxyCodeLine{574             rslt = BMP280\_E\_64BIT\_COMP\_PRESS;}
+\DoxyCodeLine{575         \}}
+\DoxyCodeLine{576     \}}
+\DoxyCodeLine{577 }
+\DoxyCodeLine{578     \textcolor{keywordflow}{return} rslt;}
+\DoxyCodeLine{579 \}}
 
 \end{DoxyCode}
 \mbox{\Hypertarget{bsp__bmp280_8h_a1890d1009e829f08bfbfde4c9f3a09c9}\label{bsp__bmp280_8h_a1890d1009e829f08bfbfde4c9f3a09c9}} 
@@ -285,42 +303,46 @@ Result of API execution
 \end{DoxyRetVals}
 This API is used to get the compensated pressure from uncompensated pressure. This API uses double floating precision. Pressure in Pa as double. Output value of \char`\"{}96386.\+2\char`\"{} equals 96386.\+2 Pa = 963.\+862 h\+Pa. 
 
-Definition at line 584 of file bsp\+\_\+bmp280.\+c.
+Definition at line 622 of file bsp\+\_\+bmp280.\+c.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{585 \{}
-\DoxyCodeLine{586     \textcolor{keywordtype}{double} var1, var2;}
-\DoxyCodeLine{587     int8\_t rslt;}
-\DoxyCodeLine{588 }
-\DoxyCodeLine{589     rslt = null\_ptr\_check(dev);}
-\DoxyCodeLine{590     \textcolor{keywordflow}{if} (rslt == BMP280\_OK)}
-\DoxyCodeLine{591     \{}
-\DoxyCodeLine{592         var1 = ((double) dev-\/>calib\_param.t\_fine / 2.0) -\/ 64000.0;}
-\DoxyCodeLine{593         var2 = var1 * var1 * ((double) dev-\/>calib\_param.dig\_p6) / 32768.0;}
-\DoxyCodeLine{594         var2 = var2 + var1 * ((double) dev-\/>calib\_param.dig\_p5) * 2.0;}
-\DoxyCodeLine{595         var2 = (var2 / 4.0) + (((\textcolor{keywordtype}{double}) dev-\/>calib\_param.dig\_p4) * 65536.0);}
-\DoxyCodeLine{596         var1 = (((double)dev-\/>calib\_param.dig\_p3) * var1 * var1 / 524288.0 + ((double)dev-\/>calib\_param.dig\_p2) * var1) /}
-\DoxyCodeLine{597                524288.0;}
-\DoxyCodeLine{598         var1 = (1.0 + var1 / 32768.0) * ((\textcolor{keywordtype}{double}) dev-\/>calib\_param.dig\_p1);}
-\DoxyCodeLine{599 }
-\DoxyCodeLine{600         *pressure = 1048576.0 -\/ (double)uncomp\_pres;}
-\DoxyCodeLine{601         \textcolor{keywordflow}{if} (var1 < 0 || var1 > 0)}
-\DoxyCodeLine{602         \{}
-\DoxyCodeLine{603             *pressure = (*pressure -\/ (var2 / 4096.0)) * 6250.0 / var1;}
-\DoxyCodeLine{604             var1 = ((double)dev-\/>calib\_param.dig\_p9) * (*pressure) * (*pressure) / 2147483648.0;}
-\DoxyCodeLine{605             var2 = (*pressure) * ((double)dev-\/>calib\_param.dig\_p8) / 32768.0;}
-\DoxyCodeLine{606             *pressure = *pressure + (var1 + var2 + ((double)dev-\/>calib\_param.dig\_p7)) / 16.0;}
-\DoxyCodeLine{607         \}}
-\DoxyCodeLine{608         \textcolor{keywordflow}{else}}
-\DoxyCodeLine{609         \{}
-\DoxyCodeLine{610             *pressure = 0;}
-\DoxyCodeLine{611             rslt = BMP280\_E\_DOUBLE\_COMP\_PRESS;}
-\DoxyCodeLine{612         \}}
-\DoxyCodeLine{613     \}}
-\DoxyCodeLine{614 }
-\DoxyCodeLine{615     \textcolor{keywordflow}{return} rslt;}
-\DoxyCodeLine{616 \}}
+\DoxyCodeLine{624 \{}
+\DoxyCodeLine{625     \textcolor{keywordtype}{double} var1, var2;}
+\DoxyCodeLine{626     int8\_t rslt;}
+\DoxyCodeLine{627 }
+\DoxyCodeLine{628     rslt = null\_ptr\_check(dev);}
+\DoxyCodeLine{629     \textcolor{keywordflow}{if} (rslt == BMP280\_OK)}
+\DoxyCodeLine{630     \{}
+\DoxyCodeLine{631         var1 = ((double)dev-\/>calib\_param.t\_fine / 2.0) -\/ 64000.0;}
+\DoxyCodeLine{632         var2 = var1 * var1 * ((double)dev-\/>calib\_param.dig\_p6) / 32768.0;}
+\DoxyCodeLine{633         var2 = var2 + var1 * ((double)dev-\/>calib\_param.dig\_p5) * 2.0;}
+\DoxyCodeLine{634         var2 = (var2 / 4.0) + (((\textcolor{keywordtype}{double})dev-\/>calib\_param.dig\_p4) * 65536.0);}
+\DoxyCodeLine{635         var1 = (((double)dev-\/>calib\_param.dig\_p3) * var1 * var1 / 524288.0 +}
+\DoxyCodeLine{636                 ((double)dev-\/>calib\_param.dig\_p2) * var1) /}
+\DoxyCodeLine{637                524288.0;}
+\DoxyCodeLine{638         var1 = (1.0 + var1 / 32768.0) * ((\textcolor{keywordtype}{double})dev-\/>calib\_param.dig\_p1);}
+\DoxyCodeLine{639 }
+\DoxyCodeLine{640         *pressure = 1048576.0 -\/ (double)uncomp\_pres;}
+\DoxyCodeLine{641         \textcolor{keywordflow}{if} (var1 < 0 || var1 > 0)}
+\DoxyCodeLine{642         \{}
+\DoxyCodeLine{643             *pressure = (*pressure -\/ (var2 / 4096.0)) * 6250.0 / var1;}
+\DoxyCodeLine{644             var1 = ((double)dev-\/>calib\_param.dig\_p9) * (*pressure) *}
+\DoxyCodeLine{645                    (*pressure) / 2147483648.0;}
+\DoxyCodeLine{646             var2 = (*pressure) * ((double)dev-\/>calib\_param.dig\_p8) / 32768.0;}
+\DoxyCodeLine{647             *pressure =}
+\DoxyCodeLine{648                 *pressure +}
+\DoxyCodeLine{649                 (var1 + var2 + ((double)dev-\/>calib\_param.dig\_p7)) / 16.0;}
+\DoxyCodeLine{650         \}}
+\DoxyCodeLine{651         \textcolor{keywordflow}{else}}
+\DoxyCodeLine{652         \{}
+\DoxyCodeLine{653             *pressure = 0;}
+\DoxyCodeLine{654             rslt = BMP280\_E\_DOUBLE\_COMP\_PRESS;}
+\DoxyCodeLine{655         \}}
+\DoxyCodeLine{656     \}}
+\DoxyCodeLine{657 }
+\DoxyCodeLine{658     \textcolor{keywordflow}{return} rslt;}
+\DoxyCodeLine{659 \}}
 
 \end{DoxyCode}
 \mbox{\Hypertarget{bsp__bmp280_8h_ad1d9f81bb0a43c72195319d72d915367}\label{bsp__bmp280_8h_ad1d9f81bb0a43c72195319d72d915367}} 
@@ -352,37 +374,38 @@ Result of API execution
 \end{DoxyRetVals}
 This API is used to get the compensated temperature from uncompensated temperature. This API uses 32 bit integers. Temperature in degC, resolution is 0.\+01 DegC. output value of \char`\"{}5123\char`\"{} equals 51.\+23 degree Celsius. 
 
-Definition at line 426 of file bsp\+\_\+bmp280.\+c.
+Definition at line 441 of file bsp\+\_\+bmp280.\+c.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{427 \{}
-\DoxyCodeLine{428     int32\_t var1, var2;}
-\DoxyCodeLine{429     int8\_t rslt;}
-\DoxyCodeLine{430 }
-\DoxyCodeLine{431     rslt = null\_ptr\_check(dev);}
-\DoxyCodeLine{432     \textcolor{keywordflow}{if} (rslt == BMP280\_OK)}
-\DoxyCodeLine{433     \{}
-\DoxyCodeLine{434         var1 =}
-\DoxyCodeLine{435             ((((uncomp\_temp / 8u) -\/ ((int32\_t) dev-\/>calib\_param.dig\_t1 << 1))) * ((int32\_t) dev-\/>calib\_param.dig\_t2)) /}
-\DoxyCodeLine{436             2048;}
-\DoxyCodeLine{437         var2 =}
-\DoxyCodeLine{438             (((((uncomp\_temp / 16u) -\/ ((int32\_t) dev-\/>calib\_param.dig\_t1)) *}
-\DoxyCodeLine{439                ((uncomp\_temp / 16u) -\/ ((int32\_t) dev-\/>calib\_param.dig\_t1))) / 4096u) *}
-\DoxyCodeLine{440              ((int32\_t) dev-\/>calib\_param.dig\_t3)) /}
-\DoxyCodeLine{441             16384u;}
-\DoxyCodeLine{442         dev-\/>calib\_param.t\_fine = var1 + var2;}
-\DoxyCodeLine{443         *comp\_temp = (dev-\/>calib\_param.t\_fine * 5u + 128u) / 256u;}
-\DoxyCodeLine{444         rslt = BMP280\_OK;}
-\DoxyCodeLine{445     \}}
-\DoxyCodeLine{446     \textcolor{keywordflow}{else}}
-\DoxyCodeLine{447     \{}
-\DoxyCodeLine{448         *comp\_temp = 0;}
-\DoxyCodeLine{449         rslt = BMP280\_E\_32BIT\_COMP\_TEMP;}
-\DoxyCodeLine{450     \}}
-\DoxyCodeLine{451 }
-\DoxyCodeLine{452     \textcolor{keywordflow}{return} rslt;}
-\DoxyCodeLine{453 \}}
+\DoxyCodeLine{443 \{}
+\DoxyCodeLine{444     int32\_t var1, var2;}
+\DoxyCodeLine{445     int8\_t rslt;}
+\DoxyCodeLine{446 }
+\DoxyCodeLine{447     rslt = null\_ptr\_check(dev);}
+\DoxyCodeLine{448     \textcolor{keywordflow}{if} (rslt == BMP280\_OK)}
+\DoxyCodeLine{449     \{}
+\DoxyCodeLine{450         var1 =}
+\DoxyCodeLine{451             ((((uncomp\_temp / 8u) -\/ ((int32\_t)dev-\/>calib\_param.dig\_t1 << 1))) *}
+\DoxyCodeLine{452              ((int32\_t)dev-\/>calib\_param.dig\_t2)) /}
+\DoxyCodeLine{453             2048;}
+\DoxyCodeLine{454         var2 = (((((uncomp\_temp / 16u) -\/ ((int32\_t)dev-\/>calib\_param.dig\_t1)) *}
+\DoxyCodeLine{455                   ((uncomp\_temp / 16u) -\/ ((int32\_t)dev-\/>calib\_param.dig\_t1))) /}
+\DoxyCodeLine{456                  4096u) *}
+\DoxyCodeLine{457                 ((int32\_t)dev-\/>calib\_param.dig\_t3)) /}
+\DoxyCodeLine{458                16384u;}
+\DoxyCodeLine{459         dev-\/>calib\_param.t\_fine = var1 + var2;}
+\DoxyCodeLine{460         *comp\_temp = (dev-\/>calib\_param.t\_fine * 5u + 128u) / 256u;}
+\DoxyCodeLine{461         rslt = BMP280\_OK;}
+\DoxyCodeLine{462     \}}
+\DoxyCodeLine{463     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{464     \{}
+\DoxyCodeLine{465         *comp\_temp = 0;}
+\DoxyCodeLine{466         rslt = BMP280\_E\_32BIT\_COMP\_TEMP;}
+\DoxyCodeLine{467     \}}
+\DoxyCodeLine{468 }
+\DoxyCodeLine{469     \textcolor{keywordflow}{return} rslt;}
+\DoxyCodeLine{470 \}}
 
 \end{DoxyCode}
 \mbox{\Hypertarget{bsp__bmp280_8h_a2699b3c803edf4918b684b694ce268fb}\label{bsp__bmp280_8h_a2699b3c803edf4918b684b694ce268fb}} 
@@ -414,34 +437,36 @@ Result of API execution
 \end{DoxyRetVals}
 This API is used to get the compensated temperature from uncompensated temperature. This API uses double floating precision. Temperature in degree Celsius , double precision. output value of \char`\"{}51.\+23\char`\"{} equals 51.\+23 degC. 
 
-Definition at line 554 of file bsp\+\_\+bmp280.\+c.
+Definition at line 589 of file bsp\+\_\+bmp280.\+c.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{555 \{}
-\DoxyCodeLine{556     \textcolor{keywordtype}{double} var1, var2;}
-\DoxyCodeLine{557     int8\_t rslt;}
-\DoxyCodeLine{558 }
-\DoxyCodeLine{559     rslt = null\_ptr\_check(dev);}
-\DoxyCodeLine{560     \textcolor{keywordflow}{if} (rslt == BMP280\_OK)}
-\DoxyCodeLine{561     \{}
-\DoxyCodeLine{562         var1 = (((double) uncomp\_temp) / 16384.0 -\/ ((double) dev-\/>calib\_param.dig\_t1) / 1024.0) *}
-\DoxyCodeLine{563                ((\textcolor{keywordtype}{double}) dev-\/>calib\_param.dig\_t2);}
-\DoxyCodeLine{564         var2 =}
-\DoxyCodeLine{565             ((((double) uncomp\_temp) / 131072.0 -\/ ((double) dev-\/>calib\_param.dig\_t1) / 8192.0) *}
-\DoxyCodeLine{566              (((\textcolor{keywordtype}{double}) uncomp\_temp) / 131072.0 -\/ ((\textcolor{keywordtype}{double}) dev-\/>calib\_param.dig\_t1) / 8192.0)) *}
-\DoxyCodeLine{567             ((\textcolor{keywordtype}{double}) dev-\/>calib\_param.dig\_t3);}
-\DoxyCodeLine{568         dev-\/>calib\_param.t\_fine = (int32\_t) (var1 + var2);}
-\DoxyCodeLine{569         *temperature = ((var1 + var2) / 5120.0);}
-\DoxyCodeLine{570     \}}
-\DoxyCodeLine{571     \textcolor{keywordflow}{else}}
-\DoxyCodeLine{572     \{}
-\DoxyCodeLine{573         *temperature = 0;}
-\DoxyCodeLine{574         rslt = BMP280\_E\_DOUBLE\_COMP\_TEMP;}
-\DoxyCodeLine{575     \}}
-\DoxyCodeLine{576 }
-\DoxyCodeLine{577     \textcolor{keywordflow}{return} rslt;}
-\DoxyCodeLine{578 \}}
+\DoxyCodeLine{591 \{}
+\DoxyCodeLine{592     \textcolor{keywordtype}{double} var1, var2;}
+\DoxyCodeLine{593     int8\_t rslt;}
+\DoxyCodeLine{594 }
+\DoxyCodeLine{595     rslt = null\_ptr\_check(dev);}
+\DoxyCodeLine{596     \textcolor{keywordflow}{if} (rslt == BMP280\_OK)}
+\DoxyCodeLine{597     \{}
+\DoxyCodeLine{598         var1 = (((double)uncomp\_temp) / 16384.0 -\/}
+\DoxyCodeLine{599                 ((double)dev-\/>calib\_param.dig\_t1) / 1024.0) *}
+\DoxyCodeLine{600                ((\textcolor{keywordtype}{double})dev-\/>calib\_param.dig\_t2);}
+\DoxyCodeLine{601         var2 = ((((double)uncomp\_temp) / 131072.0 -\/}
+\DoxyCodeLine{602                  ((double)dev-\/>calib\_param.dig\_t1) / 8192.0) *}
+\DoxyCodeLine{603                 (((\textcolor{keywordtype}{double})uncomp\_temp) / 131072.0 -\/}
+\DoxyCodeLine{604                  ((\textcolor{keywordtype}{double})dev-\/>calib\_param.dig\_t1) / 8192.0)) *}
+\DoxyCodeLine{605                ((\textcolor{keywordtype}{double})dev-\/>calib\_param.dig\_t3);}
+\DoxyCodeLine{606         dev-\/>calib\_param.t\_fine = (int32\_t)(var1 + var2);}
+\DoxyCodeLine{607         *temperature = ((var1 + var2) / 5120.0);}
+\DoxyCodeLine{608     \}}
+\DoxyCodeLine{609     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{610     \{}
+\DoxyCodeLine{611         *temperature = 0;}
+\DoxyCodeLine{612         rslt = BMP280\_E\_DOUBLE\_COMP\_TEMP;}
+\DoxyCodeLine{613     \}}
+\DoxyCodeLine{614 }
+\DoxyCodeLine{615     \textcolor{keywordflow}{return} rslt;}
+\DoxyCodeLine{616 \}}
 
 \end{DoxyCode}
 \mbox{\Hypertarget{bsp__bmp280_8h_aded88d5f67beb1b3311bb0e26ecc19da}\label{bsp__bmp280_8h_aded88d5f67beb1b3311bb0e26ecc19da}} 
@@ -471,35 +496,35 @@ Result of API execution
 \end{DoxyRetVals}
 
 
-Definition at line 290 of file bsp\+\_\+bmp280.\+c.
+Definition at line 298 of file bsp\+\_\+bmp280.\+c.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{291 \{}
-\DoxyCodeLine{292     int8\_t rslt;}
-\DoxyCodeLine{293     uint8\_t temp[2] = \{ 0, 0 \};}
-\DoxyCodeLine{294 }
-\DoxyCodeLine{295     rslt = null\_ptr\_check(dev);}
-\DoxyCodeLine{296     \textcolor{keywordflow}{if} ((rslt == BMP280\_OK) \&\& (conf != NULL))}
-\DoxyCodeLine{297     \{}
-\DoxyCodeLine{298         rslt = \mbox{\hyperlink{bsp__bmp280_8c_a31f92833cdfbcf5d82ad8382c2b29749}{bmp280\_get\_regs}}(BMP280\_CTRL\_MEAS\_ADDR, temp, 2, dev);}
-\DoxyCodeLine{299         \textcolor{keywordflow}{if} (rslt == BMP280\_OK)}
-\DoxyCodeLine{300         \{}
-\DoxyCodeLine{301             conf-\/>os\_temp = BMP280\_GET\_BITS(BMP280\_OS\_TEMP, temp[0]);}
-\DoxyCodeLine{302             conf-\/>os\_pres = BMP280\_GET\_BITS(BMP280\_OS\_PRES, temp[0]);}
-\DoxyCodeLine{303             conf-\/>odr = BMP280\_GET\_BITS(BMP280\_STANDBY\_DURN, temp[1]);}
-\DoxyCodeLine{304             conf-\/>filter = BMP280\_GET\_BITS(BMP280\_FILTER, temp[1]);}
-\DoxyCodeLine{305             conf-\/>spi3w\_en = BMP280\_GET\_BITS\_POS\_0(BMP280\_SPI3\_ENABLE, temp[1]);}
-\DoxyCodeLine{306             dev-\/>conf = *conf;}
-\DoxyCodeLine{307         \}}
-\DoxyCodeLine{308     \}}
-\DoxyCodeLine{309     \textcolor{keywordflow}{else}}
-\DoxyCodeLine{310     \{}
-\DoxyCodeLine{311         rslt = BMP280\_E\_NULL\_PTR;}
-\DoxyCodeLine{312     \}}
-\DoxyCodeLine{313 }
-\DoxyCodeLine{314     \textcolor{keywordflow}{return} rslt;}
-\DoxyCodeLine{315 \}}
+\DoxyCodeLine{299 \{}
+\DoxyCodeLine{300     int8\_t rslt;}
+\DoxyCodeLine{301     uint8\_t \mbox{\hyperlink{bsp__bmp280__cfg_8c_a9fb78358ae4b0a049a0d1b37dc4cffec}{temp}}[2] = \{0, 0\};}
+\DoxyCodeLine{302 }
+\DoxyCodeLine{303     rslt = null\_ptr\_check(dev);}
+\DoxyCodeLine{304     \textcolor{keywordflow}{if} ((rslt == BMP280\_OK) \&\& (\mbox{\hyperlink{bsp__bmp280__cfg_8c_af397dccfb46f629f15f4d28d643f84de}{conf}} != NULL))}
+\DoxyCodeLine{305     \{}
+\DoxyCodeLine{306         rslt = \mbox{\hyperlink{bsp__bmp280_8c_a31f92833cdfbcf5d82ad8382c2b29749}{bmp280\_get\_regs}}(BMP280\_CTRL\_MEAS\_ADDR, \mbox{\hyperlink{bsp__bmp280__cfg_8c_a9fb78358ae4b0a049a0d1b37dc4cffec}{temp}}, 2, dev);}
+\DoxyCodeLine{307         \textcolor{keywordflow}{if} (rslt == BMP280\_OK)}
+\DoxyCodeLine{308         \{}
+\DoxyCodeLine{309             \mbox{\hyperlink{bsp__bmp280__cfg_8c_af397dccfb46f629f15f4d28d643f84de}{conf}}-\/>os\_temp = BMP280\_GET\_BITS(BMP280\_OS\_TEMP, \mbox{\hyperlink{bsp__bmp280__cfg_8c_a9fb78358ae4b0a049a0d1b37dc4cffec}{temp}}[0]);}
+\DoxyCodeLine{310             \mbox{\hyperlink{bsp__bmp280__cfg_8c_af397dccfb46f629f15f4d28d643f84de}{conf}}-\/>os\_pres = BMP280\_GET\_BITS(BMP280\_OS\_PRES, \mbox{\hyperlink{bsp__bmp280__cfg_8c_a9fb78358ae4b0a049a0d1b37dc4cffec}{temp}}[0]);}
+\DoxyCodeLine{311             \mbox{\hyperlink{bsp__bmp280__cfg_8c_af397dccfb46f629f15f4d28d643f84de}{conf}}-\/>odr = BMP280\_GET\_BITS(BMP280\_STANDBY\_DURN, \mbox{\hyperlink{bsp__bmp280__cfg_8c_a9fb78358ae4b0a049a0d1b37dc4cffec}{temp}}[1]);}
+\DoxyCodeLine{312             \mbox{\hyperlink{bsp__bmp280__cfg_8c_af397dccfb46f629f15f4d28d643f84de}{conf}}-\/>filter = BMP280\_GET\_BITS(BMP280\_FILTER, \mbox{\hyperlink{bsp__bmp280__cfg_8c_a9fb78358ae4b0a049a0d1b37dc4cffec}{temp}}[1]);}
+\DoxyCodeLine{313             \mbox{\hyperlink{bsp__bmp280__cfg_8c_af397dccfb46f629f15f4d28d643f84de}{conf}}-\/>spi3w\_en = BMP280\_GET\_BITS\_POS\_0(BMP280\_SPI3\_ENABLE, \mbox{\hyperlink{bsp__bmp280__cfg_8c_a9fb78358ae4b0a049a0d1b37dc4cffec}{temp}}[1]);}
+\DoxyCodeLine{314             dev-\/>conf = *\mbox{\hyperlink{bsp__bmp280__cfg_8c_af397dccfb46f629f15f4d28d643f84de}{conf}};}
+\DoxyCodeLine{315         \}}
+\DoxyCodeLine{316     \}}
+\DoxyCodeLine{317     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{318     \{}
+\DoxyCodeLine{319         rslt = BMP280\_E\_NULL\_PTR;}
+\DoxyCodeLine{320     \}}
+\DoxyCodeLine{321 }
+\DoxyCodeLine{322     \textcolor{keywordflow}{return} rslt;}
+\DoxyCodeLine{323 \}}
 
 \end{DoxyCode}
 \mbox{\Hypertarget{bsp__bmp280_8h_ab1abf2ca4516a0e666469f7d57300c00}\label{bsp__bmp280_8h_ab1abf2ca4516a0e666469f7d57300c00}} 
@@ -529,27 +554,27 @@ Result of API execution
 \end{DoxyRetVals}
 
 
-Definition at line 353 of file bsp\+\_\+bmp280.\+c.
+Definition at line 364 of file bsp\+\_\+bmp280.\+c.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{354 \{}
-\DoxyCodeLine{355     int8\_t rslt;}
-\DoxyCodeLine{356     uint8\_t temp;}
-\DoxyCodeLine{357 }
-\DoxyCodeLine{358     rslt = null\_ptr\_check(dev);}
-\DoxyCodeLine{359     \textcolor{keywordflow}{if} ((rslt == BMP280\_OK) \&\& (mode != NULL))}
-\DoxyCodeLine{360     \{}
-\DoxyCodeLine{361         rslt = \mbox{\hyperlink{bsp__bmp280_8c_a31f92833cdfbcf5d82ad8382c2b29749}{bmp280\_get\_regs}}(BMP280\_CTRL\_MEAS\_ADDR, \&temp, 1, dev);}
-\DoxyCodeLine{362         *mode = BMP280\_GET\_BITS\_POS\_0(BMP280\_POWER\_MODE, temp);}
-\DoxyCodeLine{363     \}}
-\DoxyCodeLine{364     \textcolor{keywordflow}{else}}
-\DoxyCodeLine{365     \{}
-\DoxyCodeLine{366         rslt = BMP280\_E\_NULL\_PTR;}
-\DoxyCodeLine{367     \}}
+\DoxyCodeLine{365 \{}
+\DoxyCodeLine{366     int8\_t rslt;}
+\DoxyCodeLine{367     uint8\_t \mbox{\hyperlink{bsp__bmp280__cfg_8c_a9fb78358ae4b0a049a0d1b37dc4cffec}{temp}};}
 \DoxyCodeLine{368 }
-\DoxyCodeLine{369     \textcolor{keywordflow}{return} rslt;}
-\DoxyCodeLine{370 \}}
+\DoxyCodeLine{369     rslt = null\_ptr\_check(dev);}
+\DoxyCodeLine{370     \textcolor{keywordflow}{if} ((rslt == BMP280\_OK) \&\& (mode != NULL))}
+\DoxyCodeLine{371     \{}
+\DoxyCodeLine{372         rslt = \mbox{\hyperlink{bsp__bmp280_8c_a31f92833cdfbcf5d82ad8382c2b29749}{bmp280\_get\_regs}}(BMP280\_CTRL\_MEAS\_ADDR, \&\mbox{\hyperlink{bsp__bmp280__cfg_8c_a9fb78358ae4b0a049a0d1b37dc4cffec}{temp}}, 1, dev);}
+\DoxyCodeLine{373         *mode = BMP280\_GET\_BITS\_POS\_0(BMP280\_POWER\_MODE, \mbox{\hyperlink{bsp__bmp280__cfg_8c_a9fb78358ae4b0a049a0d1b37dc4cffec}{temp}});}
+\DoxyCodeLine{374     \}}
+\DoxyCodeLine{375     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{376     \{}
+\DoxyCodeLine{377         rslt = BMP280\_E\_NULL\_PTR;}
+\DoxyCodeLine{378     \}}
+\DoxyCodeLine{379 }
+\DoxyCodeLine{380     \textcolor{keywordflow}{return} rslt;}
+\DoxyCodeLine{381 \}}
 
 \end{DoxyCode}
 \mbox{\Hypertarget{bsp__bmp280_8h_a31f92833cdfbcf5d82ad8382c2b29749}\label{bsp__bmp280_8h_a31f92833cdfbcf5d82ad8382c2b29749}} 
@@ -585,36 +610,36 @@ Result of API execution
 \end{DoxyRetVals}
 
 
-Definition at line 115 of file bsp\+\_\+bmp280.\+c.
+Definition at line 119 of file bsp\+\_\+bmp280.\+c.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{116 \{}
-\DoxyCodeLine{117     int8\_t rslt;}
-\DoxyCodeLine{118 }
-\DoxyCodeLine{119     rslt = null\_ptr\_check(dev);}
-\DoxyCodeLine{120     \textcolor{keywordflow}{if} ((rslt == BMP280\_OK) \&\& (reg\_data != NULL))}
-\DoxyCodeLine{121     \{}
-\DoxyCodeLine{122         \textcolor{comment}{/* Mask the register address' MSB if interface selected is SPI */}}
-\DoxyCodeLine{123         \textcolor{keywordflow}{if} (dev-\/>intf == BMP280\_SPI\_INTF)}
-\DoxyCodeLine{124         \{}
-\DoxyCodeLine{125             reg\_addr = reg\_addr | 0x80;}
-\DoxyCodeLine{126         \}}
-\DoxyCodeLine{127         rslt = dev-\/>read(dev-\/>dev\_id, reg\_addr, reg\_data, len);}
-\DoxyCodeLine{128 }
-\DoxyCodeLine{129         \textcolor{comment}{/* Check for communication error and mask with an internal error code */}}
-\DoxyCodeLine{130         \textcolor{keywordflow}{if} (rslt != BMP280\_OK)}
-\DoxyCodeLine{131         \{}
-\DoxyCodeLine{132             rslt = BMP280\_E\_COMM\_FAIL;}
-\DoxyCodeLine{133         \}}
-\DoxyCodeLine{134     \}}
-\DoxyCodeLine{135     \textcolor{keywordflow}{else}}
-\DoxyCodeLine{136     \{}
-\DoxyCodeLine{137         rslt = BMP280\_E\_NULL\_PTR;}
-\DoxyCodeLine{138     \}}
-\DoxyCodeLine{139 }
-\DoxyCodeLine{140     \textcolor{keywordflow}{return} rslt;}
-\DoxyCodeLine{141 \}}
+\DoxyCodeLine{121 \{}
+\DoxyCodeLine{122     int8\_t rslt;}
+\DoxyCodeLine{123 }
+\DoxyCodeLine{124     rslt = null\_ptr\_check(dev);}
+\DoxyCodeLine{125     \textcolor{keywordflow}{if} ((rslt == BMP280\_OK) \&\& (reg\_data != NULL))}
+\DoxyCodeLine{126     \{}
+\DoxyCodeLine{127         \textcolor{comment}{/* Mask the register address' MSB if interface selected is SPI */}}
+\DoxyCodeLine{128         \textcolor{keywordflow}{if} (dev-\/>intf == BMP280\_SPI\_INTF)}
+\DoxyCodeLine{129         \{}
+\DoxyCodeLine{130             reg\_addr = reg\_addr | 0x80;}
+\DoxyCodeLine{131         \}}
+\DoxyCodeLine{132         rslt = dev-\/>read(dev-\/>dev\_id, reg\_addr, reg\_data, len);}
+\DoxyCodeLine{133 }
+\DoxyCodeLine{134         \textcolor{comment}{/* Check for communication error and mask with an internal error code */}}
+\DoxyCodeLine{135         \textcolor{keywordflow}{if} (rslt != BMP280\_OK)}
+\DoxyCodeLine{136         \{}
+\DoxyCodeLine{137             rslt = BMP280\_E\_COMM\_FAIL;}
+\DoxyCodeLine{138         \}}
+\DoxyCodeLine{139     \}}
+\DoxyCodeLine{140     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{141     \{}
+\DoxyCodeLine{142         rslt = BMP280\_E\_NULL\_PTR;}
+\DoxyCodeLine{143     \}}
+\DoxyCodeLine{144 }
+\DoxyCodeLine{145     \textcolor{keywordflow}{return} rslt;}
+\DoxyCodeLine{146 \}}
 
 \end{DoxyCode}
 \mbox{\Hypertarget{bsp__bmp280_8h_a7f39644204f57cb6fc3eff936df2715f}\label{bsp__bmp280_8h_a7f39644204f57cb6fc3eff936df2715f}} 
@@ -644,28 +669,29 @@ Result of API execution
 \end{DoxyRetVals}
 
 
-Definition at line 330 of file bsp\+\_\+bmp280.\+c.
+Definition at line 339 of file bsp\+\_\+bmp280.\+c.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{331 \{}
-\DoxyCodeLine{332     int8\_t rslt;}
-\DoxyCodeLine{333     uint8\_t temp;}
-\DoxyCodeLine{334 }
-\DoxyCodeLine{335     rslt = null\_ptr\_check(dev);}
-\DoxyCodeLine{336     \textcolor{keywordflow}{if} ((rslt == BMP280\_OK) \&\& (status != NULL))}
-\DoxyCodeLine{337     \{}
-\DoxyCodeLine{338         rslt = \mbox{\hyperlink{bsp__bmp280_8c_a31f92833cdfbcf5d82ad8382c2b29749}{bmp280\_get\_regs}}(BMP280\_STATUS\_ADDR, \&temp, 1, dev);}
-\DoxyCodeLine{339         status-\/>measuring = BMP280\_GET\_BITS(BMP280\_STATUS\_MEAS, temp);}
-\DoxyCodeLine{340         status-\/>im\_update = BMP280\_GET\_BITS\_POS\_0(BMP280\_STATUS\_IM\_UPDATE, temp);}
-\DoxyCodeLine{341     \}}
-\DoxyCodeLine{342     \textcolor{keywordflow}{else}}
-\DoxyCodeLine{343     \{}
-\DoxyCodeLine{344         rslt = BMP280\_E\_NULL\_PTR;}
-\DoxyCodeLine{345     \}}
-\DoxyCodeLine{346 }
-\DoxyCodeLine{347     \textcolor{keywordflow}{return} rslt;}
-\DoxyCodeLine{348 \}}
+\DoxyCodeLine{341 \{}
+\DoxyCodeLine{342     int8\_t rslt;}
+\DoxyCodeLine{343     uint8\_t \mbox{\hyperlink{bsp__bmp280__cfg_8c_a9fb78358ae4b0a049a0d1b37dc4cffec}{temp}};}
+\DoxyCodeLine{344 }
+\DoxyCodeLine{345     rslt = null\_ptr\_check(dev);}
+\DoxyCodeLine{346     \textcolor{keywordflow}{if} ((rslt == BMP280\_OK) \&\& (status != NULL))}
+\DoxyCodeLine{347     \{}
+\DoxyCodeLine{348         rslt = \mbox{\hyperlink{bsp__bmp280_8c_a31f92833cdfbcf5d82ad8382c2b29749}{bmp280\_get\_regs}}(BMP280\_STATUS\_ADDR, \&\mbox{\hyperlink{bsp__bmp280__cfg_8c_a9fb78358ae4b0a049a0d1b37dc4cffec}{temp}}, 1, dev);}
+\DoxyCodeLine{349         status-\/>measuring = BMP280\_GET\_BITS(BMP280\_STATUS\_MEAS, \mbox{\hyperlink{bsp__bmp280__cfg_8c_a9fb78358ae4b0a049a0d1b37dc4cffec}{temp}});}
+\DoxyCodeLine{350         status-\/>im\_update =}
+\DoxyCodeLine{351             BMP280\_GET\_BITS\_POS\_0(BMP280\_STATUS\_IM\_UPDATE, \mbox{\hyperlink{bsp__bmp280__cfg_8c_a9fb78358ae4b0a049a0d1b37dc4cffec}{temp}});}
+\DoxyCodeLine{352     \}}
+\DoxyCodeLine{353     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{354     \{}
+\DoxyCodeLine{355         rslt = BMP280\_E\_NULL\_PTR;}
+\DoxyCodeLine{356     \}}
+\DoxyCodeLine{357 }
+\DoxyCodeLine{358     \textcolor{keywordflow}{return} rslt;}
+\DoxyCodeLine{359 \}}
 
 \end{DoxyCode}
 \mbox{\Hypertarget{bsp__bmp280_8h_ae99e0ecdad4920b363d1c258887b4ff3}\label{bsp__bmp280_8h_ae99e0ecdad4920b363d1c258887b4ff3}} 
@@ -695,38 +721,41 @@ Result of API execution
 \end{DoxyRetVals}
 This API reads the temperature and pressure data registers. It gives the raw temperature and pressure data. 
 
-Definition at line 392 of file bsp\+\_\+bmp280.\+c.
+Definition at line 403 of file bsp\+\_\+bmp280.\+c.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{393 \{}
-\DoxyCodeLine{394     int8\_t rslt;}
-\DoxyCodeLine{395     uint8\_t temp[6] = \{ 0 \};}
-\DoxyCodeLine{396 }
-\DoxyCodeLine{397     rslt = null\_ptr\_check(dev);}
-\DoxyCodeLine{398     \textcolor{keywordflow}{if} ((rslt == BMP280\_OK) \&\& (uncomp\_data != NULL))}
-\DoxyCodeLine{399     \{}
-\DoxyCodeLine{400         rslt = \mbox{\hyperlink{bsp__bmp280_8c_a31f92833cdfbcf5d82ad8382c2b29749}{bmp280\_get\_regs}}(BMP280\_PRES\_MSB\_ADDR, temp, 6, dev);}
-\DoxyCodeLine{401         \textcolor{keywordflow}{if} (rslt == BMP280\_OK)}
-\DoxyCodeLine{402         \{}
-\DoxyCodeLine{403             uncomp\_data-\/>uncomp\_press =}
-\DoxyCodeLine{404                 (int32\_t) ((((uint32\_t) (temp[0])) << 12) | (((uint32\_t) (temp[1])) << 4) | ((uint32\_t) temp[2] >> 4));}
-\DoxyCodeLine{405             uncomp\_data-\/>uncomp\_temp =}
-\DoxyCodeLine{406                 (int32\_t) ((((int32\_t) (temp[3])) << 12) | (((int32\_t) (temp[4])) << 4) | (((int32\_t) (temp[5])) >> 4));}
-\DoxyCodeLine{407             rslt = st\_check\_boundaries((int32\_t)uncomp\_data-\/>uncomp\_temp, (int32\_t)uncomp\_data-\/>uncomp\_press);}
-\DoxyCodeLine{408         \}}
-\DoxyCodeLine{409         \textcolor{keywordflow}{else}}
-\DoxyCodeLine{410         \{}
-\DoxyCodeLine{411             rslt = BMP280\_E\_UNCOMP\_DATA\_CALC;}
-\DoxyCodeLine{412         \}}
-\DoxyCodeLine{413     \}}
-\DoxyCodeLine{414     \textcolor{keywordflow}{else}}
-\DoxyCodeLine{415     \{}
-\DoxyCodeLine{416         rslt = BMP280\_E\_NULL\_PTR;}
-\DoxyCodeLine{417     \}}
-\DoxyCodeLine{418 }
-\DoxyCodeLine{419     \textcolor{keywordflow}{return} rslt;}
-\DoxyCodeLine{420 \}}
+\DoxyCodeLine{405 \{}
+\DoxyCodeLine{406     int8\_t rslt;}
+\DoxyCodeLine{407     uint8\_t \mbox{\hyperlink{bsp__bmp280__cfg_8c_a9fb78358ae4b0a049a0d1b37dc4cffec}{temp}}[6] = \{0\};}
+\DoxyCodeLine{408 }
+\DoxyCodeLine{409     rslt = null\_ptr\_check(dev);}
+\DoxyCodeLine{410     \textcolor{keywordflow}{if} ((rslt == BMP280\_OK) \&\& (uncomp\_data != NULL))}
+\DoxyCodeLine{411     \{}
+\DoxyCodeLine{412         rslt = \mbox{\hyperlink{bsp__bmp280_8c_a31f92833cdfbcf5d82ad8382c2b29749}{bmp280\_get\_regs}}(BMP280\_PRES\_MSB\_ADDR, \mbox{\hyperlink{bsp__bmp280__cfg_8c_a9fb78358ae4b0a049a0d1b37dc4cffec}{temp}}, 6, dev);}
+\DoxyCodeLine{413         \textcolor{keywordflow}{if} (rslt == BMP280\_OK)}
+\DoxyCodeLine{414         \{}
+\DoxyCodeLine{415             uncomp\_data-\/>uncomp\_press = (int32\_t)(}
+\DoxyCodeLine{416                 (((uint32\_t)(\mbox{\hyperlink{bsp__bmp280__cfg_8c_a9fb78358ae4b0a049a0d1b37dc4cffec}{temp}}[0])) << 12) | (((uint32\_t)(\mbox{\hyperlink{bsp__bmp280__cfg_8c_a9fb78358ae4b0a049a0d1b37dc4cffec}{temp}}[1])) << 4) |}
+\DoxyCodeLine{417                 ((uint32\_t)\mbox{\hyperlink{bsp__bmp280__cfg_8c_a9fb78358ae4b0a049a0d1b37dc4cffec}{temp}}[2] >> 4));}
+\DoxyCodeLine{418             uncomp\_data-\/>uncomp\_temp = (int32\_t)((((int32\_t)(\mbox{\hyperlink{bsp__bmp280__cfg_8c_a9fb78358ae4b0a049a0d1b37dc4cffec}{temp}}[3])) << 12) |}
+\DoxyCodeLine{419                                                  (((int32\_t)(\mbox{\hyperlink{bsp__bmp280__cfg_8c_a9fb78358ae4b0a049a0d1b37dc4cffec}{temp}}[4])) << 4) |}
+\DoxyCodeLine{420                                                  (((int32\_t)(\mbox{\hyperlink{bsp__bmp280__cfg_8c_a9fb78358ae4b0a049a0d1b37dc4cffec}{temp}}[5])) >> 4));}
+\DoxyCodeLine{421             rslt = st\_check\_boundaries((int32\_t)uncomp\_data-\/>uncomp\_temp,}
+\DoxyCodeLine{422                                        (int32\_t)uncomp\_data-\/>uncomp\_press);}
+\DoxyCodeLine{423         \}}
+\DoxyCodeLine{424         \textcolor{keywordflow}{else}}
+\DoxyCodeLine{425         \{}
+\DoxyCodeLine{426             rslt = BMP280\_E\_UNCOMP\_DATA\_CALC;}
+\DoxyCodeLine{427         \}}
+\DoxyCodeLine{428     \}}
+\DoxyCodeLine{429     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{430     \{}
+\DoxyCodeLine{431         rslt = BMP280\_E\_NULL\_PTR;}
+\DoxyCodeLine{432     \}}
+\DoxyCodeLine{433 }
+\DoxyCodeLine{434     \textcolor{keywordflow}{return} rslt;}
+\DoxyCodeLine{435 \}}
 
 \end{DoxyCode}
 \mbox{\Hypertarget{bsp__bmp280_8h_a4a9809dbaa4df084461c705045925f8e}\label{bsp__bmp280_8h_a4a9809dbaa4df084461c705045925f8e}} 
@@ -754,58 +783,59 @@ Result of API execution
 \end{DoxyRetVals}
 
 
-Definition at line 234 of file bsp\+\_\+bmp280.\+c.
+Definition at line 241 of file bsp\+\_\+bmp280.\+c.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{235 \{}
-\DoxyCodeLine{236     int8\_t rslt;}
-\DoxyCodeLine{237 }
-\DoxyCodeLine{238     \textcolor{comment}{/* Maximum number of tries before timeout */}}
-\DoxyCodeLine{239     uint8\_t try\_count = 5;}
-\DoxyCodeLine{240 }
-\DoxyCodeLine{241     rslt = null\_ptr\_check(dev);}
-\DoxyCodeLine{242     \textcolor{keywordflow}{if} (rslt == BMP280\_OK)}
-\DoxyCodeLine{243     \{}
-\DoxyCodeLine{244         \textcolor{keywordflow}{while} (try\_count)}
-\DoxyCodeLine{245         \{}
-\DoxyCodeLine{246             rslt = \mbox{\hyperlink{bsp__bmp280_8c_a31f92833cdfbcf5d82ad8382c2b29749}{bmp280\_get\_regs}}(BMP280\_CHIP\_ID\_ADDR, \&dev-\/>chip\_id, 1, dev);}
+\DoxyCodeLine{242 \{}
+\DoxyCodeLine{243     int8\_t rslt;}
+\DoxyCodeLine{244 }
+\DoxyCodeLine{245     \textcolor{comment}{/* Maximum number of tries before timeout */}}
+\DoxyCodeLine{246     uint8\_t try\_count = 5;}
 \DoxyCodeLine{247 }
-\DoxyCodeLine{248             \textcolor{comment}{/* Check for chip id validity */}}
-\DoxyCodeLine{249             \textcolor{keywordflow}{if} ((rslt == BMP280\_OK) \&\&}
-\DoxyCodeLine{250                 (dev-\/>chip\_id == BMP280\_CHIP\_ID1 || dev-\/>chip\_id == BMP280\_CHIP\_ID2 || dev-\/>chip\_id == BMP280\_CHIP\_ID3))}
-\DoxyCodeLine{251             \{}
-\DoxyCodeLine{252                 rslt = \mbox{\hyperlink{bsp__bmp280_8c_ab3d06fdfe71e48cb081e1f66c14ba63f}{bmp280\_soft\_reset}}(dev);}
-\DoxyCodeLine{253                 \textcolor{keywordflow}{if} (rslt == BMP280\_OK)}
-\DoxyCodeLine{254                 \{}
-\DoxyCodeLine{255                     rslt = get\_calib\_param(dev);}
-\DoxyCodeLine{256                 \}}
-\DoxyCodeLine{257                 \textcolor{keywordflow}{break};}
-\DoxyCodeLine{258             \}}
-\DoxyCodeLine{259 }
-\DoxyCodeLine{260             \textcolor{comment}{/* Wait for 10 ms */}}
-\DoxyCodeLine{261             dev-\/>delay\_ms(10);}
-\DoxyCodeLine{262             -\/-\/try\_count;}
-\DoxyCodeLine{263         \}}
-\DoxyCodeLine{264 }
-\DoxyCodeLine{265         \textcolor{comment}{/* Chip id check failed, and timed out */}}
-\DoxyCodeLine{266         \textcolor{keywordflow}{if} (!try\_count)}
-\DoxyCodeLine{267         \{}
-\DoxyCodeLine{268             rslt = BMP280\_E\_DEV\_NOT\_FOUND;}
-\DoxyCodeLine{269         \}}
-\DoxyCodeLine{270         \textcolor{keywordflow}{if} (rslt == BMP280\_OK)}
-\DoxyCodeLine{271         \{}
-\DoxyCodeLine{272             \textcolor{comment}{/* Set values to default */}}
-\DoxyCodeLine{273             dev-\/>conf.filter = BMP280\_FILTER\_OFF;}
-\DoxyCodeLine{274             dev-\/>conf.os\_pres = BMP280\_OS\_NONE;}
-\DoxyCodeLine{275             dev-\/>conf.os\_temp = BMP280\_OS\_NONE;}
-\DoxyCodeLine{276             dev-\/>conf.odr = BMP280\_ODR\_0\_5\_MS;}
-\DoxyCodeLine{277             dev-\/>conf.spi3w\_en = BMP280\_SPI3\_WIRE\_DISABLE;}
-\DoxyCodeLine{278         \}}
-\DoxyCodeLine{279     \}}
-\DoxyCodeLine{280 }
-\DoxyCodeLine{281     \textcolor{keywordflow}{return} rslt;}
-\DoxyCodeLine{282 \}}
+\DoxyCodeLine{248     rslt = null\_ptr\_check(dev);}
+\DoxyCodeLine{249     \textcolor{keywordflow}{if} (rslt == BMP280\_OK)}
+\DoxyCodeLine{250     \{}
+\DoxyCodeLine{251         \textcolor{keywordflow}{while} (try\_count)}
+\DoxyCodeLine{252         \{}
+\DoxyCodeLine{253             rslt = \mbox{\hyperlink{bsp__bmp280_8c_a31f92833cdfbcf5d82ad8382c2b29749}{bmp280\_get\_regs}}(BMP280\_CHIP\_ID\_ADDR, \&dev-\/>chip\_id, 1, dev);}
+\DoxyCodeLine{254 }
+\DoxyCodeLine{255             \textcolor{comment}{/* Check for chip id validity */}}
+\DoxyCodeLine{256             \textcolor{keywordflow}{if} ((rslt == BMP280\_OK) \&\& (dev-\/>chip\_id == BMP280\_CHIP\_ID1 ||}
+\DoxyCodeLine{257                                         dev-\/>chip\_id == BMP280\_CHIP\_ID2 ||}
+\DoxyCodeLine{258                                         dev-\/>chip\_id == BMP280\_CHIP\_ID3))}
+\DoxyCodeLine{259             \{}
+\DoxyCodeLine{260                 rslt = \mbox{\hyperlink{bsp__bmp280_8c_ab3d06fdfe71e48cb081e1f66c14ba63f}{bmp280\_soft\_reset}}(dev);}
+\DoxyCodeLine{261                 \textcolor{keywordflow}{if} (rslt == BMP280\_OK)}
+\DoxyCodeLine{262                 \{}
+\DoxyCodeLine{263                     rslt = get\_calib\_param(dev);}
+\DoxyCodeLine{264                 \}}
+\DoxyCodeLine{265                 \textcolor{keywordflow}{break};}
+\DoxyCodeLine{266             \}}
+\DoxyCodeLine{267 }
+\DoxyCodeLine{268             \textcolor{comment}{/* Wait for 10 ms */}}
+\DoxyCodeLine{269             dev-\/>delay\_ms(10);}
+\DoxyCodeLine{270             -\/-\/try\_count;}
+\DoxyCodeLine{271         \}}
+\DoxyCodeLine{272 }
+\DoxyCodeLine{273         \textcolor{comment}{/* Chip id check failed, and timed out */}}
+\DoxyCodeLine{274         \textcolor{keywordflow}{if} (!try\_count)}
+\DoxyCodeLine{275         \{}
+\DoxyCodeLine{276             rslt = BMP280\_E\_DEV\_NOT\_FOUND;}
+\DoxyCodeLine{277         \}}
+\DoxyCodeLine{278         \textcolor{keywordflow}{if} (rslt == BMP280\_OK)}
+\DoxyCodeLine{279         \{}
+\DoxyCodeLine{280             \textcolor{comment}{/* Set values to default */}}
+\DoxyCodeLine{281             dev-\/>conf.filter = BMP280\_FILTER\_OFF;}
+\DoxyCodeLine{282             dev-\/>conf.os\_pres = BMP280\_OS\_NONE;}
+\DoxyCodeLine{283             dev-\/>conf.os\_temp = BMP280\_OS\_NONE;}
+\DoxyCodeLine{284             dev-\/>conf.odr = BMP280\_ODR\_0\_5\_MS;}
+\DoxyCodeLine{285             dev-\/>conf.spi3w\_en = BMP280\_SPI3\_WIRE\_DISABLE;}
+\DoxyCodeLine{286         \}}
+\DoxyCodeLine{287     \}}
+\DoxyCodeLine{288 }
+\DoxyCodeLine{289     \textcolor{keywordflow}{return} rslt;}
+\DoxyCodeLine{290 \}}
 
 \end{DoxyCode}
 \mbox{\Hypertarget{bsp__bmp280_8h_a61799b86b24d68b7a20814fcaf9adea8}\label{bsp__bmp280_8h_a61799b86b24d68b7a20814fcaf9adea8}} 
@@ -835,13 +865,13 @@ Result of API execution
 \end{DoxyRetVals}
 
 
-Definition at line 322 of file bsp\+\_\+bmp280.\+c.
+Definition at line 330 of file bsp\+\_\+bmp280.\+c.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{323 \{}
-\DoxyCodeLine{324     \textcolor{keywordflow}{return} conf\_sensor(BMP280\_SLEEP\_MODE, conf, dev);}
-\DoxyCodeLine{325 \}}
+\DoxyCodeLine{332 \{}
+\DoxyCodeLine{333     \textcolor{keywordflow}{return} conf\_sensor(BMP280\_SLEEP\_MODE, \mbox{\hyperlink{bsp__bmp280__cfg_8c_af397dccfb46f629f15f4d28d643f84de}{conf}}, dev);}
+\DoxyCodeLine{334 \}}
 
 \end{DoxyCode}
 \mbox{\Hypertarget{bsp__bmp280_8h_a4401d930aa889a00121087f4aeac0182}\label{bsp__bmp280_8h_a4401d930aa889a00121087f4aeac0182}} 
@@ -871,21 +901,21 @@ Result of API execution
 \end{DoxyRetVals}
 
 
-Definition at line 375 of file bsp\+\_\+bmp280.\+c.
+Definition at line 386 of file bsp\+\_\+bmp280.\+c.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{376 \{}
-\DoxyCodeLine{377     int8\_t rslt;}
-\DoxyCodeLine{378 }
-\DoxyCodeLine{379     rslt = null\_ptr\_check(dev);}
-\DoxyCodeLine{380     \textcolor{keywordflow}{if} (rslt == BMP280\_OK)}
-\DoxyCodeLine{381     \{}
-\DoxyCodeLine{382         rslt = conf\_sensor(mode, \&dev-\/>conf, dev);}
-\DoxyCodeLine{383     \}}
-\DoxyCodeLine{384 }
-\DoxyCodeLine{385     \textcolor{keywordflow}{return} rslt;}
-\DoxyCodeLine{386 \}}
+\DoxyCodeLine{387 \{}
+\DoxyCodeLine{388     int8\_t rslt;}
+\DoxyCodeLine{389 }
+\DoxyCodeLine{390     rslt = null\_ptr\_check(dev);}
+\DoxyCodeLine{391     \textcolor{keywordflow}{if} (rslt == BMP280\_OK)}
+\DoxyCodeLine{392     \{}
+\DoxyCodeLine{393         rslt = conf\_sensor(mode, \&dev-\/>conf, dev);}
+\DoxyCodeLine{394     \}}
+\DoxyCodeLine{395 }
+\DoxyCodeLine{396     \textcolor{keywordflow}{return} rslt;}
+\DoxyCodeLine{397 \}}
 
 \end{DoxyCode}
 \mbox{\Hypertarget{bsp__bmp280_8h_a2d41bc3f1cfccf3e250749a77723883b}\label{bsp__bmp280_8h_a2d41bc3f1cfccf3e250749a77723883b}} 
@@ -919,70 +949,71 @@ Result of API execution
 \end{DoxyRetVals}
 
 
-Definition at line 147 of file bsp\+\_\+bmp280.\+c.
+Definition at line 152 of file bsp\+\_\+bmp280.\+c.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{148 \{}
-\DoxyCodeLine{149     int8\_t rslt;}
-\DoxyCodeLine{150     uint8\_t temp\_buff[8]; \textcolor{comment}{/* Typically not to write more than 4 registers */}}
-\DoxyCodeLine{151     uint16\_t temp\_len;}
-\DoxyCodeLine{152     uint8\_t reg\_addr\_cnt;}
-\DoxyCodeLine{153 }
-\DoxyCodeLine{154     \textcolor{keywordflow}{if} (len > 4)}
-\DoxyCodeLine{155     \{}
-\DoxyCodeLine{156         len = 4;}
-\DoxyCodeLine{157     \}}
-\DoxyCodeLine{158     rslt = null\_ptr\_check(dev);}
-\DoxyCodeLine{159     \textcolor{keywordflow}{if} ((rslt == BMP280\_OK) \&\& (reg\_addr != NULL) \&\& (reg\_data != NULL))}
-\DoxyCodeLine{160     \{}
-\DoxyCodeLine{161         \textcolor{keywordflow}{if} (len != 0)}
-\DoxyCodeLine{162         \{}
-\DoxyCodeLine{163             temp\_buff[0] = reg\_data[0];}
-\DoxyCodeLine{164 }
-\DoxyCodeLine{165             \textcolor{comment}{/* Mask the register address' MSB if interface selected is SPI */}}
-\DoxyCodeLine{166             \textcolor{keywordflow}{if} (dev-\/>intf == BMP280\_SPI\_INTF)}
-\DoxyCodeLine{167             \{}
-\DoxyCodeLine{168                 \textcolor{comment}{/* Converting all the reg address into proper SPI write address }}
-\DoxyCodeLine{169 \textcolor{comment}{                 * i.e making MSB(R/`W) bit 0 }}
-\DoxyCodeLine{170 \textcolor{comment}{                 */}}
-\DoxyCodeLine{171                 \textcolor{keywordflow}{for} (reg\_addr\_cnt = 0; reg\_addr\_cnt < len; reg\_addr\_cnt++)}
-\DoxyCodeLine{172                 \{}
-\DoxyCodeLine{173                     reg\_addr[reg\_addr\_cnt] = reg\_addr[reg\_addr\_cnt] \& 0x7F;}
-\DoxyCodeLine{174                 \}}
-\DoxyCodeLine{175             \}}
-\DoxyCodeLine{176 }
-\DoxyCodeLine{177             \textcolor{comment}{/* Burst write mode */}}
-\DoxyCodeLine{178             \textcolor{keywordflow}{if} (len > 1)}
-\DoxyCodeLine{179             \{}
-\DoxyCodeLine{180                 \textcolor{comment}{/* Interleave register address w.r.t data for burst write*/}}
-\DoxyCodeLine{181                 interleave\_data(reg\_addr, temp\_buff, reg\_data, len);}
-\DoxyCodeLine{182                 temp\_len = ((len * 2) -\/ 1);}
-\DoxyCodeLine{183             \}}
-\DoxyCodeLine{184             \textcolor{keywordflow}{else}}
+\DoxyCodeLine{154 \{}
+\DoxyCodeLine{155     int8\_t rslt;}
+\DoxyCodeLine{156     uint8\_t temp\_buff[8]; \textcolor{comment}{/* Typically not to write more than 4 registers */}}
+\DoxyCodeLine{157     uint16\_t temp\_len;}
+\DoxyCodeLine{158     uint8\_t reg\_addr\_cnt;}
+\DoxyCodeLine{159 }
+\DoxyCodeLine{160     \textcolor{keywordflow}{if} (len > 4)}
+\DoxyCodeLine{161     \{}
+\DoxyCodeLine{162         len = 4;}
+\DoxyCodeLine{163     \}}
+\DoxyCodeLine{164     rslt = null\_ptr\_check(dev);}
+\DoxyCodeLine{165     \textcolor{keywordflow}{if} ((rslt == BMP280\_OK) \&\& (reg\_addr != NULL) \&\& (reg\_data != NULL))}
+\DoxyCodeLine{166     \{}
+\DoxyCodeLine{167         \textcolor{keywordflow}{if} (len != 0)}
+\DoxyCodeLine{168         \{}
+\DoxyCodeLine{169             temp\_buff[0] = reg\_data[0];}
+\DoxyCodeLine{170 }
+\DoxyCodeLine{171             \textcolor{comment}{/* Mask the register address' MSB if interface selected is SPI */}}
+\DoxyCodeLine{172             \textcolor{keywordflow}{if} (dev-\/>intf == BMP280\_SPI\_INTF)}
+\DoxyCodeLine{173             \{}
+\DoxyCodeLine{174                 \textcolor{comment}{/* Converting all the reg address into proper SPI write address }}
+\DoxyCodeLine{175 \textcolor{comment}{                 * i.e making MSB(R/`W) bit 0 }}
+\DoxyCodeLine{176 \textcolor{comment}{                 */}}
+\DoxyCodeLine{177                 \textcolor{keywordflow}{for} (reg\_addr\_cnt = 0; reg\_addr\_cnt < len; reg\_addr\_cnt++)}
+\DoxyCodeLine{178                 \{}
+\DoxyCodeLine{179                     reg\_addr[reg\_addr\_cnt] = reg\_addr[reg\_addr\_cnt] \& 0x7F;}
+\DoxyCodeLine{180                 \}}
+\DoxyCodeLine{181             \}}
+\DoxyCodeLine{182 }
+\DoxyCodeLine{183             \textcolor{comment}{/* Burst write mode */}}
+\DoxyCodeLine{184             \textcolor{keywordflow}{if} (len > 1)}
 \DoxyCodeLine{185             \{}
-\DoxyCodeLine{186                 temp\_len = len;}
-\DoxyCodeLine{187             \}}
-\DoxyCodeLine{188             rslt = dev-\/>write(dev-\/>dev\_id, reg\_addr[0], temp\_buff, temp\_len);}
-\DoxyCodeLine{189 }
-\DoxyCodeLine{190             \textcolor{comment}{/* Check for communication error and mask with an internal error code */}}
-\DoxyCodeLine{191             \textcolor{keywordflow}{if} (rslt != BMP280\_OK)}
-\DoxyCodeLine{192             \{}
-\DoxyCodeLine{193                 rslt = BMP280\_E\_COMM\_FAIL;}
-\DoxyCodeLine{194             \}}
-\DoxyCodeLine{195         \}}
-\DoxyCodeLine{196         \textcolor{keywordflow}{else}}
-\DoxyCodeLine{197         \{}
-\DoxyCodeLine{198             rslt = BMP280\_E\_INVALID\_LEN;}
-\DoxyCodeLine{199         \}}
-\DoxyCodeLine{200     \}}
-\DoxyCodeLine{201     \textcolor{keywordflow}{else}}
-\DoxyCodeLine{202     \{}
-\DoxyCodeLine{203         rslt = BMP280\_E\_NULL\_PTR;}
-\DoxyCodeLine{204     \}}
-\DoxyCodeLine{205 }
-\DoxyCodeLine{206     \textcolor{keywordflow}{return} rslt;}
-\DoxyCodeLine{207 \}}
+\DoxyCodeLine{186                 \textcolor{comment}{/* Interleave register address w.r.t data for burst write*/}}
+\DoxyCodeLine{187                 interleave\_data(reg\_addr, temp\_buff, reg\_data, len);}
+\DoxyCodeLine{188                 temp\_len = ((len * 2) -\/ 1);}
+\DoxyCodeLine{189             \}}
+\DoxyCodeLine{190             \textcolor{keywordflow}{else}}
+\DoxyCodeLine{191             \{}
+\DoxyCodeLine{192                 temp\_len = len;}
+\DoxyCodeLine{193             \}}
+\DoxyCodeLine{194             rslt = dev-\/>write(dev-\/>dev\_id, reg\_addr[0], temp\_buff, temp\_len);}
+\DoxyCodeLine{195 }
+\DoxyCodeLine{196             \textcolor{comment}{/* Check for communication error and mask with an internal error }}
+\DoxyCodeLine{197 \textcolor{comment}{             * code */}}
+\DoxyCodeLine{198             \textcolor{keywordflow}{if} (rslt != BMP280\_OK)}
+\DoxyCodeLine{199             \{}
+\DoxyCodeLine{200                 rslt = BMP280\_E\_COMM\_FAIL;}
+\DoxyCodeLine{201             \}}
+\DoxyCodeLine{202         \}}
+\DoxyCodeLine{203         \textcolor{keywordflow}{else}}
+\DoxyCodeLine{204         \{}
+\DoxyCodeLine{205             rslt = BMP280\_E\_INVALID\_LEN;}
+\DoxyCodeLine{206         \}}
+\DoxyCodeLine{207     \}}
+\DoxyCodeLine{208     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{209     \{}
+\DoxyCodeLine{210         rslt = BMP280\_E\_NULL\_PTR;}
+\DoxyCodeLine{211     \}}
+\DoxyCodeLine{212 }
+\DoxyCodeLine{213     \textcolor{keywordflow}{return} rslt;}
+\DoxyCodeLine{214 \}}
 
 \end{DoxyCode}
 \mbox{\Hypertarget{bsp__bmp280_8h_ab3d06fdfe71e48cb081e1f66c14ba63f}\label{bsp__bmp280_8h_ab3d06fdfe71e48cb081e1f66c14ba63f}} 
@@ -1010,25 +1041,25 @@ Result of API execution
 \end{DoxyRetVals}
 
 
-Definition at line 212 of file bsp\+\_\+bmp280.\+c.
+Definition at line 219 of file bsp\+\_\+bmp280.\+c.
 
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{213 \{}
-\DoxyCodeLine{214     int8\_t rslt;}
-\DoxyCodeLine{215     uint8\_t reg\_addr = BMP280\_SOFT\_RESET\_ADDR;}
-\DoxyCodeLine{216     uint8\_t soft\_rst\_cmd = BMP280\_SOFT\_RESET\_CMD;}
-\DoxyCodeLine{217 }
-\DoxyCodeLine{218     rslt = null\_ptr\_check(dev);}
-\DoxyCodeLine{219     \textcolor{keywordflow}{if} (rslt == BMP280\_OK)}
-\DoxyCodeLine{220     \{}
-\DoxyCodeLine{221         rslt = \mbox{\hyperlink{bsp__bmp280_8c_a2d41bc3f1cfccf3e250749a77723883b}{bmp280\_set\_regs}}(\&reg\_addr, \&soft\_rst\_cmd, 1, dev);}
-\DoxyCodeLine{222 }
-\DoxyCodeLine{223         \textcolor{comment}{/* As per the datasheet, startup time is 2 ms. */}}
-\DoxyCodeLine{224         dev-\/>delay\_ms(2);}
-\DoxyCodeLine{225     \}}
-\DoxyCodeLine{226 }
-\DoxyCodeLine{227     \textcolor{keywordflow}{return} rslt;}
-\DoxyCodeLine{228 \}}
+\DoxyCodeLine{220 \{}
+\DoxyCodeLine{221     int8\_t rslt;}
+\DoxyCodeLine{222     uint8\_t reg\_addr = BMP280\_SOFT\_RESET\_ADDR;}
+\DoxyCodeLine{223     uint8\_t soft\_rst\_cmd = BMP280\_SOFT\_RESET\_CMD;}
+\DoxyCodeLine{224 }
+\DoxyCodeLine{225     rslt = null\_ptr\_check(dev);}
+\DoxyCodeLine{226     \textcolor{keywordflow}{if} (rslt == BMP280\_OK)}
+\DoxyCodeLine{227     \{}
+\DoxyCodeLine{228         rslt = \mbox{\hyperlink{bsp__bmp280_8c_a2d41bc3f1cfccf3e250749a77723883b}{bmp280\_set\_regs}}(\&reg\_addr, \&soft\_rst\_cmd, 1, dev);}
+\DoxyCodeLine{229 }
+\DoxyCodeLine{230         \textcolor{comment}{/* As per the datasheet, startup time is 2 ms. */}}
+\DoxyCodeLine{231         dev-\/>delay\_ms(2);}
+\DoxyCodeLine{232     \}}
+\DoxyCodeLine{233 }
+\DoxyCodeLine{234     \textcolor{keywordflow}{return} rslt;}
+\DoxyCodeLine{235 \}}
 
 \end{DoxyCode}

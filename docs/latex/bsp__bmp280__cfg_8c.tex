@@ -1,0 +1,405 @@
+\hypertarget{bsp__bmp280__cfg_8c}{}\doxysection{bmp280/bsp\+\_\+bmp280\+\_\+cfg.c File Reference}
+\label{bsp__bmp280__cfg_8c}\index{bmp280/bsp\_bmp280\_cfg.c@{bmp280/bsp\_bmp280\_cfg.c}}
+{\ttfamily \#include $<$bsp\+\_\+bmp280\+\_\+cfg.\+h$>$}\newline
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{bsp__bmp280__cfg_8c_a3045fb5808e4a0e95b9ddc5ae953f837}{BMP280\+\_\+\+Read}} (void)
+\begin{DoxyCompactList}\small\item\em Function that reads and computes data (temp and pressure) \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{bsp__bmp280__cfg_8c_a1bbb3c66158f712d39877835a403ba46}{BMP280\+\_\+\+Setup}} (void)
+\begin{DoxyCompactList}\small\item\em Function that initializes and configurates BMP280. Call \mbox{\hyperlink{bsp__bmp280__cfg_8c_a1bbb3c66158f712d39877835a403ba46}{BMP280\+\_\+\+Setup()}} before \mbox{\hyperlink{bsp__bmp280__cfg_8c_a3045fb5808e4a0e95b9ddc5ae953f837}{BMP280\+\_\+\+Read()}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{bsp__bmp280__cfg_8c_ac6e078d7f8ab4993562bd538a724ec86}{BMP280\+\_\+\+Print}} (UART\+\_\+\+Handle\+Type\+Def $\ast$uart)
+\begin{DoxyCompactList}\small\item\em Function that print temperature and pressure to the given UART. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{bsp__bmp280__cfg_8c_a2cae470095c07a4ac4dd6a3c793d02e9}{Delay\+\_\+ms}} (uint32\+\_\+t period\+\_\+ms)
+\begin{DoxyCompactList}\small\item\em Function that creates a mandatory delay required in some of the APIs such as \char`\"{}bmg250\+\_\+soft\+\_\+reset\char`\"{}, \char`\"{}bmg250\+\_\+set\+\_\+foc\char`\"{}, \char`\"{}bmg250\+\_\+perform\+\_\+self\+\_\+test\char`\"{} and so on. \end{DoxyCompactList}\item 
+int8\+\_\+t \mbox{\hyperlink{bsp__bmp280__cfg_8c_a2214a034a3a0e099189920bd50dc2520}{I2\+C\+\_\+\+Reg\+\_\+\+Write}} (uint8\+\_\+t i2c\+\_\+addr, uint8\+\_\+t reg\+\_\+addr, uint8\+\_\+t $\ast$reg\+\_\+data, uint16\+\_\+t length)
+\begin{DoxyCompactList}\small\item\em Function for writing the sensor\textquotesingle{}s registers through I2C bus. \end{DoxyCompactList}\item 
+int8\+\_\+t \mbox{\hyperlink{bsp__bmp280__cfg_8c_a8255c229e6fbc22dd451148307c45f9a}{I2\+C\+\_\+\+Reg\+\_\+\+Read}} (uint8\+\_\+t i2c\+\_\+addr, uint8\+\_\+t reg\+\_\+addr, uint8\+\_\+t $\ast$reg\+\_\+data, uint16\+\_\+t length)
+\begin{DoxyCompactList}\small\item\em Function for reading the sensor\textquotesingle{}s registers through I2C bus. \end{DoxyCompactList}\item 
+int8\+\_\+t \mbox{\hyperlink{bsp__bmp280__cfg_8c_a9648823468baba045f062d5b50b9f560}{SPI\+\_\+\+Reg\+\_\+\+Write}} (uint8\+\_\+t cs, uint8\+\_\+t reg\+\_\+addr, uint8\+\_\+t $\ast$reg\+\_\+data, uint16\+\_\+t length)
+\begin{DoxyCompactList}\small\item\em Function for writing the sensor\textquotesingle{}s registers through SPI bus. \end{DoxyCompactList}\item 
+int8\+\_\+t \mbox{\hyperlink{bsp__bmp280__cfg_8c_a596060b80c7ba3ea10e58b4ad40204ea}{SPI\+\_\+\+Reg\+\_\+\+Read}} (uint8\+\_\+t cs, uint8\+\_\+t reg\+\_\+addr, uint8\+\_\+t $\ast$reg\+\_\+data, uint16\+\_\+t length)
+\begin{DoxyCompactList}\small\item\em Function for reading the sensor\textquotesingle{}s registers through SPI bus. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{bsp__bmp280__cfg_8c_a16a78513eb6aea76cb217bd4ea22fcb8}\label{bsp__bmp280__cfg_8c_a16a78513eb6aea76cb217bd4ea22fcb8}} 
+SPI\+\_\+\+Handle\+Type\+Def $\ast$ \mbox{\hyperlink{bsp__bmp280__cfg_8c_a16a78513eb6aea76cb217bd4ea22fcb8}{bmp280\+\_\+spi\+\_\+handler}}
+\begin{DoxyCompactList}\small\item\em is used in \mbox{\hyperlink{bsp__bmp280__cfg_8c_a1bbb3c66158f712d39877835a403ba46}{BMP280\+\_\+\+Setup()}} function when BMP280\+\_\+\+SPI is defined \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{bsp__bmp280__cfg_8c_a31e0716cefbc17c88b287aeb2b2f69c5}\label{bsp__bmp280__cfg_8c_a31e0716cefbc17c88b287aeb2b2f69c5}} 
+I2\+C\+\_\+\+Handle\+Type\+Def $\ast$ \mbox{\hyperlink{bsp__bmp280__cfg_8c_a31e0716cefbc17c88b287aeb2b2f69c5}{bmp280\+\_\+i2c\+\_\+handler}}
+\begin{DoxyCompactList}\small\item\em is used in \mbox{\hyperlink{bsp__bmp280__cfg_8c_a1bbb3c66158f712d39877835a403ba46}{BMP280\+\_\+\+Setup()}} function when BMP280\+\_\+\+I2C is defined \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{bsp__bmp280__cfg_8c_afa454d49bc1292bb653871a21549be88}\label{bsp__bmp280__cfg_8c_afa454d49bc1292bb653871a21549be88}} 
+struct \mbox{\hyperlink{structbmp280__dev}{bmp280\+\_\+dev}} \mbox{\hyperlink{bsp__bmp280__cfg_8c_afa454d49bc1292bb653871a21549be88}{bmp}}
+\begin{DoxyCompactList}\small\item\em store all info of BMP280 (device addr, chip id, calib parameters, function pointers, etc.) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{bsp__bmp280__cfg_8c_af397dccfb46f629f15f4d28d643f84de}\label{bsp__bmp280__cfg_8c_af397dccfb46f629f15f4d28d643f84de}} 
+struct \mbox{\hyperlink{structbmp280__config}{bmp280\+\_\+config}} \mbox{\hyperlink{bsp__bmp280__cfg_8c_af397dccfb46f629f15f4d28d643f84de}{conf}}
+\begin{DoxyCompactList}\small\item\em store bmp280 configuration \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{bsp__bmp280__cfg_8c_a47d41036eee568108f05055391107f2e}\label{bsp__bmp280__cfg_8c_a47d41036eee568108f05055391107f2e}} 
+struct \mbox{\hyperlink{structbmp280__uncomp__data}{bmp280\+\_\+uncomp\+\_\+data}} \mbox{\hyperlink{bsp__bmp280__cfg_8c_a47d41036eee568108f05055391107f2e}{ucomp\+\_\+data}}
+\begin{DoxyCompactList}\small\item\em store raw (uncomputed) data \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{bsp__bmp280__cfg_8c_a568030323bb61bfdde47f8232e6b8749}\label{bsp__bmp280__cfg_8c_a568030323bb61bfdde47f8232e6b8749}} 
+int32\+\_\+t \mbox{\hyperlink{bsp__bmp280__cfg_8c_a568030323bb61bfdde47f8232e6b8749}{temp32}}
+\begin{DoxyCompactList}\small\item\em store 32bit temperature \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{bsp__bmp280__cfg_8c_a9fb78358ae4b0a049a0d1b37dc4cffec}\label{bsp__bmp280__cfg_8c_a9fb78358ae4b0a049a0d1b37dc4cffec}} 
+double \mbox{\hyperlink{bsp__bmp280__cfg_8c_a9fb78358ae4b0a049a0d1b37dc4cffec}{temp}}
+\begin{DoxyCompactList}\small\item\em store floating point temperature \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{bsp__bmp280__cfg_8c_a23389ddea34436eebd4cc43bc13e2fda}\label{bsp__bmp280__cfg_8c_a23389ddea34436eebd4cc43bc13e2fda}} 
+uint32\+\_\+t \mbox{\hyperlink{bsp__bmp280__cfg_8c_a23389ddea34436eebd4cc43bc13e2fda}{pres32}}
+\begin{DoxyCompactList}\small\item\em store 32bit pressure \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{bsp__bmp280__cfg_8c_a53813368bc8f2a9d10ae9cf227592b2f}\label{bsp__bmp280__cfg_8c_a53813368bc8f2a9d10ae9cf227592b2f}} 
+double \mbox{\hyperlink{bsp__bmp280__cfg_8c_a53813368bc8f2a9d10ae9cf227592b2f}{pres}}
+\begin{DoxyCompactList}\small\item\em store floating point pressure \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{bsp__bmp280__cfg_8c_ac6e078d7f8ab4993562bd538a724ec86}\label{bsp__bmp280__cfg_8c_ac6e078d7f8ab4993562bd538a724ec86}} 
+\index{bsp\_bmp280\_cfg.c@{bsp\_bmp280\_cfg.c}!BMP280\_Print@{BMP280\_Print}}
+\index{BMP280\_Print@{BMP280\_Print}!bsp\_bmp280\_cfg.c@{bsp\_bmp280\_cfg.c}}
+\doxysubsubsection{\texorpdfstring{BMP280\_Print()}{BMP280\_Print()}}
+{\footnotesize\ttfamily void BMP280\+\_\+\+Print (\begin{DoxyParamCaption}\item[{UART\+\_\+\+Handle\+Type\+Def $\ast$}]{uart }\end{DoxyParamCaption})}
+
+
+
+Function that print temperature and pressure to the given UART. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em uart} & UART Handler address (\&huart1, \&huart2, etc.) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+
+
+Definition at line 87 of file bsp\+\_\+bmp280\+\_\+cfg.\+c.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{88 \{}
+\DoxyCodeLine{89     \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{char} MSG[60];}
+\DoxyCodeLine{90     sprintf((\textcolor{keywordtype}{char} *)MSG,}
+\DoxyCodeLine{91             \textcolor{stringliteral}{"{}\(\backslash\)rTemperature = \%.2f Celsius | Pressure = \%.2f Pa\(\backslash\)n\(\backslash\)r"{}}, \mbox{\hyperlink{bsp__bmp280__cfg_8c_a9fb78358ae4b0a049a0d1b37dc4cffec}{temp}},}
+\DoxyCodeLine{92             \mbox{\hyperlink{bsp__bmp280__cfg_8c_a53813368bc8f2a9d10ae9cf227592b2f}{pres}});}
+\DoxyCodeLine{93     HAL\_UART\_Transmit(uart, MSG, \textcolor{keyword}{sizeof}(MSG), 100);}
+\DoxyCodeLine{94 \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{bsp__bmp280__cfg_8c_a3045fb5808e4a0e95b9ddc5ae953f837}\label{bsp__bmp280__cfg_8c_a3045fb5808e4a0e95b9ddc5ae953f837}} 
+\index{bsp\_bmp280\_cfg.c@{bsp\_bmp280\_cfg.c}!BMP280\_Read@{BMP280\_Read}}
+\index{BMP280\_Read@{BMP280\_Read}!bsp\_bmp280\_cfg.c@{bsp\_bmp280\_cfg.c}}
+\doxysubsubsection{\texorpdfstring{BMP280\_Read()}{BMP280\_Read()}}
+{\footnotesize\ttfamily void BMP280\+\_\+\+Read (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Function that reads and computes data (temp and pressure) 
+
+\begin{DoxyReturn}{Returns}
+void. 
+\end{DoxyReturn}
+
+
+Definition at line 34 of file bsp\+\_\+bmp280\+\_\+cfg.\+c.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{35 \{}
+\DoxyCodeLine{36     \mbox{\hyperlink{bsp__bmp280_8c_ae99e0ecdad4920b363d1c258887b4ff3}{bmp280\_get\_uncomp\_data}}(\&\mbox{\hyperlink{bsp__bmp280__cfg_8c_a47d41036eee568108f05055391107f2e}{ucomp\_data}}, \&\mbox{\hyperlink{bsp__bmp280__cfg_8c_afa454d49bc1292bb653871a21549be88}{bmp}});}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38     \mbox{\hyperlink{bsp__bmp280_8c_ad1d9f81bb0a43c72195319d72d915367}{bmp280\_get\_comp\_temp\_32bit}}(\&\mbox{\hyperlink{bsp__bmp280__cfg_8c_a568030323bb61bfdde47f8232e6b8749}{temp32}}, \mbox{\hyperlink{bsp__bmp280__cfg_8c_a47d41036eee568108f05055391107f2e}{ucomp\_data}}.uncomp\_temp, \&\mbox{\hyperlink{bsp__bmp280__cfg_8c_afa454d49bc1292bb653871a21549be88}{bmp}});}
+\DoxyCodeLine{39     \mbox{\hyperlink{bsp__bmp280_8c_aed425399b074d6541e8d74883dba2446}{bmp280\_get\_comp\_pres\_32bit}}(\&\mbox{\hyperlink{bsp__bmp280__cfg_8c_a23389ddea34436eebd4cc43bc13e2fda}{pres32}}, \mbox{\hyperlink{bsp__bmp280__cfg_8c_a47d41036eee568108f05055391107f2e}{ucomp\_data}}.uncomp\_press, \&\mbox{\hyperlink{bsp__bmp280__cfg_8c_afa454d49bc1292bb653871a21549be88}{bmp}});}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41     \mbox{\hyperlink{bsp__bmp280_8c_a2699b3c803edf4918b684b694ce268fb}{bmp280\_get\_comp\_temp\_double}}(\&\mbox{\hyperlink{bsp__bmp280__cfg_8c_a9fb78358ae4b0a049a0d1b37dc4cffec}{temp}}, \mbox{\hyperlink{bsp__bmp280__cfg_8c_a47d41036eee568108f05055391107f2e}{ucomp\_data}}.uncomp\_temp, \&\mbox{\hyperlink{bsp__bmp280__cfg_8c_afa454d49bc1292bb653871a21549be88}{bmp}});}
+\DoxyCodeLine{42     \mbox{\hyperlink{bsp__bmp280_8c_a1890d1009e829f08bfbfde4c9f3a09c9}{bmp280\_get\_comp\_pres\_double}}(\&\mbox{\hyperlink{bsp__bmp280__cfg_8c_a53813368bc8f2a9d10ae9cf227592b2f}{pres}}, \mbox{\hyperlink{bsp__bmp280__cfg_8c_a47d41036eee568108f05055391107f2e}{ucomp\_data}}.uncomp\_press, \&\mbox{\hyperlink{bsp__bmp280__cfg_8c_afa454d49bc1292bb653871a21549be88}{bmp}});}
+\DoxyCodeLine{43 \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{bsp__bmp280__cfg_8c_a1bbb3c66158f712d39877835a403ba46}\label{bsp__bmp280__cfg_8c_a1bbb3c66158f712d39877835a403ba46}} 
+\index{bsp\_bmp280\_cfg.c@{bsp\_bmp280\_cfg.c}!BMP280\_Setup@{BMP280\_Setup}}
+\index{BMP280\_Setup@{BMP280\_Setup}!bsp\_bmp280\_cfg.c@{bsp\_bmp280\_cfg.c}}
+\doxysubsubsection{\texorpdfstring{BMP280\_Setup()}{BMP280\_Setup()}}
+{\footnotesize\ttfamily void BMP280\+\_\+\+Setup (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Function that initializes and configurates BMP280. Call \mbox{\hyperlink{bsp__bmp280__cfg_8c_a1bbb3c66158f712d39877835a403ba46}{BMP280\+\_\+\+Setup()}} before \mbox{\hyperlink{bsp__bmp280__cfg_8c_a3045fb5808e4a0e95b9ddc5ae953f837}{BMP280\+\_\+\+Read()}} 
+
+\begin{DoxyReturn}{Returns}
+void. 
+\end{DoxyReturn}
+
+
+Definition at line 52 of file bsp\+\_\+bmp280\+\_\+cfg.\+c.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{53 \{}
+\DoxyCodeLine{54     \textcolor{comment}{/* Assign address*/}}
+\DoxyCodeLine{55     \mbox{\hyperlink{bsp__bmp280__cfg_8c_afa454d49bc1292bb653871a21549be88}{bmp}}.dev\_id = BMP280\_I2C\_ADDR\_PRIM;}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57     \textcolor{comment}{/* Map functions */}}
+\DoxyCodeLine{58     \mbox{\hyperlink{bsp__bmp280__cfg_8c_afa454d49bc1292bb653871a21549be88}{bmp}}.delay\_ms = \mbox{\hyperlink{bsp__bmp280__cfg_8c_a2cae470095c07a4ac4dd6a3c793d02e9}{Delay\_ms}};}
+\DoxyCodeLine{59 \textcolor{preprocessor}{\#ifdef BMP280\_SPI}}
+\DoxyCodeLine{60     \mbox{\hyperlink{bsp__bmp280__cfg_8c_a16a78513eb6aea76cb217bd4ea22fcb8}{bmp280\_spi\_handler}} = \&hspi1;}
+\DoxyCodeLine{61     \mbox{\hyperlink{bsp__bmp280__cfg_8c_afa454d49bc1292bb653871a21549be88}{bmp}}.read = \mbox{\hyperlink{bsp__bmp280__cfg_8c_a596060b80c7ba3ea10e58b4ad40204ea}{SPI\_Reg\_Read}};}
+\DoxyCodeLine{62     \mbox{\hyperlink{bsp__bmp280__cfg_8c_afa454d49bc1292bb653871a21549be88}{bmp}}.write = \mbox{\hyperlink{bsp__bmp280__cfg_8c_a9648823468baba045f062d5b50b9f560}{SPI\_Reg\_Write}};}
+\DoxyCodeLine{63     \mbox{\hyperlink{bsp__bmp280__cfg_8c_afa454d49bc1292bb653871a21549be88}{bmp}}.intf = BMP280\_SPI\_INTF;}
+\DoxyCodeLine{64 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{65 \textcolor{preprocessor}{\#ifdef BMP280\_I2C}}
+\DoxyCodeLine{66     \mbox{\hyperlink{bsp__bmp280__cfg_8c_a31e0716cefbc17c88b287aeb2b2f69c5}{bmp280\_i2c\_handler}} = \&hi2c1;}
+\DoxyCodeLine{67     \mbox{\hyperlink{bsp__bmp280__cfg_8c_afa454d49bc1292bb653871a21549be88}{bmp}}.read = \mbox{\hyperlink{bsp__bmp280__cfg_8c_a8255c229e6fbc22dd451148307c45f9a}{I2C\_Reg\_Read}};}
+\DoxyCodeLine{68     \mbox{\hyperlink{bsp__bmp280__cfg_8c_afa454d49bc1292bb653871a21549be88}{bmp}}.write = \mbox{\hyperlink{bsp__bmp280__cfg_8c_a2214a034a3a0e099189920bd50dc2520}{I2C\_Reg\_Write}};}
+\DoxyCodeLine{69     \mbox{\hyperlink{bsp__bmp280__cfg_8c_afa454d49bc1292bb653871a21549be88}{bmp}}.intf = BMP280\_I2C\_INTF;}
+\DoxyCodeLine{70 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{71 }
+\DoxyCodeLine{72     \mbox{\hyperlink{bsp__bmp280__cfg_8c_af397dccfb46f629f15f4d28d643f84de}{conf}}.filter = BMP280\_FILTER\_COEFF\_2;}
+\DoxyCodeLine{73     \mbox{\hyperlink{bsp__bmp280__cfg_8c_af397dccfb46f629f15f4d28d643f84de}{conf}}.os\_temp = BMP280\_OS\_4X;}
+\DoxyCodeLine{74     \mbox{\hyperlink{bsp__bmp280__cfg_8c_af397dccfb46f629f15f4d28d643f84de}{conf}}.os\_pres = BMP280\_OS\_NONE;}
+\DoxyCodeLine{75     \mbox{\hyperlink{bsp__bmp280__cfg_8c_af397dccfb46f629f15f4d28d643f84de}{conf}}.odr = BMP280\_ODR\_1000\_MS;}
+\DoxyCodeLine{76     \mbox{\hyperlink{bsp__bmp280_8c_a4a9809dbaa4df084461c705045925f8e}{bmp280\_init}}(\&\mbox{\hyperlink{bsp__bmp280__cfg_8c_afa454d49bc1292bb653871a21549be88}{bmp}});}
+\DoxyCodeLine{77     \mbox{\hyperlink{bsp__bmp280_8c_a61799b86b24d68b7a20814fcaf9adea8}{bmp280\_set\_config}}(\&\mbox{\hyperlink{bsp__bmp280__cfg_8c_af397dccfb46f629f15f4d28d643f84de}{conf}}, \&\mbox{\hyperlink{bsp__bmp280__cfg_8c_afa454d49bc1292bb653871a21549be88}{bmp}});}
+\DoxyCodeLine{78     \mbox{\hyperlink{bsp__bmp280_8c_a4401d930aa889a00121087f4aeac0182}{bmp280\_set\_power\_mode}}(BMP280\_NORMAL\_MODE, \&\mbox{\hyperlink{bsp__bmp280__cfg_8c_afa454d49bc1292bb653871a21549be88}{bmp}});}
+\DoxyCodeLine{79 \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{bsp__bmp280__cfg_8c_a2cae470095c07a4ac4dd6a3c793d02e9}\label{bsp__bmp280__cfg_8c_a2cae470095c07a4ac4dd6a3c793d02e9}} 
+\index{bsp\_bmp280\_cfg.c@{bsp\_bmp280\_cfg.c}!Delay\_ms@{Delay\_ms}}
+\index{Delay\_ms@{Delay\_ms}!bsp\_bmp280\_cfg.c@{bsp\_bmp280\_cfg.c}}
+\doxysubsubsection{\texorpdfstring{Delay\_ms()}{Delay\_ms()}}
+{\footnotesize\ttfamily void Delay\+\_\+ms (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{period\+\_\+ms }\end{DoxyParamCaption})}
+
+
+
+Function that creates a mandatory delay required in some of the APIs such as \char`\"{}bmg250\+\_\+soft\+\_\+reset\char`\"{}, \char`\"{}bmg250\+\_\+set\+\_\+foc\char`\"{}, \char`\"{}bmg250\+\_\+perform\+\_\+self\+\_\+test\char`\"{} and so on. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em period\+\_\+ms} & \+: the required wait time in milliseconds. ($<$ 60000ms) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void. 
+\end{DoxyReturn}
+
+
+Definition at line 105 of file bsp\+\_\+bmp280\+\_\+cfg.\+c.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{106 \{}
+\DoxyCodeLine{107     OS\_ERR os\_err;}
+\DoxyCodeLine{108     \textcolor{comment}{/* Implement the delay routine according to the target machine */}}
+\DoxyCodeLine{109     \textcolor{keywordflow}{if} (period\_ms < 1000)}
+\DoxyCodeLine{110     \{}
+\DoxyCodeLine{111         OSTimeDlyHMSM(0, 0, 0, period\_ms, OS\_OPT\_TIME\_HMSM\_STRICT, \&os\_err);}
+\DoxyCodeLine{112     \}}
+\DoxyCodeLine{113     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (period\_ms < 60000)}
+\DoxyCodeLine{114     \{}
+\DoxyCodeLine{115         OSTimeDlyHMSM(0, 0, period\_ms / 1000u, period\_ms \% 1000u,}
+\DoxyCodeLine{116                       OS\_OPT\_TIME\_HMSM\_STRICT, \&os\_err);}
+\DoxyCodeLine{117     \}}
+\DoxyCodeLine{118 \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{bsp__bmp280__cfg_8c_a8255c229e6fbc22dd451148307c45f9a}\label{bsp__bmp280__cfg_8c_a8255c229e6fbc22dd451148307c45f9a}} 
+\index{bsp\_bmp280\_cfg.c@{bsp\_bmp280\_cfg.c}!I2C\_Reg\_Read@{I2C\_Reg\_Read}}
+\index{I2C\_Reg\_Read@{I2C\_Reg\_Read}!bsp\_bmp280\_cfg.c@{bsp\_bmp280\_cfg.c}}
+\doxysubsubsection{\texorpdfstring{I2C\_Reg\_Read()}{I2C\_Reg\_Read()}}
+{\footnotesize\ttfamily int8\+\_\+t I2\+C\+\_\+\+Reg\+\_\+\+Read (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{i2c\+\_\+addr,  }\item[{uint8\+\_\+t}]{reg\+\_\+addr,  }\item[{uint8\+\_\+t $\ast$}]{reg\+\_\+data,  }\item[{uint16\+\_\+t}]{length }\end{DoxyParamCaption})}
+
+
+
+Function for reading the sensor\textquotesingle{}s registers through I2C bus. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em i2c\+\_\+addr} & \+: Sensor I2C address. \\
+\hline
+\mbox{\texttt{ in}}  & {\em reg\+\_\+addr} & \+: Register address. \\
+\hline
+\mbox{\texttt{ out}}  & {\em reg\+\_\+data} & \+: Pointer to the data buffer to store the read data. \\
+\hline
+\mbox{\texttt{ in}}  & {\em length} & \+: No of bytes to read.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Status of execution 
+\end{DoxyReturn}
+
+\begin{DoxyRetVals}{Return values}
+{\em 0} & -\/$>$ Success \\
+\hline
+{\em -\/1} & -\/$>$ Failed \\
+\hline
+\end{DoxyRetVals}
+
+
+Definition at line 159 of file bsp\+\_\+bmp280\+\_\+cfg.\+c.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{161 \{}
+\DoxyCodeLine{162 }
+\DoxyCodeLine{163     uint16\_t bmp280\_addr;}
+\DoxyCodeLine{164     bmp280\_addr = (\mbox{\hyperlink{bsp__bmp280__cfg_8c_afa454d49bc1292bb653871a21549be88}{bmp}}.dev\_id << 1);}
+\DoxyCodeLine{165 }
+\DoxyCodeLine{166     \textcolor{keywordflow}{if} (HAL\_I2C\_Mem\_Read(\mbox{\hyperlink{bsp__bmp280__cfg_8c_a31e0716cefbc17c88b287aeb2b2f69c5}{bmp280\_i2c\_handler}}, bmp280\_addr, reg\_addr, 1, reg\_data,}
+\DoxyCodeLine{167                          length, 500) == HAL\_OK)}
+\DoxyCodeLine{168     \{}
+\DoxyCodeLine{169         \textcolor{keywordflow}{return} 0;}
+\DoxyCodeLine{170     \}}
+\DoxyCodeLine{171     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{172         \textcolor{keywordflow}{return} -\/1;}
+\DoxyCodeLine{173 \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{bsp__bmp280__cfg_8c_a2214a034a3a0e099189920bd50dc2520}\label{bsp__bmp280__cfg_8c_a2214a034a3a0e099189920bd50dc2520}} 
+\index{bsp\_bmp280\_cfg.c@{bsp\_bmp280\_cfg.c}!I2C\_Reg\_Write@{I2C\_Reg\_Write}}
+\index{I2C\_Reg\_Write@{I2C\_Reg\_Write}!bsp\_bmp280\_cfg.c@{bsp\_bmp280\_cfg.c}}
+\doxysubsubsection{\texorpdfstring{I2C\_Reg\_Write()}{I2C\_Reg\_Write()}}
+{\footnotesize\ttfamily int8\+\_\+t I2\+C\+\_\+\+Reg\+\_\+\+Write (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{i2c\+\_\+addr,  }\item[{uint8\+\_\+t}]{reg\+\_\+addr,  }\item[{uint8\+\_\+t $\ast$}]{reg\+\_\+data,  }\item[{uint16\+\_\+t}]{length }\end{DoxyParamCaption})}
+
+
+
+Function for writing the sensor\textquotesingle{}s registers through I2C bus. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em i2c\+\_\+addr} & \+: sensor I2C address. \\
+\hline
+\mbox{\texttt{ in}}  & {\em reg\+\_\+addr} & \+: Register address. \\
+\hline
+\mbox{\texttt{ in}}  & {\em reg\+\_\+data} & \+: Pointer to the data buffer whose value is to be written. \\
+\hline
+\mbox{\texttt{ in}}  & {\em length} & \+: No of bytes to write.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Status of execution 
+\end{DoxyReturn}
+
+\begin{DoxyRetVals}{Return values}
+{\em 0} & -\/$>$ Success \\
+\hline
+{\em -\/1} & -\/$>$ Failed \\
+\hline
+\end{DoxyRetVals}
+
+
+Definition at line 134 of file bsp\+\_\+bmp280\+\_\+cfg.\+c.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{136 \{}
+\DoxyCodeLine{137 }
+\DoxyCodeLine{138     uint16\_t bmp280\_addr = (\mbox{\hyperlink{bsp__bmp280__cfg_8c_afa454d49bc1292bb653871a21549be88}{bmp}}.dev\_id << 1);}
+\DoxyCodeLine{139     \textcolor{keywordflow}{if} (HAL\_I2C\_Mem\_Write(\mbox{\hyperlink{bsp__bmp280__cfg_8c_a31e0716cefbc17c88b287aeb2b2f69c5}{bmp280\_i2c\_handler}}, bmp280\_addr, reg\_addr, 1,}
+\DoxyCodeLine{140                           reg\_data, length, 500) == HAL\_OK)}
+\DoxyCodeLine{141         \textcolor{keywordflow}{return} 0;}
+\DoxyCodeLine{142     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{143         \textcolor{keywordflow}{return} -\/1;}
+\DoxyCodeLine{144 \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{bsp__bmp280__cfg_8c_a596060b80c7ba3ea10e58b4ad40204ea}\label{bsp__bmp280__cfg_8c_a596060b80c7ba3ea10e58b4ad40204ea}} 
+\index{bsp\_bmp280\_cfg.c@{bsp\_bmp280\_cfg.c}!SPI\_Reg\_Read@{SPI\_Reg\_Read}}
+\index{SPI\_Reg\_Read@{SPI\_Reg\_Read}!bsp\_bmp280\_cfg.c@{bsp\_bmp280\_cfg.c}}
+\doxysubsubsection{\texorpdfstring{SPI\_Reg\_Read()}{SPI\_Reg\_Read()}}
+{\footnotesize\ttfamily int8\+\_\+t SPI\+\_\+\+Reg\+\_\+\+Read (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{cs,  }\item[{uint8\+\_\+t}]{reg\+\_\+addr,  }\item[{uint8\+\_\+t $\ast$}]{reg\+\_\+data,  }\item[{uint16\+\_\+t}]{length }\end{DoxyParamCaption})}
+
+
+
+Function for reading the sensor\textquotesingle{}s registers through SPI bus. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em cs} & \+: NOT USE \\
+\hline
+\mbox{\texttt{ in}}  & {\em reg\+\_\+addr} & \+: Register command \\
+\hline
+\mbox{\texttt{ out}}  & {\em reg\+\_\+data} & \+: Pointer to the data buffer to store the read data. \\
+\hline
+\mbox{\texttt{ in}}  & {\em length} & \+: Number of bytes to read.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Status of execution 
+\end{DoxyReturn}
+
+\begin{DoxyRetVals}{Return values}
+{\em 0} & -\/$>$ Success \\
+\hline
+{\em 1} & -\/$>$ Failed \\
+\hline
+\end{DoxyRetVals}
+
+
+Definition at line 215 of file bsp\+\_\+bmp280\+\_\+cfg.\+c.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{217 \{}
+\DoxyCodeLine{218 }
+\DoxyCodeLine{219     HAL\_GPIO\_WritePin(\mbox{\hyperlink{bsp__bmp280__cfg_8h_a9c1ae761ea4e6778c4f91637b8ab4fe1}{BMP280\_SPI\_CS\_PORT}}, \mbox{\hyperlink{bsp__bmp280__cfg_8h_a635d35e643a92d473e016a06b9c4b65f}{BMP280\_SPI\_CS\_PIN}}, GPIO\_PIN\_RESET);}
+\DoxyCodeLine{220     \textcolor{keywordflow}{if} (HAL\_SPI\_Transmit(\mbox{\hyperlink{bsp__bmp280__cfg_8c_a16a78513eb6aea76cb217bd4ea22fcb8}{bmp280\_spi\_handler}}, \&reg\_addr, 1, 100) == HAL\_OK \&\&}
+\DoxyCodeLine{221         HAL\_SPI\_Receive(\mbox{\hyperlink{bsp__bmp280__cfg_8c_a16a78513eb6aea76cb217bd4ea22fcb8}{bmp280\_spi\_handler}}, reg\_data, length, 100) == HAL\_OK)}
+\DoxyCodeLine{222     \{}
+\DoxyCodeLine{223         HAL\_GPIO\_WritePin(\mbox{\hyperlink{bsp__bmp280__cfg_8h_a9c1ae761ea4e6778c4f91637b8ab4fe1}{BMP280\_SPI\_CS\_PORT}}, \mbox{\hyperlink{bsp__bmp280__cfg_8h_a635d35e643a92d473e016a06b9c4b65f}{BMP280\_SPI\_CS\_PIN}}, GPIO\_PIN\_SET);}
+\DoxyCodeLine{224         \textcolor{keywordflow}{return} 0;}
+\DoxyCodeLine{225     \}}
+\DoxyCodeLine{226     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{227         \textcolor{keywordflow}{return} -\/1;}
+\DoxyCodeLine{228 \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{bsp__bmp280__cfg_8c_a9648823468baba045f062d5b50b9f560}\label{bsp__bmp280__cfg_8c_a9648823468baba045f062d5b50b9f560}} 
+\index{bsp\_bmp280\_cfg.c@{bsp\_bmp280\_cfg.c}!SPI\_Reg\_Write@{SPI\_Reg\_Write}}
+\index{SPI\_Reg\_Write@{SPI\_Reg\_Write}!bsp\_bmp280\_cfg.c@{bsp\_bmp280\_cfg.c}}
+\doxysubsubsection{\texorpdfstring{SPI\_Reg\_Write()}{SPI\_Reg\_Write()}}
+{\footnotesize\ttfamily int8\+\_\+t SPI\+\_\+\+Reg\+\_\+\+Write (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{cs,  }\item[{uint8\+\_\+t}]{reg\+\_\+addr,  }\item[{uint8\+\_\+t $\ast$}]{reg\+\_\+data,  }\item[{uint16\+\_\+t}]{length }\end{DoxyParamCaption})}
+
+
+
+Function for writing the sensor\textquotesingle{}s registers through SPI bus. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em cs} & \+: NOT USE \\
+\hline
+\mbox{\texttt{ in}}  & {\em reg\+\_\+addr} & \+: NOT USE \\
+\hline
+\mbox{\texttt{ in}}  & {\em reg\+\_\+data} & \+: Pointer to the data buffer whose data has to be written. \\
+\hline
+\mbox{\texttt{ in}}  & {\em length} & \+: Number of bytes to write.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Status of execution 
+\end{DoxyReturn}
+
+\begin{DoxyRetVals}{Return values}
+{\em 0} & -\/$>$ Success \\
+\hline
+{\em -\/1} & -\/$>$ Failed \\
+\hline
+\end{DoxyRetVals}
+
+
+Definition at line 189 of file bsp\+\_\+bmp280\+\_\+cfg.\+c.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{191 \{}
+\DoxyCodeLine{192     HAL\_GPIO\_WritePin(\mbox{\hyperlink{bsp__bmp280__cfg_8h_a9c1ae761ea4e6778c4f91637b8ab4fe1}{BMP280\_SPI\_CS\_PORT}}, \mbox{\hyperlink{bsp__bmp280__cfg_8h_a635d35e643a92d473e016a06b9c4b65f}{BMP280\_SPI\_CS\_PIN}}, GPIO\_PIN\_RESET);}
+\DoxyCodeLine{193     \textcolor{keywordflow}{if} (HAL\_SPI\_Transmit(\mbox{\hyperlink{bsp__bmp280__cfg_8c_a16a78513eb6aea76cb217bd4ea22fcb8}{bmp280\_spi\_handler}}, reg\_data, length, 100) == HAL\_OK)}
+\DoxyCodeLine{194     \{}
+\DoxyCodeLine{195         HAL\_GPIO\_WritePin(\mbox{\hyperlink{bsp__bmp280__cfg_8h_a9c1ae761ea4e6778c4f91637b8ab4fe1}{BMP280\_SPI\_CS\_PORT}}, \mbox{\hyperlink{bsp__bmp280__cfg_8h_a635d35e643a92d473e016a06b9c4b65f}{BMP280\_SPI\_CS\_PIN}}, GPIO\_PIN\_SET);}
+\DoxyCodeLine{196         \textcolor{keywordflow}{return} 0;}
+\DoxyCodeLine{197     \}}
+\DoxyCodeLine{198     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{199         \textcolor{keywordflow}{return} -\/1;}
+\DoxyCodeLine{200 \}}
+
+\end{DoxyCode}
