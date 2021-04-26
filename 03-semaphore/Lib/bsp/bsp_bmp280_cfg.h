@@ -11,16 +11,27 @@
 extern "C" {
 #endif
 
+/*
+ * 0: I2C
+ * 1: SPI
+*/
+#define BMP280_PROTOCOL 0
+
 #define BMP280_SPI_CS_PORT GPIOA
 #define BMP280_SPI_CS_PIN GPIO_PIN_10
 
 extern struct bmp280_dev bmp;
 extern struct bmp280_config conf;
 extern struct bmp280_uncomp_data ucomp_data;
+
 extern int32_t temp32;
 extern double temp;
 
+extern uint32_t pres32;
+extern double pres;
+
 void BMP280_Read(void);
+void BMP280_Setup(void);
 void Delay_ms(uint32_t period_ms);
 int8_t I2C_Reg_Write(uint8_t i2c_addr, uint8_t reg_addr, uint8_t *reg_data, uint16_t length);
 int8_t I2C_Reg_Read(uint8_t i2c_addr, uint8_t reg_addr, uint8_t *reg_data, uint16_t length);
