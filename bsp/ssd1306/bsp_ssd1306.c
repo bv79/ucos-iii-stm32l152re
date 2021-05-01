@@ -145,14 +145,14 @@ int8_t SSD1306_SetVerticalScrollArea(SSD1306_Row_t n_fixed_row,
 
 int8_t SSD1306_SetLowerColStartAddr(SSD1306_Col_t addr)
 {
-    if (addr < SSD1306_HEIGHT/SSD1306_SEG_SIZE)
+    if (addr < SSD1306_HEIGHT / SSD1306_SEG_SIZE)
         SSD1306_WriteCommand(0x00 | addr);
     return 0;
 }
 
 int8_t SSD1306_SetHigherColStartAddr(SSD1306_Col_t addr)
 {
-    if (addr < SSD1306_HEIGHT/SSD1306_SEG_SIZE)
+    if (addr < SSD1306_HEIGHT / SSD1306_SEG_SIZE)
         SSD1306_WriteCommand(0x10 | addr);
     return 0;
 }
@@ -264,7 +264,9 @@ void SSD1306_Init(void)
     SSD1306_SetChargeBumpSetting(SSD1306_CHARGE_BUMP_ENABLE);
     SSD1306_DispOnOff(SSD1306_DISP_ON);
     SSD1306_Delay(100);
-    SSD1306_FillBuffer(SSD1306_PIXEL_ON);
+    SSD1306_FillBuffer(SSD1306_PIXEL_OFF);
+    SSD1306_Board_Initialize();
+    SSD1306_Board_PrintChar(5, 3, 'A');
     SSD1306_UpdateDisp();
 }
 
@@ -294,7 +296,7 @@ void SSD1306_FillBuffer(SSD1306_PixelState_t state)
     uint8_t byte = 0x00;
     if (state)
         byte = 0xFF;
-    for (int8_t i = 0; i < SSD1306_HEIGHT/SSD1306_SEG_SIZE; i++)
+    for (int8_t i = 0; i < SSD1306_HEIGHT / SSD1306_SEG_SIZE; i++)
     {
         for (int8_t j = 0; j < SSD1306_WIDTH; j++)
         {
@@ -310,4 +312,44 @@ void SSD1306_DrawPixel(uint8_t x, uint8_t y, SSD1306_PixelState_t state)
     else
         SSD1306_Buffer[y / SSD1306_SEG_SIZE][x] &=
             ~(1u << (y % SSD1306_SEG_SIZE));
+}
+
+void SSD1306_Board_Initialize(void)
+{
+    for (uint8_t y = 0; y <= SSD1306_BOARD_HEIGHT; y++)
+    {
+        for (uint8_t x = 0; x <= SSD1306_BOARD_WIDTH; x++)
+        {
+            if (y == 0 || y % 10 == 0)
+            {
+                SSD1306_DrawPixel(x + SSD1306_BOARD_X_OFFSET,
+                                  y + SSD1306_BOARD_Y_OFFSET, SSD1306_PIXEL_ON);
+            }
+            if (x == 0 || x % 8 == 0)
+            {
+                SSD1306_DrawPixel(x + SSD1306_BOARD_X_OFFSET,
+                                  y + SSD1306_BOARD_Y_OFFSET, SSD1306_PIXEL_ON);
+            }
+        }
+    }
+}
+
+void SSD1306_Board_PrintChar(uint8_t board_col, uint8_t board_row, char c)
+{
+    if (board_col <= SSD1306_BOARD_WIDTH / SSD1306_BOARD_CELL_WIDTH &&
+        board_row <= SSD1306_BOARD_HEIGHT / SSD1306_BOARD_CELL_HEIGHT)
+    {
+        for (uint8_t j = 0; j < SSD1306_FONT_WIDTH; j++)
+        {
+            for (uint8_t i = 0; i < SSD1306_FONT_HEIGHT; i++)
+            {
+                SSD1306_DrawPixel(
+                    board_col * SSD1306_BOARD_CELL_WIDTH + SSD1306_BOARD_X0 +
+                        SSD1306_BOARD_X_OFFSET + j,
+                    board_row * SSD1306_BOARD_CELL_HEIGHT + SSd1306_BOARD_Y0 +
+                        SSD1306_BOARD_Y_OFFSET + i,
+                    Font[(c - 32) * SSD1306_FONT_WIDTH + j] & (1 << i));
+            }
+        }
+    }
 }

@@ -27,6 +27,19 @@ extern "C"
 #define SSD1306_DUMMY_BYTE_ON 0xFF
 
 #define SSD1306_SEG_SIZE 0x08
+    
+#define SSD1306_TITLE_HEIGHT 16u
+#define SSD1306_BOARD_HEIGHT 40u 
+#define SSD1306_BOARD_WIDTH 120u
+#define SSD1306_BOARD_X_OFFSET 3u
+#define SSD1306_BOARD_Y_OFFSET 4u
+#define SSD1306_BOARD_CELL_WIDTH 8u
+#define SSD1306_BOARD_CELL_HEIGHT 10u
+#define SSD1306_BOARD_X0 2u
+#define SSd1306_BOARD_Y0 1u
+#define SSD1306_FONT_HEIGHT 8u
+#define SSD1306_FONT_WIDTH 6u
+
 
 uint8_t SSD1306_Buffer[SSD1306_HEIGHT / 8][SSD1306_WIDTH];
 
@@ -569,6 +582,8 @@ void SSD1306_Reset(void);
 void SSD1306_UpdateDisp(void);
 void SSD1306_FillBuffer(SSD1306_PixelState_t state);
 void SSD1306_DrawPixel(uint8_t x, uint8_t y, SSD1306_PixelState_t state);
+void SSD1306_Board_Initialize(void);
+void SSD1306_Board_PrintChar(uint8_t board_col, uint8_t board_row, char c);
 
 /* Belong to bsp_ssd1306_cfg.h */
 
