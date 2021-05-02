@@ -693,24 +693,124 @@ void SSD1306_SetPrechargePeriod(SSD1306_Phase_t phase1_period,
  */
 void SSD1306_SetVCOMHDeselectLevel(SSD1306_VCOMHDeselectLevel_t level);
 
-
+/**
+ * @brief this function turns the internal regulator circuit on/off.
+ *
+ * @note The internal regulator circuit in SSD1306 accompanying only 2 exernal capacitors can generate a 7.5V voltage supply (VCC) from a low voltage supply input (VBAT). The VCC is the voltage supply to the OLED driver block.
+ *
+ * @param[in] state \n
+ * - SSD1306_CHARGE_BUMP_DISABLE: disable charge pump \n 
+ * - SSD1306_CHARGE_BUMP_ENABLE: enable charge pump during display on 
+ */
 void SSD1306_SetChargeBumpSetting(SSD1306_ChargeBumpState_t state);
 
+/**
+ * @brief this function initializes SSD1306
+ *
+ * @note this function should be called first before using any SSD1306's functions
+ */
 void SSD1306_Init(void);
+
+/**
+ * @brief this function resets the OLED
+ *
+ * @note when RES# input is LOW, the chip is initialized with following status \n
+ * 1. Display is OFF
+ * 2. 126 x 64 Display Mode
+ * 3. Normal segment and display data column address and row address mapping (SEG0 mapped to address 00h and COM0 mapped to address 00h
+ * 4. Shift register data clear in serial interface
+ * 5. Display start line is set at display RAM address 0
+ * 6. Column address counter is set at 0
+ * 7. Normal scan direction of the COM outputs
+ * 8. Constrast control register is set at 7Fh
+ * 9. Normal display mode
+ */
 void SSD1306_Reset(void);
+
+/**
+ * @brief this function updates the changes to the display
+ */
 void SSD1306_UpdateDisp(void);
+
+/**
+ * @brief this function fills the SSD1306_Buffer with 0x00 or 0xFF
+ */
 void SSD1306_FillBuffer(SSD1306_PixelState_t state);
+
+/**
+ * @brief this function draws a pixel at (x,y) location.
+ *
+ * @note (0,0) locate at the bottom left of the OLED and (127,63) locate at the top right of the OLED.
+ *
+ * @param[in] x should be in range [0-127]
+ * @param[in] y should be in range [0-63]
+ * @param[in] state on/off
+ */
 void SSD1306_DrawPixel(uint8_t x, uint8_t y, SSD1306_PixelState_t state);
 
+/**
+ * @brief this function draws a char at (x,y) location.
+ *
+ * @note this function will draw the character from (x,y) up and to the right of (x,y)
+ * @param[in] x should be in range [0-127]
+ * @param[in] y should be in range [0-63]
+ * @param[in] c 
+ */
 void SSD1306_PrintCharXY(uint8_t x, uint8_t y, uint8_t c);
+
+/**
+ * @brief this function draws a string start at (x,y) location (up and right)
+ *
+ * @param[in] x should be in range [0-127]
+ * @param[in] y should be in range [0-63]
+ * @param[in] *str pointer to the string
+ * @param[in] length length/size of the string
+ */
 void SSD1306_PrintStrXY(uint8_t x, uint8_t y, uint8_t *str, uint8_t length);
 
+/**
+ * @brief this function draws a character at (col,row).
+ *
+ * @note for 128x64 display with 6x8 font, there are 21 cols and 8 rows
+ *
+ * @param[in] col should be in range [0-20]
+ * @param[in] row should be in range [0-7]
+ */
 void SSD1306_PrintCharColRow(uint8_t col, uint8_t row, uint8_t c);
+
+/**
+ * @brief this function draws a string at (col,row)
+ *
+ * @note for 128x64 display with 6x8 font, there are 21 cols and 8 rows
+ *
+ * @param[in] col should be in range [0-20]
+ * @param[in] row should be in range [0-7]
+ * @param[in] *str pointer to the string
+ * @param[in] length length/size of the string
+ */
 void SSD1306_PrintStrColRow(uint8_t col, uint8_t row, uint8_t *str,
                             uint8_t length);
 
+/**
+ * @brief this function draws a table (15 cols x 4 rows) on the OLED display 
+ */
 void SSD1306_Board_Initialize(void);
+
+/**
+ * @brief this function draws a character to the initilized table (SSD1306_Board_Initialize()) at (board_col, board_row)
+ * 
+ * @param[in] board_col should be in range [0-14]
+ * @param[in] board_row should be in range [0-3]
+ */
 void SSD1306_Board_PrintChar(uint8_t board_col, uint8_t board_row, char c);
+
+/**
+ * @brief this functions draw a title (string) of the table/board on the top of the OLED
+ *
+ * @param[in] x_offset offset on x-axis
+ * @param[in] *title pointer to title
+ * @param[in] length length/size of title
+ */
 void SSD1306_Board_PrintTitle(uint8_t x_offset, uint8_t *title,
                               uint8_t length);
 
