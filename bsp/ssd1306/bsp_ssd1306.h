@@ -9,11 +9,8 @@ extern "C"
 {
 #endif
 
-/* Belong to bsp_ssd1306_cfg.h */
-#include <gpio.h>
-#include <spi.h>
-/* End of cfg */
-
+#include <bsp_ssd1306_cfg.h>
+#include <bsp_ssd1306_fonts.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -27,9 +24,10 @@ extern "C"
 #define SSD1306_DUMMY_BYTE_ON 0xFF
 
 #define SSD1306_SEG_SIZE 0x08
-    
+
 #define SSD1306_TITLE_HEIGHT 16u
-#define SSD1306_BOARD_HEIGHT 40u 
+
+#define SSD1306_BOARD_HEIGHT 40u
 #define SSD1306_BOARD_WIDTH 120u
 #define SSD1306_BOARD_X_OFFSET 3u
 #define SSD1306_BOARD_Y_OFFSET 4u
@@ -40,106 +38,14 @@ extern "C"
 #define SSD1306_FONT_HEIGHT 8u
 #define SSD1306_FONT_WIDTH 6u
 
-
 uint8_t SSD1306_Buffer[SSD1306_HEIGHT / 8][SSD1306_WIDTH];
 
-static const uint8_t Font[] = {
-0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  // sp
-0x00, 0x00, 0xfa, 0x00, 0x00, 0x00,  // !
-0x00, 0xe0, 0x00, 0xe0, 0x00, 0x00,  // "
-0x28, 0xfe, 0x28, 0xfe, 0x28, 0x00,  // #
-0x74, 0x54, 0xfe, 0x54, 0x5c, 0x00,  // $
-0x02, 0x4c, 0x10, 0x64, 0x80, 0x00,  // %
-0x6c, 0x92, 0xaa, 0x44, 0x0a, 0x00,  // &
-0x00, 0x00, 0xe0, 0x00, 0x00, 0x00,  // '
-0x00, 0x38, 0x44, 0x82, 0x00, 0x00,  // (
-0x00, 0x82, 0x44, 0x38, 0x00, 0x00,  // )
-0x28, 0x10, 0x7c, 0x10, 0x28, 0x00,  // *
-0x10, 0x10, 0x7c, 0x10, 0x10, 0x00,  // +
-0x00, 0x0a, 0x0c, 0x00, 0x00, 0x00,  // ,
-0x10, 0x10, 0x10, 0x10, 0x10, 0x10,  // -
-0x00, 0x06, 0x06, 0x00, 0x00, 0x00,  // .
-0x04, 0x08, 0x10, 0x20, 0x40, 0x00,  // /
-0x7c, 0x8a, 0x92, 0xa2, 0x7c, 0x00,  // 0
-0x22, 0x62, 0xfe, 0x02, 0x02, 0x00,  // 1
-0x42, 0x86, 0x8a, 0x92, 0x62, 0x00,  // 2
-0x84, 0x82, 0xa2, 0xd2, 0x8c, 0x00,  // 3
-0x18, 0x28, 0x48, 0xfe, 0x08, 0x00,  // 4
-0xe2, 0xa2, 0xa2, 0xa2, 0x9c, 0x00,  // 5
-0x3c, 0x52, 0x92, 0x92, 0x0c, 0x00,  // 6
-0x86, 0x88, 0x90, 0xa0, 0xc0, 0x00,  // 7
-0x6c, 0x92, 0x92, 0x92, 0x6c, 0x00,  // 8
-0x60, 0x92, 0x92, 0x94, 0x78, 0x00,  // 9
-0x00, 0x6c, 0x6c, 0x00, 0x00, 0x00,  // :
-0x00, 0x6a, 0x6c, 0x00, 0x00, 0x00,  // ;
-0x10, 0x28, 0x44, 0x82, 0x00, 0x00,  // <
-0x28, 0x28, 0x28, 0x28, 0x28, 0x00,  // =
-0x00, 0x82, 0x44, 0x28, 0x10, 0x00,  // >
-0x40, 0x80, 0x8a, 0x90, 0x60, 0x00,  // ?
-0x7c, 0x82, 0xba, 0xaa, 0x7a, 0x00,  // @
-0x7e, 0x88, 0x88, 0x88, 0x7e, 0x00,  // A
-0xfe, 0x92, 0x92, 0x92, 0x6c, 0x00,  // B
-0x7c, 0x82, 0x82, 0x82, 0x44, 0x00,  // C
-0xfe, 0x82, 0x82, 0x82, 0x7c, 0x00,  // D
-0xfe, 0x92, 0x92, 0x92, 0x82, 0x00,  // E
-0xfe, 0x90, 0x90, 0x90, 0x80, 0x00,  // F
-0x7c, 0x82, 0x92, 0x92, 0x5e, 0x00,  // G
-0xfe, 0x10, 0x10, 0x10, 0xfe, 0x00,  // H
-0x82, 0x82, 0xfe, 0x82, 0x82, 0x00,  // I
-0x04, 0x02, 0x82, 0xfc, 0x80, 0x00,  // J
-0xfe, 0x10, 0x28, 0x44, 0x82, 0x00,  // K
-0xfe, 0x02, 0x02, 0x02, 0x02, 0x00,  // L
-0xfe, 0x40, 0x20, 0x40, 0xfe, 0x00,  // M
-0xfe, 0x20, 0x10, 0x08, 0xfe, 0x00,  // N
-0x7c, 0x82, 0x82, 0x82, 0x7c, 0x00,  // O
-0xfe, 0x90, 0x90, 0x90, 0x60, 0x00,  // P
-0x7c, 0x82, 0x8a, 0x84, 0x7a, 0x00,  // Q
-0xfe, 0x90, 0x98, 0x94, 0x62, 0x00,  // R
-0x64, 0x92, 0x92, 0x92, 0x4c, 0x00,  // S
-0x80, 0x80, 0xfe, 0x80, 0x80, 0x00,  // T
-0xfc, 0x02, 0x02, 0x02, 0xfc, 0x00,  // U
-0xf8, 0x04, 0x02, 0x04, 0xf8, 0x00,  // V
-0xfc, 0x02, 0x1c, 0x02, 0xfc, 0x00,  // W
-0xc6, 0x28, 0x10, 0x28, 0xc6, 0x00,  // X
-0xe0, 0x10, 0x0e, 0x10, 0xe0, 0x00,  // Y
-0x86, 0x8a, 0x92, 0xa2, 0xc2, 0x00,  // Z
-0x00, 0xfe, 0x82, 0x82, 0x00, 0x00,  // [
-0x40, 0x20, 0x10, 0x08, 0x04, 0x00,  /* \ */
-0x00, 0x82, 0x82, 0xfe, 0x00, 0x00,  // ]
-0x20, 0x40, 0x80, 0x40, 0x20, 0x00,  // ^
-0x02, 0x02, 0x02, 0x02, 0x02, 0x00,  // _
-0x00, 0x80, 0x40, 0x20, 0x00, 0x00,  // `
-0x2e, 0x2a, 0x2a, 0x2a, 0x1e, 0x00,  // a
-0xfe, 0x12, 0x22, 0x22, 0x1c, 0x00,  // b
-0x1c, 0x22, 0x22, 0x22, 0x04, 0x00,  // c
-0x1c, 0x22, 0x22, 0x12, 0xfe, 0x00,  // d
-0x1c, 0x2a, 0x2a, 0x2a, 0x18, 0x00,  // e
-0x10, 0x7e, 0x90, 0x80, 0x40, 0x00,  // f
-0x30, 0x4a, 0x4a, 0x4a, 0x7c, 0x00,  // g
-0xfe, 0x10, 0x20, 0x20, 0x1e, 0x00,  // h
-0x00, 0x22, 0xbe, 0x02, 0x00, 0x00,  // i
-0x04, 0x02, 0x02, 0xbc, 0x00, 0x00,  // j
-0xfe, 0x08, 0x14, 0x22, 0x00, 0x00,  // k
-0x00, 0x82, 0xfe, 0x02, 0x00, 0x00,  // l
-0x3e, 0x20, 0x18, 0x20, 0x1e, 0x00,  // m
-0x3e, 0x10, 0x20, 0x20, 0x1e, 0x00,  // n
-0x1c, 0x22, 0x22, 0x22, 0x1c, 0x00,  // o
-0x3e, 0x28, 0x28, 0x28, 0x10, 0x00,  // p
-0x10, 0x28, 0x28, 0x28, 0x3e, 0x00,  // q
-0x3e, 0x10, 0x20, 0x20, 0x10, 0x00,  // r
-0x12, 0x2a, 0x2a, 0x2a, 0x04, 0x00,  // s
-0x20, 0xfc, 0x22, 0x02, 0x04, 0x00,  // t
-0x3c, 0x02, 0x02, 0x04, 0x3e, 0x00,  // u
-0x38, 0x04, 0x02, 0x04, 0x38, 0x00,  // v
-0x3c, 0x02, 0x0c, 0x02, 0x3c, 0x00,  // w
-0x22, 0x14, 0x08, 0x14, 0x22, 0x00,  // x
-0x30, 0x0a, 0x0a, 0x0a, 0x3c, 0x00,  // y
-0x22, 0x26, 0x2a, 0x32, 0x22, 0x00,  // z
-0x00, 0x10, 0x6c, 0x82, 0x00, 0x00,  // {
-0x00, 0x00, 0xfe, 0x00, 0x00, 0x00,  // |
-0x00, 0x82, 0x6c, 0x10, 0x00, 0x00,  // }
-0x18, 0x20, 0x10, 0x08, 0x30, 0x00,  // ~
-};
+typedef enum
+{
+    SSD1306_OK,
+    SSD1306_WRITECMD_FAILED,
+    SSD1306_WRITEDATA_FAILED
+} SSD1306_ErrorCode_t;
 
 typedef enum
 {
@@ -162,15 +68,15 @@ typedef enum
 
 typedef enum
 {
-    SSD1306_SCROLL_STEP_5_FRAME,
-    SSD1306_SCROLL_STEP_64_FRAME,
-    SSD1306_SCROLL_STEP_128_FRAME,
-    SSD1306_SCROLL_STEP_256_FRAME,
-    SSD1306_SCROLL_STEP_3_FRAME,
-    SSD1306_SCROLL_STEP_4_FRAME,
-    SSD1306_SCROLL_STEP_25_FRAME,
-    SSD1306_SCROLL_STEP_2_FRAME
-} SSD1306_ScrollStep_t;
+    SSD1306_SCROLL_5_FRAME,
+    SSD1306_SCROLL_64_FRAME,
+    SSD1306_SCROLL_128_FRAME,
+    SSD1306_SCROLL_256_FRAME,
+    SSD1306_SCROLL_3_FRAME,
+    SSD1306_SCROLL_4_FRAME,
+    SSD1306_SCROLL_25_FRAME,
+    SSD1306_SCROLL_2_FRAME
+} SSD1306_ScrollFrame_t;
 
 typedef enum
 {
@@ -205,9 +111,9 @@ typedef enum
 
 typedef enum
 {
-    SSD1306_FLIP_OFF = 0x00,
-    SSD1306_FLIP_ON = 0x08
-} SSD1306_COMOutputScanDirection_t; /* COM Output Scan Direction */
+    SSD1306_FROM_COM0 = 0x00,
+    SSD1306_TO_COM0 = 0x08
+} SSD1306_COMOutputScanDirection_t; 
 
 typedef enum
 {
@@ -547,70 +453,267 @@ typedef enum
     SSD1306_PHASE_15,
 } SSD1306_Phase_t;
 
-int8_t SSD1306_SetConstrast(uint8_t constrast);
-int8_t SSD1306_EntireDispOnSoft(void);
-int8_t SSD1306_EntireDispOnHard(void);
-int8_t SSD1306_InverseDisp(SSD1306_Inverse_t state);
-int8_t SSD1306_DispOnOff(SSD1306_DispState_t state);
-int8_t SSD1306_SetupContHorizontalScroll(SSD1306_HorizontalScrollDirection_t direct, SSD1306_PageAddr_t start_page, SSD1306_ScrollStep_t step, SSD1306_PageAddr_t end_page);
+/**
+ * @brief this function changes the constrast value of  the display
+ *
+ * @param[in] constrast should be in range [0x00 - 0xFF]
+ */
+void SSD1306_SetConstrast(uint8_t constrast);
 
-/* Setup Continuous Vertical and Horizontal Scroll */
-int8_t SSD1306_SetupContHorizontalVerticalScroll(SSD1306_HorizontalScrollDirection_t direct, SSD1306_PageAddr_t start_page, SSD1306_ScrollStep_t step, SSD1306_PageAddr_t end_page, SSD1306_Row_t offset);
+/**
+ * @brief this function turns entire display ON and resume to RAM content
+ * display. Output follows RAM content.
+ */
+void SSD1306_EntireDispOnSoft(void);
 
-int8_t SSD1306_DeactiveScroll(void);
-int8_t SSD1306_ActiveScroll(void);
-int8_t SSD1306_SetVerticalScrollArea(SSD1306_Row_t n_fixed_row, SSD1306_Row_t n_scroll_row);
-int8_t SSD1306_SetLowerColStartAddr(SSD1306_Col_t addr);  /* ONLY use for Page Addressing Mode */
-int8_t SSD1306_SetHigherColStartAddr(SSD1306_Col_t addr); /* ONLY use for Page Addressing Mode */
-int8_t SSD1306_SetMemAddrMode(SSD1306_MemAddrMode_t mode);
-int8_t SSD1306_SetColAddr(SSD1306_Col_t col_start, SSD1306_Col_t col_end);              /* ONLY use for Horizontal or Vertical Addressing Mode */
-int8_t SSD1306_SetPageAddr(SSD1306_PageAddr_t start_page, SSD1306_PageAddr_t end_page); /* ONLY use for Horizontal or Vertical Addressing Mode */
-int8_t SSD1306_SetPageStartAddr(SSD1306_PageAddr_t start_page);                         /* ONLY use for Page Addressing Mode */
-int8_t SSD1306_SetDispStartLine(SSD1306_Row_t start_line);                              /* Documentation is UNCLEAR; 5-bit or 6-bit ??? */
-int8_t SSD1306_SetSegRemap(SSD1306_SegmentRemapDirection_t direction);
-int8_t SSD1306_SetMultiplexRatio(SSD1306_MUXRatio_t ratio);
-int8_t SSD1306_SetCOMOutPutScanDirection(SSD1306_COMOutputScanDirection_t state); /* COM Output Scan Direction */
-int8_t SSD1306_SetDispOffet(SSD1306_Row_t offset);
-int8_t SSD1306_SetHardwareCfg(SSD1306_PinConfig_t cfg, SSD1306_COMRemap_t remap);
-int8_t SSD1306_ClkCfg(SSD1306_ClkRatio_t ratio, SSD1306_ClkFrq_t frq); /* Set Display Clock Divide Ratio and Oscillator Freq */
-int8_t SSD1306_SetPrechargePeriod(SSD1306_Phase_t phase1_period, SSD1306_Phase_t phase2_period);
-int8_t SSD1306_SetVCOMHDeselectLevel(SSD1306_VCOMHDeselectLevel_t level);
-int8_t SSD1306_SetChargeBumpSetting(SSD1306_ChargeBumpState_t state);
+/**
+ * @brief this funtion turns entire display ON. Output ignores RAM content
+ */
+void SSD1306_EntireDispOnHard(void);
+
+/**
+ * @brief this function inverse display color
+ *
+ * @param[in] state \n
+ * - SSD1306_NORMAL_DISP: 0 in RAM -> OFF in Display \n
+ * - SSD1306_INVERSE_DISP: 0 in RAM -> ON in Display
+ */
+void SSD1306_InverseDisp(SSD1306_Inverse_t state);
+
+/**
+ * @brief turn display ON or OFF
+ *
+ * @param[in] state \n
+ * - SSD1306_DISP_OFF: display OFF \n
+ * - SSD1306_DISP_ON: display ON
+ */
+void SSD1306_DispOnOff(SSD1306_DispState_t state);
+
+/**
+ * @brief this function setups the horizontal scroll parameters and
+ * determines the scrolling start page, end page and scrolling spped
+ *
+ * @note before calling this function the horizontal scroll must be
+ * deactived. Otherwise, RAM content may be corrupted
+ *
+ * @param[in] direct \n
+ * - SSD1306_RIGHT_SCROLL: Right Horizontal Scroll \n
+ * - SSD1306_LEFT_SCROLL: Left Horizontal Scroll
+ * @param[in] start_page
+ * @param[in] frame set time interval between each scroll step in terms of
+ * frame frequency
+ * @param[in] end_page
+ *
+ */
+void SSD1306_SetupContHorizontalScroll(
+    SSD1306_HorizontalScrollDirection_t direct,
+    SSD1306_PageAddr_t start_page, SSD1306_ScrollFrame_t frame,
+    SSD1306_PageAddr_t end_page);
+
+/**
+ * @brief this function setups the continuous veritcal scroll parameters and
+ * determines the scrolling start page, end page, scrolling speed and
+ * vertical scrolling offset.
+ *
+ * @note before call this function the scroll must be deactivated.
+ * Otherwise, RAM content may be corrupted.
+ *
+ * @param[in] direct \n
+ * - SSD1306_RIGHT_SCROLL:	Vertical and Right Horizontal Scroll \n
+ * - SSD1306_LEFT_SCROLL: Vertical and Left Horizontal Scroll
+ * @param[in] start_page
+ * @param[in] end_page
+ * @param[in] offset
+ */
+void SSD1306_SetupContHorizontalVerticalScroll(
+    SSD1306_HorizontalScrollDirection_t direct,
+    SSD1306_PageAddr_t start_page, SSD1306_ScrollFrame_t frame,
+    SSD1306_PageAddr_t end_page, SSD1306_Row_t offset);
+
+/**
+ * @brief this function deactivates scrolling
+ *
+ * @note should be called before calling SSD1306_SetupContHorizontalScroll()
+ * and SSD1306_SetupContHorizontalVerticalScroll() function.
+ */
+void SSD1306_DeactiveScroll(void);
+
+/**
+ * @brief this function activate scrollling
+ *
+ * @note should be called after calling SSD1306_SetupContHorizontalScroll()
+ * and SSD1306_SetupContHorizontalVerticalScroll() function.
+ */
+void SSD1306_ActiveScroll(void);
+
+/**
+ * @brief set up the vertical scroll area \n
+ * - (n_fixed_row == 0 && n_scroll_row == mux ratio) -> whole area scrolls
+ * \n
+ * - (n_fixed_row == 0 && n_scroll_row < mux ratio) -> top area scrolls \n
+ * - (n_fixed_row + n_scroll_row) < mux ratio -> central area scrolls \n
+ * - (n_fixed_row + n_scroll_row) == mux ratio -> bottom area scrolls
+ *
+ * @param[in] n_fixed_row: number of rows in top fixed area
+ * @param[in] n_scroll_row: number of rows in scroll area
+ *
+ * @note
+ * - n_fixed_row + n_scroll_row <= multiplex ratio \n
+ * - n_scroll_row < multiplex ratio
+ */
+void SSD1306_SetVerticalScrollArea(SSD1306_Row_t n_fixed_row,
+                                   SSD1306_Row_t n_scroll_row);
+
+/**
+ * @brief this function sets memory addressing mode
+ *
+ * @param[in] mode \n
+ * - SSD1306_MEM_ADDR_HORIZONTAL_MODE: Horizontal addressing mode \n
+ * - SSD1306_MEM_ADDR_VERTICAL_MODE: Vertical addressing mode \n
+ * - SSD1306_MEM_ADDR_PAGE_MODE: Page addressing mode
+ */
+void SSD1306_SetMemAddrMode(SSD1306_MemAddrMode_t mode);
+
+/**
+ * @brief this function set column start address and end adress of the
+ * display data RAM.
+ *
+ * @note ONLY use for Horizontal or Vertical Addressing Mode
+ *
+ * @param[in] col_start should be in range [0-127]
+ * @param[in] col_end should be in range [0-127]
+ */
+void SSD1306_SetColAddr(SSD1306_Col_t col_start, SSD1306_Col_t col_end);
+
+/**
+ * @brief this function set start page address and end page address of the
+ * display data RAM.
+ *
+ * @note ONLY use for Horizontal or Vertical Addressing Mode
+ *
+ * @param[in] start_page should be in range [0-7]
+ * @param[in] end_page should be in range [0-7]
+ */
+void SSD1306_SetPageAddr(SSD1306_PageAddr_t start_page,
+                         SSD1306_PageAddr_t end_page);
+
+/**
+ * @brief this function set start page address and column(segment) start
+ * address
+ *
+ * @note ONLY use for Page Addressing Mode
+ *
+ * @param[in] start_page should be in range [0-7]
+ * @param[in] seg should be in range [0-127]
+ */
+void SSD1306_SetPageStartAddr(SSD1306_PageAddr_t start_page,
+                              SSD1306_Col_t seg);
+
+/**
+ * @brief this function sets the Display Start Line register to
+ * determine starting address of display RAM, by selecting a value from
+ * 0 to 63. With value = 0, RAM row 0 is mapped to COM0. With value = 1,
+ * RAM row 1 is mapped to COM0 and so on.
+ *
+ * @param[in] start_line should be in range [0-63]
+ */
+void SSD1306_SetDispStartLine(SSD1306_Row_t start_line);
+
+/**
+ * @brief this function changes the mapping between the display data column
+ * address and the segment driver.
+ *
+ * @param[in] direction \n
+ * - SSD1306_SEG_REMAP_NORM: column address 0 is mapped to SEG0\n
+ * - SSD1306_SEG_REMAP_INVERSE: column address 127 is mapped to SEG0
+ */
+void SSD1306_SetSegRemap(SSD1306_SegmentRemapDirection_t direction);
+
+/**
+ * @brief this function switches the default 63 multiplex mode to any multiplex mode, ranging from 16 to 63. The output pads COM0~COM63 will be switched to the coressponding COM signal
+ *
+ * @param[in] ratio should be in range [16-63]
+ */
+void SSD1306_SetMultiplexRatio(SSD1306_MUXRatio_t ratio);
+
+/**
+ * @brief this function sets the scan direction of the COM output. 
+ *
+ * @param[in] direction \n
+ * - SSD1306_FROM_COM0: Normal mode. Scan from COM0 to COM[N-1]\n
+ * - SSD1306_TO_COM0: Remapped mode. Scan from COM[N-1] to COM0
+ */
+void SSD1306_SetCOMOutPutScanDirection(
+    SSD1306_COMOutputScanDirection_t direction);
+
+/**
+ * @brief this function sets vertical shift by COM from 0 to 63
+ *
+ * @paramp[in] offset should be in range [0-63]
+ */
+void SSD1306_SetDispOffet(SSD1306_Row_t offset);
+
+/**
+ * @brief this function sets COM Pins Hardware Configuration
+ *
+ * @param[in] cfg \n
+ * - SSD1306_PIN_CFG_SEQUENT: sequential COM pin configuration \n
+ * - SSD1306_PIN_CFG_ALTER: alternative COM pin configuration
+ * @param[in] remap \n
+ * - SSD1306_COM_REMAP_DISABLE: disable COM Left/Right remap \n
+ * - SSD1306_COM_REMAP_ENABLE: enable COM Left/Right remap
+ */
+void SSD1306_SetHardwareCfg(SSD1306_PinConfig_t cfg,
+                            SSD1306_COMRemap_t remap);
+/**
+ * @brief this function sets display clock divide ratio and oscillator frequency
+ *
+ * @param[in] ratio should be in range [0-15]
+ * @param[in] frq should be in range [0-15]
+ */
+void SSD1306_ClkCfg(SSD1306_ClkRatio_t ratio,
+                    SSD1306_ClkFrq_t frq);
+
+/**
+ * @brief this function sets the duration of the pre-charge period. This interval is counted in number of display clock.
+ *
+ * @param[in] phase1_period should be in range [0-15]
+ * @param[in] phase2_period should be in range [0-15]
+ */
+void SSD1306_SetPrechargePeriod(SSD1306_Phase_t phase1_period,
+                                SSD1306_Phase_t phase2_period);
+
+/**
+ * @brief this function adjust the VCOMH regulator output 
+ *
+ * @param[in] level \n
+ * - SSD1306_VCOMH_065_VCC \n
+ * - SSD1306_VCOMH_077_VCC \n
+ * - SSD1306_VCOMH_083_VCC
+ */
+void SSD1306_SetVCOMHDeselectLevel(SSD1306_VCOMHDeselectLevel_t level);
+
+
+void SSD1306_SetChargeBumpSetting(SSD1306_ChargeBumpState_t state);
 
 void SSD1306_Init(void);
 void SSD1306_Reset(void);
 void SSD1306_UpdateDisp(void);
 void SSD1306_FillBuffer(SSD1306_PixelState_t state);
 void SSD1306_DrawPixel(uint8_t x, uint8_t y, SSD1306_PixelState_t state);
+
+void SSD1306_PrintCharXY(uint8_t x, uint8_t y, uint8_t c);
+void SSD1306_PrintStrXY(uint8_t x, uint8_t y, uint8_t *str, uint8_t length);
+
+void SSD1306_PrintCharColRow(uint8_t col, uint8_t row, uint8_t c);
+void SSD1306_PrintStrColRow(uint8_t col, uint8_t row, uint8_t *str,
+                            uint8_t length);
+
 void SSD1306_Board_Initialize(void);
 void SSD1306_Board_PrintChar(uint8_t board_col, uint8_t board_row, char c);
+void SSD1306_Board_PrintTitle(uint8_t x_offset, uint8_t *title,
+                              uint8_t length);
 
-/* Belong to bsp_ssd1306_cfg.h */
-
-#define SSD1306_DC_PORT GPIOA
-#define SSD1306_DC_PIN GPIO_PIN_8
-
-/* RESET Pin is active LOW -> Keep this pin HIGH during normal operation */
-#define SSD1306_RESET_PORT GPIOA
-#define SSD1306_RESET_PIN GPIO_PIN_9
-
-#define SSD1306_CS_PORT GPIOA
-#define SSD1306_CS_PIN GPIO_PIN_10
-
-#define SSD1306_SPI_HANDLER &hspi1
-
-
-int8_t SSD1306_WriteCommand(uint8_t cmd);
-int8_t SSD1306_WriteData(uint8_t *data, uint8_t size);
-void SSD1306_Delay(uint32_t ms);
-void SSD1306_CSPinOff(void);
-void SSD1306_CSPinOn(void);
-void SSD1306_DCPinOff(void);
-void SSD1306_DCPinOn(void);
-void SSD1306_ResetPinOff(void);
-void SSD1306_ResetPinOn(void);
-
-/* End of bsp_ssd1306_cfg.h */
 #ifdef __cplusplus
 }
 #endif /* End of CPP guard */
