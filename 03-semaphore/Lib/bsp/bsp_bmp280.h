@@ -34,15 +34,16 @@
 * @date	2020-01-10
 * @version	v3.3.4
 *
-*/#ifndef __BSP_BMP280_H__
+*/
+#ifndef __BSP_BMP280_H__
 #define __BSP_BMP280_H__
-
-#include "bsp_bmp280_defs.h"
 
 /*! CPP guard */
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#include "bsp_bmp280_defs.h"
 
 /*!
  * @brief This API reads the data from the given register address of the

@@ -105,7 +105,6 @@ void BMP280_Print(UART_HandleTypeDef *uart)
 void Delay_ms(uint32_t period_ms)
 {
     OS_ERR os_err;
-    /* Implement the delay routine according to the target machine */
     if (period_ms < 1000)
     {
         OSTimeDlyHMSM(0, 0, 0, period_ms, OS_OPT_TIME_HMSM_STRICT, &os_err);
