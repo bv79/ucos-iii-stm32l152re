@@ -47,11 +47,9 @@
 \mbox{\Hypertarget{bsp__ssd1306_8h_a5c4ca9d0268f333264442ec94501bbb1}\label{bsp__ssd1306_8h_a5c4ca9d0268f333264442ec94501bbb1}} 
 \#define {\bfseries SSD1306\+\_\+\+BOARD\+\_\+\+CELL\+\_\+\+HEIGHT}~10u
 \item 
-\mbox{\Hypertarget{bsp__ssd1306_8h_ac75d02b90d91a92c888a9c4afd4edb16}\label{bsp__ssd1306_8h_ac75d02b90d91a92c888a9c4afd4edb16}} 
-\#define {\bfseries SSD1306\+\_\+\+BOARD\+\_\+\+X0}~2u
+\#define \mbox{\hyperlink{bsp__ssd1306_8h_ac75d02b90d91a92c888a9c4afd4edb16}{SSD1306\+\_\+\+BOARD\+\_\+\+X0}}~2u
 \item 
-\mbox{\Hypertarget{bsp__ssd1306_8h_a9e184ac2af4771b8cacbcbea2ef6e589}\label{bsp__ssd1306_8h_a9e184ac2af4771b8cacbcbea2ef6e589}} 
-\#define {\bfseries SSd1306\+\_\+\+BOARD\+\_\+\+Y0}~1u
+\#define \mbox{\hyperlink{bsp__ssd1306_8h_a9e184ac2af4771b8cacbcbea2ef6e589}{SSd1306\+\_\+\+BOARD\+\_\+\+Y0}}~1u
 \item 
 \mbox{\Hypertarget{bsp__ssd1306_8h_a68e22101a5c297461c77c20e511164cf}\label{bsp__ssd1306_8h_a68e22101a5c297461c77c20e511164cf}} 
 \#define {\bfseries SSD1306\+\_\+\+FONT\+\_\+\+HEIGHT}~8u
@@ -622,6 +620,29 @@ uint8\+\_\+t {\bfseries SSD1306\+\_\+\+Buffer} \mbox{[}SSD1306\+\_\+\+HEIGHT/8\m
 \end{DoxyCompactItemize}
 
 
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{bsp__ssd1306_8h_ac75d02b90d91a92c888a9c4afd4edb16}\label{bsp__ssd1306_8h_ac75d02b90d91a92c888a9c4afd4edb16}} 
+\index{bsp\_ssd1306.h@{bsp\_ssd1306.h}!SSD1306\_BOARD\_X0@{SSD1306\_BOARD\_X0}}
+\index{SSD1306\_BOARD\_X0@{SSD1306\_BOARD\_X0}!bsp\_ssd1306.h@{bsp\_ssd1306.h}}
+\doxysubsubsection{\texorpdfstring{SSD1306\_BOARD\_X0}{SSD1306\_BOARD\_X0}}
+{\footnotesize\ttfamily \#define SSD1306\+\_\+\+BOARD\+\_\+\+X0~2u}
+
+Original point to start print char to the board 
+
+Definition at line 38 of file bsp\+\_\+ssd1306.\+h.
+
+\mbox{\Hypertarget{bsp__ssd1306_8h_a9e184ac2af4771b8cacbcbea2ef6e589}\label{bsp__ssd1306_8h_a9e184ac2af4771b8cacbcbea2ef6e589}} 
+\index{bsp\_ssd1306.h@{bsp\_ssd1306.h}!SSd1306\_BOARD\_Y0@{SSd1306\_BOARD\_Y0}}
+\index{SSd1306\_BOARD\_Y0@{SSd1306\_BOARD\_Y0}!bsp\_ssd1306.h@{bsp\_ssd1306.h}}
+\doxysubsubsection{\texorpdfstring{SSd1306\_BOARD\_Y0}{SSd1306\_BOARD\_Y0}}
+{\footnotesize\ttfamily \#define SSd1306\+\_\+\+BOARD\+\_\+\+Y0~1u}
+
+Original point to start print char to the board 
+
+Definition at line 40 of file bsp\+\_\+ssd1306.\+h.
+
+
+
 \doxysubsection{Function Documentation}
 \mbox{\Hypertarget{bsp__ssd1306_8h_a131e398a11d6f99ab1b70a162c365a45}\label{bsp__ssd1306_8h_a131e398a11d6f99ab1b70a162c365a45}} 
 \index{bsp\_ssd1306.h@{bsp\_ssd1306.h}!SSD1306\_ActiveScroll@{SSD1306\_ActiveScroll}}
@@ -784,7 +805,24 @@ Definition at line 205 of file bsp\+\_\+ssd1306.\+c.
 this function initializes SSD1306 
 
 \begin{DoxyNote}{Note}
-this function should be called first before using any SSD1306\textquotesingle{}s functions 
+this function should be called first before using any SSD1306\textquotesingle{}s functions. SSD1306 is intialized by execute following commands
+\begin{DoxyEnumerate}
+\item RESET (active LOW)
+\item Set multiplex ratio (0x\+A8)
+\item Set display offset (0x\+D3)
+\item Set display start line (0x40)
+\item Set segment re-\/map (0x\+A0/0x\+A1)
+\item Set COM Output Direction (0x\+C0/0x\+C8)
+\item Set COM pins hardware configuration (0x\+DA)
+\item Set contrast control (0x81)
+\item Disable entire display on (0x\+A4)
+\item Set normal display (0x\+A6)
+\item Set osc frequency (0x\+D5)
+\item Enable charge pump regulator (0x8D)
+\end{DoxyEnumerate}
+\begin{DoxyEnumerate}
+\item Display on (0x\+AF) 
+\end{DoxyEnumerate}
 \end{DoxyNote}
 
 

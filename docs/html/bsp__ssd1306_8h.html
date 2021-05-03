@@ -123,11 +123,9 @@ Macros</h2></td></tr>
 <tr class="memitem:a5c4ca9d0268f333264442ec94501bbb1"><td class="memItemLeft" align="right" valign="top"><a id="a5c4ca9d0268f333264442ec94501bbb1"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>SSD1306_BOARD_CELL_HEIGHT</b>&#160;&#160;&#160;10u</td></tr>
 <tr class="separator:a5c4ca9d0268f333264442ec94501bbb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac75d02b90d91a92c888a9c4afd4edb16"><td class="memItemLeft" align="right" valign="top"><a id="ac75d02b90d91a92c888a9c4afd4edb16"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>SSD1306_BOARD_X0</b>&#160;&#160;&#160;2u</td></tr>
+<tr class="memitem:ac75d02b90d91a92c888a9c4afd4edb16"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="bsp__ssd1306_8h.html#ac75d02b90d91a92c888a9c4afd4edb16">SSD1306_BOARD_X0</a>&#160;&#160;&#160;2u</td></tr>
 <tr class="separator:ac75d02b90d91a92c888a9c4afd4edb16"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9e184ac2af4771b8cacbcbea2ef6e589"><td class="memItemLeft" align="right" valign="top"><a id="a9e184ac2af4771b8cacbcbea2ef6e589"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>SSd1306_BOARD_Y0</b>&#160;&#160;&#160;1u</td></tr>
+<tr class="memitem:a9e184ac2af4771b8cacbcbea2ef6e589"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="bsp__ssd1306_8h.html#a9e184ac2af4771b8cacbcbea2ef6e589">SSd1306_BOARD_Y0</a>&#160;&#160;&#160;1u</td></tr>
 <tr class="separator:a9e184ac2af4771b8cacbcbea2ef6e589"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a68e22101a5c297461c77c20e511164cf"><td class="memItemLeft" align="right" valign="top"><a id="a68e22101a5c297461c77c20e511164cf"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>SSD1306_FONT_HEIGHT</b>&#160;&#160;&#160;8u</td></tr>
@@ -721,6 +719,41 @@ Variables</h2></td></tr>
 uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>SSD1306_Buffer</b> [SSD1306_HEIGHT/8][SSD1306_WIDTH]</td></tr>
 <tr class="separator:a2ca9ee3f74538c99605d4e44f432d58f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="ac75d02b90d91a92c888a9c4afd4edb16"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac75d02b90d91a92c888a9c4afd4edb16">&#9670;&nbsp;</a></span>SSD1306_BOARD_X0</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SSD1306_BOARD_X0&#160;&#160;&#160;2u</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Original point to start print char to the board </p>
+
+<p class="definition">Definition at line <a class="el" href="bsp__ssd1306_8h_source.html#l00038">38</a> of file <a class="el" href="bsp__ssd1306_8h_source.html">bsp_ssd1306.h</a>.</p>
+
+</div>
+</div>
+<a id="a9e184ac2af4771b8cacbcbea2ef6e589"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9e184ac2af4771b8cacbcbea2ef6e589">&#9670;&nbsp;</a></span>SSd1306_BOARD_Y0</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SSd1306_BOARD_Y0&#160;&#160;&#160;1u</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Original point to start print char to the board </p>
+
+<p class="definition">Definition at line <a class="el" href="bsp__ssd1306_8h_source.html#l00040">40</a> of file <a class="el" href="bsp__ssd1306_8h_source.html">bsp_ssd1306.h</a>.</p>
+
+</div>
+</div>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="a131e398a11d6f99ab1b70a162c365a45"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a131e398a11d6f99ab1b70a162c365a45">&#9670;&nbsp;</a></span>SSD1306_ActiveScroll()</h2>
@@ -996,7 +1029,24 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>SSD1306_Buffer</b>
 </div><div class="memdoc">
 
 <p>this function initializes SSD1306 </p>
-<dl class="section note"><dt>Note</dt><dd>this function should be called first before using any SSD1306's functions </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>this function should be called first before using any SSD1306's functions. SSD1306 is intialized by execute following commands<ol type="1">
+<li>RESET (active LOW)</li>
+<li>Set multiplex ratio (0xA8)</li>
+<li>Set display offset (0xD3)</li>
+<li>Set display start line (0x40)</li>
+<li>Set segment re-map (0xA0/0xA1)</li>
+<li>Set COM Output Direction (0xC0/0xC8)</li>
+<li>Set COM pins hardware configuration (0xDA)</li>
+<li>Set contrast control (0x81)</li>
+<li>Disable entire display on (0xA4)</li>
+<li>Set normal display (0xA6)</li>
+<li>Set osc frequency (0xD5)</li>
+<li>Enable charge pump regulator (0x8D)</li>
+</ol>
+<ol type="1">
+<li>Display on (0xAF) </li>
+</ol>
+</dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="bsp__ssd1306_8c_source.html#l00157">157</a> of file <a class="el" href="bsp__ssd1306_8c_source.html">bsp_ssd1306.c</a>.</p>
 

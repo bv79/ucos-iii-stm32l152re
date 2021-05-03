@@ -33,8 +33,12 @@ extern "C"
 #define SSD1306_BOARD_Y_OFFSET 4u
 #define SSD1306_BOARD_CELL_WIDTH 8u
 #define SSD1306_BOARD_CELL_HEIGHT 10u
+
+/** Original point to start print char to the board */
 #define SSD1306_BOARD_X0 2u
+/** Original point to start print char to the board */
 #define SSd1306_BOARD_Y0 1u
+
 #define SSD1306_FONT_HEIGHT 8u
 #define SSD1306_FONT_WIDTH 6u
 
@@ -113,7 +117,7 @@ typedef enum
 {
     SSD1306_FROM_COM0 = 0x00,
     SSD1306_TO_COM0 = 0x08
-} SSD1306_COMOutputScanDirection_t; 
+} SSD1306_COMOutputScanDirection_t;
 
 typedef enum
 {
@@ -630,14 +634,16 @@ void SSD1306_SetDispStartLine(SSD1306_Row_t start_line);
 void SSD1306_SetSegRemap(SSD1306_SegmentRemapDirection_t direction);
 
 /**
- * @brief this function switches the default 63 multiplex mode to any multiplex mode, ranging from 16 to 63. The output pads COM0~COM63 will be switched to the coressponding COM signal
+ * @brief this function switches the default 63 multiplex mode to any
+ * multiplex mode, ranging from 16 to 63. The output pads COM0~COM63 will be
+ * switched to the coressponding COM signal
  *
  * @param[in] ratio should be in range [16-63]
  */
 void SSD1306_SetMultiplexRatio(SSD1306_MUXRatio_t ratio);
 
 /**
- * @brief this function sets the scan direction of the COM output. 
+ * @brief this function sets the scan direction of the COM output.
  *
  * @param[in] direction \n
  * - SSD1306_FROM_COM0: Normal mode. Scan from COM0 to COM[N-1]\n
@@ -666,16 +672,17 @@ void SSD1306_SetDispOffet(SSD1306_Row_t offset);
 void SSD1306_SetHardwareCfg(SSD1306_PinConfig_t cfg,
                             SSD1306_COMRemap_t remap);
 /**
- * @brief this function sets display clock divide ratio and oscillator frequency
+ * @brief this function sets display clock divide ratio and oscillator
+ * frequency
  *
  * @param[in] ratio should be in range [0-15]
  * @param[in] frq should be in range [0-15]
  */
-void SSD1306_ClkCfg(SSD1306_ClkRatio_t ratio,
-                    SSD1306_ClkFrq_t frq);
+void SSD1306_ClkCfg(SSD1306_ClkRatio_t ratio, SSD1306_ClkFrq_t frq);
 
 /**
- * @brief this function sets the duration of the pre-charge period. This interval is counted in number of display clock.
+ * @brief this function sets the duration of the pre-charge period. This
+ * interval is counted in number of display clock.
  *
  * @param[in] phase1_period should be in range [0-15]
  * @param[in] phase2_period should be in range [0-15]
@@ -684,7 +691,7 @@ void SSD1306_SetPrechargePeriod(SSD1306_Phase_t phase1_period,
                                 SSD1306_Phase_t phase2_period);
 
 /**
- * @brief this function adjust the VCOMH regulator output 
+ * @brief this function adjust the VCOMH regulator output
  *
  * @param[in] level \n
  * - SSD1306_VCOMH_065_VCC \n
@@ -696,28 +703,47 @@ void SSD1306_SetVCOMHDeselectLevel(SSD1306_VCOMHDeselectLevel_t level);
 /**
  * @brief this function turns the internal regulator circuit on/off.
  *
- * @note The internal regulator circuit in SSD1306 accompanying only 2 exernal capacitors can generate a 7.5V voltage supply (VCC) from a low voltage supply input (VBAT). The VCC is the voltage supply to the OLED driver block.
+ * @note The internal regulator circuit in SSD1306 accompanying only 2
+ * exernal capacitors can generate a 7.5V voltage supply (VCC) from a low
+ * voltage supply input (VBAT). The VCC is the voltage supply to the OLED
+ * driver block.
  *
  * @param[in] state \n
- * - SSD1306_CHARGE_BUMP_DISABLE: disable charge pump \n 
- * - SSD1306_CHARGE_BUMP_ENABLE: enable charge pump during display on 
+ * - SSD1306_CHARGE_BUMP_DISABLE: disable charge pump \n
+ * - SSD1306_CHARGE_BUMP_ENABLE: enable charge pump during display on
  */
 void SSD1306_SetChargeBumpSetting(SSD1306_ChargeBumpState_t state);
 
 /**
  * @brief this function initializes SSD1306
  *
- * @note this function should be called first before using any SSD1306's functions
+ * @note this function should be called first before using any SSD1306's
+ * functions. SSD1306 is intialized by execute following commands
+ * 1. RESET (active LOW)
+ * 2. Set multiplex ratio (0xA8)
+ * 3. Set display offset (0xD3)
+ * 4. Set display start line (0x40)
+ * 5. Set segment re-map (0xA0/0xA1)
+ * 6. Set COM Output Direction (0xC0/0xC8)
+ * 7. Set COM pins hardware configuration (0xDA)
+ * 8. Set contrast control (0x81)
+ * 9. Disable entire display on (0xA4)
+ * 10. Set normal display (0xA6)
+ * 11. Set osc frequency (0xD5)
+ * 12. Enable charge pump regulator (0x8D)
+ * 12. Display on (0xAF)
  */
 void SSD1306_Init(void);
 
 /**
  * @brief this function resets the OLED
  *
- * @note when RES# input is LOW, the chip is initialized with following status \n
+ * @note when RES# input is LOW, the chip is initialized with following
+ * status \n
  * 1. Display is OFF
  * 2. 126 x 64 Display Mode
- * 3. Normal segment and display data column address and row address mapping (SEG0 mapped to address 00h and COM0 mapped to address 00h
+ * 3. Normal segment and display data column address and row address mapping
+ * (SEG0 mapped to address 00h and COM0 mapped to address 00h
  * 4. Shift register data clear in serial interface
  * 5. Display start line is set at display RAM address 0
  * 6. Column address counter is set at 0
@@ -740,7 +766,8 @@ void SSD1306_FillBuffer(SSD1306_PixelState_t state);
 /**
  * @brief this function draws a pixel at (x,y) location.
  *
- * @note (0,0) locate at the bottom left of the OLED and (127,63) locate at the top right of the OLED.
+ * @note (0,0) locate at the bottom left of the OLED and (127,63) locate at
+ * the top right of the OLED.
  *
  * @param[in] x should be in range [0-127]
  * @param[in] y should be in range [0-63]
@@ -751,15 +778,17 @@ void SSD1306_DrawPixel(uint8_t x, uint8_t y, SSD1306_PixelState_t state);
 /**
  * @brief this function draws a char at (x,y) location.
  *
- * @note this function will draw the character from (x,y) up and to the right of (x,y)
+ * @note this function will draw the character from (x,y) up and to the
+ * right of (x,y)
  * @param[in] x should be in range [0-127]
  * @param[in] y should be in range [0-63]
- * @param[in] c 
+ * @param[in] c
  */
 void SSD1306_PrintCharXY(uint8_t x, uint8_t y, uint8_t c);
 
 /**
- * @brief this function draws a string start at (x,y) location (up and right)
+ * @brief this function draws a string start at (x,y) location (up and
+ * right)
  *
  * @param[in] x should be in range [0-127]
  * @param[in] y should be in range [0-63]
@@ -792,20 +821,22 @@ void SSD1306_PrintStrColRow(uint8_t col, uint8_t row, uint8_t *str,
                             uint8_t length);
 
 /**
- * @brief this function draws a table (15 cols x 4 rows) on the OLED display 
+ * @brief this function draws a table (15 cols x 4 rows) on the OLED display
  */
 void SSD1306_Board_Initialize(void);
 
 /**
- * @brief this function draws a character to the initilized table (SSD1306_Board_Initialize()) at (board_col, board_row)
- * 
+ * @brief this function draws a character to the initilized table
+ * (SSD1306_Board_Initialize()) at (board_col, board_row)
+ *
  * @param[in] board_col should be in range [0-14]
  * @param[in] board_row should be in range [0-3]
  */
 void SSD1306_Board_PrintChar(uint8_t board_col, uint8_t board_row, char c);
 
 /**
- * @brief this functions draw a title (string) of the table/board on the top of the OLED
+ * @brief this functions draw a title (string) of the table/board on the top
+ * of the OLED
  *
  * @param[in] x_offset offset on x-axis
  * @param[in] *title pointer to title

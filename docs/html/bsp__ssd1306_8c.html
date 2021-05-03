@@ -467,7 +467,24 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="bsp_
 </div><div class="memdoc">
 
 <p>this function initializes SSD1306 </p>
-<dl class="section note"><dt>Note</dt><dd>this function should be called first before using any SSD1306's functions </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>this function should be called first before using any SSD1306's functions. SSD1306 is intialized by execute following commands<ol type="1">
+<li>RESET (active LOW)</li>
+<li>Set multiplex ratio (0xA8)</li>
+<li>Set display offset (0xD3)</li>
+<li>Set display start line (0x40)</li>
+<li>Set segment re-map (0xA0/0xA1)</li>
+<li>Set COM Output Direction (0xC0/0xC8)</li>
+<li>Set COM pins hardware configuration (0xDA)</li>
+<li>Set contrast control (0x81)</li>
+<li>Disable entire display on (0xA4)</li>
+<li>Set normal display (0xA6)</li>
+<li>Set osc frequency (0xD5)</li>
+<li>Enable charge pump regulator (0x8D)</li>
+</ol>
+<ol type="1">
+<li>Display on (0xAF) </li>
+</ol>
+</dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="bsp__ssd1306_8c_source.html#l00157">157</a> of file <a class="el" href="bsp__ssd1306_8c_source.html">bsp_ssd1306.c</a>.</p>
 

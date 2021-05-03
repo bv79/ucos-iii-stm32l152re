@@ -246,7 +246,24 @@ Definition at line 205 of file bsp\+\_\+ssd1306.\+c.
 this function initializes SSD1306 
 
 \begin{DoxyNote}{Note}
-this function should be called first before using any SSD1306\textquotesingle{}s functions 
+this function should be called first before using any SSD1306\textquotesingle{}s functions. SSD1306 is intialized by execute following commands
+\begin{DoxyEnumerate}
+\item RESET (active LOW)
+\item Set multiplex ratio (0x\+A8)
+\item Set display offset (0x\+D3)
+\item Set display start line (0x40)
+\item Set segment re-\/map (0x\+A0/0x\+A1)
+\item Set COM Output Direction (0x\+C0/0x\+C8)
+\item Set COM pins hardware configuration (0x\+DA)
+\item Set contrast control (0x81)
+\item Disable entire display on (0x\+A4)
+\item Set normal display (0x\+A6)
+\item Set osc frequency (0x\+D5)
+\item Enable charge pump regulator (0x8D)
+\end{DoxyEnumerate}
+\begin{DoxyEnumerate}
+\item Display on (0x\+AF) 
+\end{DoxyEnumerate}
 \end{DoxyNote}
 
 
