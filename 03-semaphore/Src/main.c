@@ -36,10 +36,12 @@
 #define APP_TASK_START_STK_SIZE 128u
 #define READ_DATA_TASK_STK_SIZE 128u
 #define DISPLAY_DATA_TASK_STK_SIZE 128u
+#define BLINK_TASK_STK_SIZE 128u
 /* Task Priority */
 #define APP_TASK_START_PRIO 1u
 #define READ_DATA_TASK_PRIO 2u
-#define DISPLAY_DATA_TASK_PRIO 2u
+#define DISPLAY_DATA_TASK_PRIO 3u
+#define BLINK_TASK_PRIO 4u
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -54,10 +56,12 @@
 static OS_TCB AppTaskStartTCB;
 static OS_TCB ReadDataTaskTCB;
 static OS_TCB DisplayDataTaskTCB;
+static OS_TCB BlinkTaskTCB;
 /* Task Stack */
 static CPU_STK AppTaskStartStk[APP_TASK_START_STK_SIZE];
-static CPU_STK ReadDataTaskStk[APP_TASK_START_STK_SIZE];
-static CPU_STK DisplayDataTaskStk[APP_TASK_START_STK_SIZE];
+static CPU_STK ReadDataTaskStk[READ_DATA_TASK_STK_SIZE];
+static CPU_STK DisplayDataTaskStk[DISPLAY_DATA_TASK_STK_SIZE];
+static CPU_STK BlinkTaskStk[BLINK_TASK_STK_SIZE];
 /* Semaphore */
 OS_SEM sem;
 
@@ -69,6 +73,7 @@ void SystemClock_Config(void);
 static void AppTaskStart(void *p_arg);
 static void ReadDataTask(void *p_arg);
 static void DisplayDataTask(void *p_arg);
+static void BlinkTask(void *p_arg);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -198,6 +203,21 @@ static void AppTaskStart(void *p_arg)
   MX_SPI1_Init();
 
   OSTaskCreate(
+      (OS_TCB *)&BlinkTaskTCB,
+      (CPU_CHAR *)"Blink Task",
+      (OS_TASK_PTR)BlinkTask,
+      (void *)0,
+      (OS_PRIO)BLINK_TASK_PRIO,
+      (CPU_STK *)&BlinkTaskStk[0],
+      (CPU_STK_SIZE)BLINK_TASK_STK_SIZE / 10,
+      (CPU_STK_SIZE)BLINK_TASK_STK_SIZE,
+      (OS_MSG_QTY)5u,
+      (OS_TICK)0u,
+      (void *)0,
+      (OS_OPT)(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR),
+      (OS_ERR *)&os_err);
+
+  OSTaskCreate(
       (OS_TCB *)&ReadDataTaskTCB,
       (CPU_CHAR *)"Read Data Task",
       (OS_TASK_PTR)ReadDataTask,
@@ -226,6 +246,7 @@ static void AppTaskStart(void *p_arg)
       (void *)0,
       (OS_OPT)(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR),
       (OS_ERR *)&os_err);
+
 }
 
 static void ReadDataTask(void *p_arg)
@@ -235,17 +256,19 @@ static void ReadDataTask(void *p_arg)
   BMP280_Setup();
 
   unsigned char MSG[27];
-  sprintf((char*)MSG, "ReadDataTask: reading...\r\n");
+  sprintf((char*)MSG, "ReadDataTask: reading...\n\r");
   while (DEF_TRUE)
   {
     HAL_UART_Transmit(&huart2, MSG, sizeof(MSG), 100);
     BMP280_Read();
+    /*
     OSSemPost(
       (OS_SEM *)&sem,
       (OS_OPT)OS_OPT_TIME_HMSM_STRICT,
       (OS_ERR *)&os_err
     );
-    OSTimeDlyHMSM(0, 0, 1, 0, OS_OPT_TIME_HMSM_STRICT, &os_err);
+    */
+    OSTimeDlyHMSM(0, 0, 10, 0, OS_OPT_TIME_HMSM_STRICT, &os_err);
   }
 }
 
@@ -255,6 +278,7 @@ static void DisplayDataTask(void *p_arg)
 
   while (DEF_TRUE)
   {
+    /*
     OSSemPend(
       (OS_SEM *)&sem,
       (OS_TICK)0,
@@ -262,8 +286,23 @@ static void DisplayDataTask(void *p_arg)
       (CPU_TS *)NULL,
       (OS_ERR *)&os_err
     );
+    */
     BMP280_Print(&huart2);
-    OSTimeDlyHMSM(0, 0, 1, 0, OS_OPT_TIME_HMSM_STRICT, &os_err);
+    OSTimeDlyHMSM(0, 0, 10, 0, OS_OPT_TIME_HMSM_STRICT, &os_err);
+  }
+
+}
+
+static void BlinkTask(void *p_arg)
+{
+  OS_ERR os_err;
+  unsigned char MSG[13];
+  sprintf((char*)MSG, "Blink Task\n\r");
+  while (DEF_TRUE)
+  {
+    HAL_UART_Transmit(&huart2, MSG, sizeof(MSG), 100);
+    HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
+    OSTimeDlyHMSM(0, 0, 5, 0, OS_OPT_TIME_HMSM_STRICT, &os_err);
   }
 
 }
