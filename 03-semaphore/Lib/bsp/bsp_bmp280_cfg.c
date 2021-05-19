@@ -98,7 +98,7 @@ void BMP280_Print(UART_HandleTypeDef *uart)
  * such as "bmg250_soft_reset", "bmg250_set_foc", "bmg250_perform_self_test" and
  * so on.
  *
- *  @param[in] period_ms  : the required wait time in milliseconds. (< 60000ms)
+ *  @param[in] period_ms  : delay period in milliseconds
  *  @return void.
  *
  */

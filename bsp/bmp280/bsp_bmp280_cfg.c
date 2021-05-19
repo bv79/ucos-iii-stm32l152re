@@ -86,11 +86,11 @@ void BMP280_Setup(void)
  */
 void BMP280_Print(UART_HandleTypeDef *uart)
 {
-    unsigned char MSG[60];
-    sprintf((char *)MSG,
+    unsigned char msg[51];
+    sprintf((char *)msg,
             "\rTemperature = %.2f Celsius | Pressure = %.2f Pa\n\r", temp,
             pres);
-    HAL_UART_Transmit(uart, MSG, sizeof(MSG), 100);
+    HAL_UART_Transmit(uart, msg, sizeof(msg), 100);
 }
 
 /*!
@@ -98,22 +98,32 @@ void BMP280_Print(UART_HandleTypeDef *uart)
  * such as "bmg250_soft_reset", "bmg250_set_foc", "bmg250_perform_self_test" and
  * so on.
  *
- *  @param[in] period_ms  : the required wait time in milliseconds. (< 60000ms)
+ *  @param[in] period_ms  : delay period in milliseconds
  *  @return void.
  *
  */
 void Delay_ms(uint32_t period_ms)
 {
     OS_ERR os_err;
-    if (period_ms < 1000)
-    {
-        OSTimeDlyHMSM(0, 0, 0, period_ms, OS_OPT_TIME_HMSM_STRICT, &os_err);
-    }
-    else if (period_ms < 60000)
-    {
-        OSTimeDlyHMSM(0, 0, period_ms / 1000u, period_ms % 1000u,
-                      OS_OPT_TIME_HMSM_STRICT, &os_err);
-    }
+    /* Non-blocking delay */
+	OSTimeDlyHMSM(period_ms/3600000, (period_ms/60000)%60, (period_ms/1000)%60, period_ms%1000, OS_OPT_TIME_HMSM_STRICT, &os_err);
+    
+	/* Blocking delay */
+    /*
+    OS_TICK ticks     = ((OSCfg_TickRate_Hz * ((OS_TICK)period_ms + ((OS_TICK)500u / OSCfg_TickRate_Hz))) / (OS_TICK)1000u);
+    OS_TICK start_ticks = OSTimeGet(&os_err);
+	OS_TICK current_ticks = start_ticks;
+
+	while(current_ticks - start_ticks <= ticks)
+	{
+		current_ticks = OSTimeGet(&os_err);
+		if(current_ticks < start_ticks)
+		{
+			ticks = (start_ticks + ticks) - UINT32_MAX;
+			start_ticks = 0;
+		}
+	}
+    */
 }
 
 /*!
