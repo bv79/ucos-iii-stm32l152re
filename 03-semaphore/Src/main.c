@@ -35,7 +35,7 @@
 /* Task Stack Size */
 #define APP_TASK_START_STK_SIZE 128u
 #define READ_DATA_TASK_STK_SIZE 128u
-#define DISPLAY_DATA_TASK_STK_SIZE 128u
+#define DISPLAY_DATA_TASK_STK_SIZE 256u
 #define BLINK_TASK_STK_SIZE 128u
 /* Task Priority */
 #define APP_TASK_START_PRIO 1u
@@ -93,11 +93,10 @@ int main(void)
   }
 
   OSSemCreate(
-    (OS_SEM *)&sem,
-    (CPU_CHAR *)"Semaphore",
-    (OS_SEM_CTR)0,
-    (OS_ERR *)&os_err
-  );
+      (OS_SEM *)&sem,
+      (CPU_CHAR *)"Semaphore",
+      (OS_SEM_CTR)0,
+      (OS_ERR *)&os_err);
 
   OSTaskCreate(
       /* pointer to task control block */
@@ -177,8 +176,7 @@ void SystemClock_Config(void)
   }
   /** Initializes the CPU, AHB and APB buses clocks
   */
-  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
-                              |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
+  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
@@ -200,7 +198,6 @@ static void AppTaskStart(void *p_arg)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   MX_I2C1_Init();
-  MX_SPI1_Init();
 
   OSTaskCreate(
       (OS_TCB *)&BlinkTaskTCB,
@@ -246,7 +243,6 @@ static void AppTaskStart(void *p_arg)
       (void *)0,
       (OS_OPT)(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR),
       (OS_ERR *)&os_err);
-
 }
 
 static void ReadDataTask(void *p_arg)
@@ -254,57 +250,50 @@ static void ReadDataTask(void *p_arg)
 
   OS_ERR os_err;
   BMP280_Setup();
-
-  unsigned char MSG[27];
-  sprintf((char*)MSG, "ReadDataTask: reading...\n\r");
+  unsigned char MSG[] = "\rRead Data Task \n\r";
   while (DEF_TRUE)
   {
     HAL_UART_Transmit(&huart2, MSG, sizeof(MSG), 100);
     BMP280_Read();
-    /*
     OSSemPost(
-      (OS_SEM *)&sem,
-      (OS_OPT)OS_OPT_TIME_HMSM_STRICT,
-      (OS_ERR *)&os_err
-    );
-    */
-    OSTimeDlyHMSM(0, 0, 10, 0, OS_OPT_TIME_HMSM_STRICT, &os_err);
+        (OS_SEM *)&sem,
+        (OS_OPT)OS_OPT_POST_1,
+        (OS_ERR *)&os_err);
+    OSTimeDlyHMSM(0, 0, 1, 0, OS_OPT_TIME_HMSM_STRICT, &os_err);
   }
 }
 
 static void DisplayDataTask(void *p_arg)
 {
   OS_ERR os_err;
+  unsigned char MSG[] = "\rDisplay Data Task \n\r";
 
   while (DEF_TRUE)
   {
-    /*
-    OSSemPend(
-      (OS_SEM *)&sem,
-      (OS_TICK)0,
-      (OS_OPT)OS_OPT_PEND_BLOCKING,
-      (CPU_TS *)NULL,
-      (OS_ERR *)&os_err
-    );
-    */
-    BMP280_Print(&huart2);
-    OSTimeDlyHMSM(0, 0, 10, 0, OS_OPT_TIME_HMSM_STRICT, &os_err);
-  }
 
+    OSSemPend(
+        (OS_SEM *)&sem,
+        (OS_TICK)0,
+        (OS_OPT)OS_OPT_PEND_BLOCKING,
+        (CPU_TS *)NULL,
+        (OS_ERR *)&os_err);
+
+    HAL_UART_Transmit(&huart2, MSG, sizeof(MSG), 100);
+    BMP280_Print(&huart2);
+    OSTimeDlyHMSM(0, 0, 1, 0, OS_OPT_TIME_HMSM_STRICT, &os_err);
+  }
 }
 
 static void BlinkTask(void *p_arg)
 {
   OS_ERR os_err;
-  unsigned char MSG[13];
-  sprintf((char*)MSG, "Blink Task\n\r");
+  unsigned char MSG[] = "\rBlink Task \n\r";
   while (DEF_TRUE)
   {
     HAL_UART_Transmit(&huart2, MSG, sizeof(MSG), 100);
     HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
-    OSTimeDlyHMSM(0, 0, 5, 0, OS_OPT_TIME_HMSM_STRICT, &os_err);
+    OSTimeDlyHMSM(0, 0, 1, 0, OS_OPT_TIME_HMSM_STRICT, &os_err);
   }
-
 }
 /* USER CODE END 4 */
 
@@ -323,7 +312,7 @@ void Error_Handler(void)
   /* USER CODE END Error_Handler_Debug */
 }
 
-#ifdef  USE_FULL_ASSERT
+#ifdef USE_FULL_ASSERT
 /**
   * @brief  Reports the name of the source file and the source line number
   *         where the assert_param error has occurred.
