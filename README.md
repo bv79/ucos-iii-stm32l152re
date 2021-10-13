@@ -6,11 +6,12 @@
 <!-- vim-markdown-toc GFM -->
 
 - [Hardware](#hardware)
-- [Toolchain (on Arch Linux)](#toolchain-on-arch-linux)
+- [Toolchain](#toolchain)
+	- [On Arch Linux](#on-arch-linux)
+	- [On Windows 10](#on-windows-10) 	 
 - [Generate a STM32 project with STM32CubeMX](#generate-a-stm32-project-with-stm32cubemx)
 - [Import the project to Platformio](#import-the-project-to-platformio)
 - [Porting ucos-iii](#porting-ucos-iii)
-- [Problems](#problems)
 - [References](#references)
 
 <!-- vim-markdown-toc -->
@@ -18,7 +19,8 @@
 ## Hardware
 - [STM32 Nucleo-L152RE](https://www.st.com/en/evaluation-tools/nucleo-l152re.html)
 
-## Toolchain (on Arch Linux)
+## Toolchain 
+### On Arch Linux
 - [STM32CubeMX](https://aur.archlinux.org/packages/stm32cubemx/)
 - [python](https://archlinux.org/packages/extra/x86_64/python/)
 - [platformio](https://docs.platformio.org/en/latest/core/installation.html)
@@ -66,6 +68,14 @@
     ---
 - [visual-studio-code](https://aur.archlinux.org/packages/visual-studio-code-bin/) and [PlatformIO IDE](https://marketplace.visualstudio.com/items?itemName=platformio.platformio-ide) plug-in.
 
+### On Windows 10
+- Download and install the following programs
+	- [STM32CubeMX](https://www.st.com/en/development-tools/stm32cubemx.html)
+	- [Visual Studio Code](https://code.visualstudio.com/Download)
+	- [stlink](https://www.st.com/en/development-tools/stsw-link009.html) 
+	- [STM32 Virtual COM Port Driver](https://www.st.com/en/development-tools/stsw-stm32102.html): Starting from Windows® 10, the STSW-STM32102 driver is no more adequate and the usage of the native inbox driver is recommended.
+- Search and install PlatformIO plugin in Extension tab of Visual Studio Code 
+ 
 ## Generate a STM32 project with STM32CubeMX
 - `STM32CubeMX` > `File` > `New Project` > `Board Selector` > `Commercial Part Number` = `NUCLEO-L152RE` > Select the board > `Start Project`
 - Use following settings for the project:
@@ -293,11 +303,6 @@ Lib
   ```
 - Include `os.h` in `main.h`
 - Create `main()` function in `main.c`
-
-## Problems
-- Can't debug when PC13 is enabled. Solutions:
-	- Call any `HAL_GPIO_xxx()` function
-	- Disable pin `PC13`
 
 ## References
 - [µC/OS-III for the STMicroelectronics STM32][1]
