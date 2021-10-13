@@ -1,5 +1,4 @@
 # ucos-iii-STM32L152RE
-> Description goes here
 
 ## Table of Contents
 
